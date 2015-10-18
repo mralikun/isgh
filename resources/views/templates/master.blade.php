@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+    
+    <head>
+        
+        <meta charset="utf-8">
+        <title>Welcome to ISGH</title>
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/assets/css/main.css">
+        
+    </head>
+    
+    
+    <body ng-app="isgh">
+       
+        <header class="container-fluid">
+
+            <div class="col-sm-4 col-md-2 col-lg-2"><h2>ISGH</h2></div>
+            <div class="col-sm-8 col-md-8 col-lg-8">
+
+                <nav>
+                    <ul>
+                    
+                        @yield("navigation")
+                    
+                    </ul>
+                </nav>
+
+            </div>
+
+        </header>
+        
+        <div class="alert">
+            
+            <di class="content">
+                <h4 class="message"></h4>
+                <button class="accept" data-confirm="1">Yes</button><button class="decline" data-confirm="0">No</button>
+            </di>
+            
+        </div>
+        
+        <main>
+   
+            <h2 class="page-title">@yield("pageTitle")</h2>
+
+            <div class="container-fluid">
+
+                <div class="col-sm-6 col-md-6 col-lg-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">
+
+                    @yield("content")
+
+                </div>
+                
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    @yield("aside")
+                </div>
+                
+            </div>
+        </main>    
+        
+        <script src="/assets/js/core/jquery.min.js"></script>
+        <script src="/assets/js/core/angular.min.js"></script>
+        <script src="/assets/js/core/bootstrap.min.js"></script>
+        <script src="/assets/js/controllers/user.js"></script>
+        <script src="/assets/js/app.js"></script>
+        @yield("scripts")
+        
+    </body>
+
+    
+</html>
