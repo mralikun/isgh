@@ -20,7 +20,7 @@ Update Profile
 @section("content")
 
 <span class="text-right note">All of the following fields are required</span>
-<form class="form-horizontal" ng-submit="update()" id="update-profile-form" ng-controller="UserController as uc">
+<form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" ng-submit="update()">
 
     <div class="form-group">
         <label class="control-label col-sm-3">Name</label>
@@ -86,7 +86,8 @@ Update Profile
 
 @section("aside")
 
-<img src="/assets/images/user.jpg" class="edit-img"/>
+<!--<img src="/assets/images/user.jpg" class="edit-img thumbnail"/>-->
+<div class="edit-img thumbnail"></div>
 <input type="file" name="profile_picture" class="form-control profile-pic">
 
 @stop

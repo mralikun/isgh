@@ -34,10 +34,10 @@
         
         <div class="alert">
             
-            <di class="content">
+            <div class="content">
                 <h4 class="message"></h4>
-                <button class="accept" data-confirm="1">Yes</button><button class="decline" data-confirm="0">No</button>
-            </di>
+                <button class="accept btn-isgh" data-confirm="1">Yes</button><button class="decline btn-isgh" data-confirm="0">No</button>
+            </div>
             
         </div>
         
@@ -63,9 +63,14 @@
         <script src="/assets/js/core/jquery.min.js"></script>
         <script src="/assets/js/core/angular.min.js"></script>
         <script src="/assets/js/core/bootstrap.min.js"></script>
-        <script src="/assets/js/controllers/user.js"></script>
         <script src="/assets/js/app.js"></script>
+        <script src="/assets/js/controllers/user.js"></script>
         @yield("scripts")
+        <script>
+        
+            ISGH.init();
+            
+        </script>
         
     </body>
 

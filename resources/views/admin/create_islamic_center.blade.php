@@ -20,12 +20,12 @@ Create Islamic Center
 @section("content")
 
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
-<form class="form-horizontal">
+<form class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create(center)">
 
    <div class="form-group">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
        <div class="col-sm-10">
-           <input type="text" name="name" class="form-control" required placeholder="Enter your name" >
+           <input type="text" name="name" class="form-control" required placeholder="Enter Islamic Center's name" ng-model="center.name">
        </div>
    </div>
 
@@ -61,17 +61,17 @@ Create Islamic Center
 
    <div class="form-group">
        <label class="col-sm-2 control-label">Director Name <sup>*</sup></label>
-       <div class="col-sm-10"><select name="director_name" class="form-control" required><option value="0">Choose a director</option></select></div>
+       <div class="col-sm-10"><select name="director_name" class="form-control" required ng-model="center.director_name"></select></div>
    </div>
 
    <div class="form-group">
        <label class="col-sm-2 control-label">Director Cell Phone</label>
-       <div class="col-sm-10"><input type="tel" name="director_cell" class="form-control" disabled placeholder="Director cell phone"></div>
+       <div class="col-sm-10"><input type="tel" name="director_cell" class="form-control" disabled placeholder="Director cell phone" ng-model="center.director_cell_phone"></div>
    </div>
 
   <div class="form-group">
        <label class="col-sm-2 control-label">Website</label>
-       <div class="col-sm-10"><input type="url" name="website" class="form-control" placeholder="e.g: http://www.google.com/"></div>
+       <div class="col-sm-10"><input type="url" name="website" class="form-control" placeholder="e.g: http://www.google.com/" ng-model="center.website"></div>
    </div>
 
   <div class="form-group">
@@ -79,22 +79,22 @@ Create Islamic Center
        <div class="col-sm-10">
 
            <label for="start_time" class="col-sm-2">Start</label>
-           <div class="col-sm-3"><input type="time" name="khutbah_start_time" class="form-control" required></div>
+           <div class="col-sm-3"><input type="time" name="khutbah_start_time" class="form-control" required ng-model="center.khutbah_start"></div>
 
           <label for="end_time" class="col-sm-2">End</label>
-           <div class="col-sm-3"><input type="time" name="khutbah_end_time" class="form-control" required></div>
+           <div class="col-sm-3"><input type="time" name="khutbah_end_time" class="form-control" required ng-model="center.khutbah_end"></div>
 
        </div>
    </div>
 
  <div class="form-group">
        <label class="col-sm-2 control-label">Parking Information <sup>*</sup></label>
-       <div class="col-sm-10"><textarea name="parking_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please fill any parking related details" required></textarea></div>
+       <div class="col-sm-10"><textarea name="parking_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please fill any parking related details" required ng-model="center.parking_information"></textarea></div>
    </div>
 
 <div class="form-group">
        <label class="col-sm-2 control-label">Other Information</label>
-       <div class="col-sm-10"><textarea name="other_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please include any additional instructions"></textarea></div>
+       <div class="col-sm-10"><textarea name="other_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please include any additional instructions" ng-model="center.other_information"></textarea></div>
    </div>
 
    <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center">
@@ -108,5 +108,5 @@ Create Islamic Center
 
 <script src="/assets/js/services/google-geocode.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByh3oCcAHKsHhGrd2widWjrkH2a14hVfU&signed_in=true&libraries=places&callback=initAutocomplete"></script>
-
+<script src="/assets/js/controllers/islamicCenter.js"></script>
 @stop

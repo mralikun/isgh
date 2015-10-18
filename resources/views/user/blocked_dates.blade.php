@@ -21,6 +21,13 @@ Available/Blocked Dates
 
 <h3>Name</h3>
 <span class="hint"><strong>Check the box for all dates you're willing to give khutbah in and leave the box blank if you don't want to give any khutbah at that day , <mark>You must check at least 1 box.</mark></strong></span>
+<div class="options">
+    
+    <button class="btn btn-isgh select-all">Select All</button>
+    <button class="btn btn-isgh unselect-all">Unselect All</button>
+    <button class="btn btn-isgh reverse-select">Reverse Selection</button>
+    
+</div>
 <form>
     <div class="dates-calendar">
 
@@ -28,73 +35,73 @@ Available/Blocked Dates
            <div class="date-content">
                <h4>Friday</h4>
                <h5>12 / 11 / 2015</h5>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        <div class="date">
            <div class="date-content">
                <h4>Friday</h4>
-               <input type="checkbox">
+               <input type="checkbox" disabled>
            </div>
        </div>
        

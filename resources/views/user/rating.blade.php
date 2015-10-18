@@ -53,7 +53,8 @@ Rating
 
     $(".stars").raty({
         number: 7,
-        starType: "i"
+        starType: "i",
+        cancel: true
     });
     
 </script>
