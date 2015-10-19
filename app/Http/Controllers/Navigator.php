@@ -9,7 +9,7 @@ class Navigator extends Controller {
 
 	public function index()
 	{
-		return view('user.edit_profile');
+		return view('auth/login');
 	}
     
 }
