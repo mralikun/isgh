@@ -41,6 +41,8 @@
             
         </div>
         
+        <div class="notification"><p></p></div>
+        
         <main>
    
             <h2 class="page-title">@yield("pageTitle")</h2>

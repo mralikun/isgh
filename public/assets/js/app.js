@@ -141,6 +141,12 @@ var ISGH = {
         }
     },
     
+    notify:function(msg){
+        $(".notification p").text(msg);
+        $(".notification").addClass("appear");
+        window.setTimeout(function(){$(".notification").removeClass("appear")} , 5000);
+    },
+    
     init: function(){
         
         $(".profile-pic").on("change" , function(event){
@@ -176,6 +182,10 @@ var ISGH = {
                 $(element).prop("checked" , !$(element).prop("checked"));
             });
             $(".dates-calendar .date").toggleClass("available");
+        });
+        
+        $(".notification").on("click" , function(){
+            $(this).removeClass("appear");
         });
         
     }
