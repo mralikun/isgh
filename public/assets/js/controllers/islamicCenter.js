@@ -5,16 +5,21 @@ angular.module("isgh" , [])
         
         scope.create = function(){
             ISGH.updateAddressComponents(scope.center);
-            if(!ISGH.Validator.required(["name" , "address" , "country" , "locality" , "administrative_area_level_1" , "postal_code" , "director_name" , "khutbah_start" , "khutbah_end" , "parking_information"] , scope.center)){
-                ISGH.alertBox.init("Some required fields are missing, Please review all form fields and make sure that nothing required is missing");
-                return false;
-            }
+            //if(!ISGH.Validator.required(["name" , "address" , "country" , "locality" , "administrative_area_level_1" , "postal_code" , "director_name" , "khutbah_start" , "khutbah_end" , "parking_information"] , scope.center)){
+            //    ISGH.alertBox.init("Some required fields are missing, Please review all form fields and make shure that nothing required is missing");
+            //    return false;
+            //}
             
             http.post("/admin/createIslamicCenter" , scope.center)
                 .then(function(resp){
-                //  success cb
+                
+                if(resp.data == "true")
+                    ISGH.notify("The Islamic center " + scope.center.name+ " has been successfully created!");
+                else
+                    ISGH.alertBox.init("This Islamic center already exists" , false);
+                
             } , function(err){
-                ISGH.alertBox.init("Something went wrong, Please refresh and try again");
+                ISGH.alertBox.init("Something went wrong, Please refresh and try again" , false);
             });
                 
         }

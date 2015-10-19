@@ -31,7 +31,7 @@ Available/Blocked Dates
 <form ng-controller="UserController as uc">
     <div class="dates-calendar">
 
-       <div class="date" id="5" ng-click="setBlockedDates()">
+       <div class="date" id="5" ng-click="handleDatesClick($event)">
            <div class="date-content">
                <h4>Friday</h4>
                <h5>12 / 11 / 2015</h5>

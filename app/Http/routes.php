@@ -41,5 +41,13 @@ Route::get('/admin/islamic_center/edit', 'AdminController@Edit_Islamic_Center_In
 // here the route for creating members from "create_members.blade.php" in admin
 Route::post("/admin/createUser",'AdminController@createUser');
 
+// here the route for getting cell phone for director to create islamic center
+Route::post("/user/getCellPhone",'AdminController@getCellPhone');
+
+// here the route for creating islamic center
+Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
+
+
+
 
 

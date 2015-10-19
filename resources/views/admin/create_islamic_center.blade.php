@@ -56,7 +56,6 @@ Create Islamic Center
             </div>
 
        </div>
-       <!-- The rest of the address data -->
    </div>
 
    <div class="form-group">

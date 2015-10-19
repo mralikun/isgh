@@ -161,7 +161,7 @@ a:hover {
     font-size: 1.15em;
     transform: translateX(25px);
     cursor: pointer;
-    transition: transform 300ms , opacity 300ms , box-shadow 300ms;
+    transition: transform 500ms , opacity 500ms , box-shadow 500ms;
 }
 
 .notification:hover {

@@ -13,6 +13,7 @@ angular.module("isgh" , [])
         scope.user = {};
         // we should request this if the user goes to the dates page.
         scope.cycleDates = [];
+        
         scope.dates = {
             available: [],
 //            blocked: [], it might be useful later
@@ -35,6 +36,7 @@ angular.module("isgh" , [])
                 where.splice(where.indexOf(what) , 1);
             }
         };
+        
         scope.update = function (){
             // updating the address manually to the model becuase the model doesn't respond to input auto fill.
 //            ISGH.updateAddressComponents(scope.user);

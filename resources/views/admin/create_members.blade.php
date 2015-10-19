@@ -26,17 +26,17 @@ Create new member
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Username </label>
-        <div class="col-sm-10"><input type="text" class="form-control" required ng-model="tempUser.username" placeholder="Username" minlength="6" maxlength="32"></div>
+        <div class="col-sm-10"><input type="text" class="form-control" required ng-model="tempUser.username" placeholder="Username: 6 ~ 32 Characters" minlength="6" maxlength="32"></div>
     </div>
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Password </label>
-        <div class="col-sm-10"><input type="password" name="password" required class="form-control" ng-model="tempUser.password" placeholder="Enter a password" minlength="8" maxlength="21"></div>
+        <div class="col-sm-10"><input type="password" name="password" required class="form-control" ng-model="tempUser.password" placeholder="Password: at least 8 Characters" minlength="8"></div>
     </div>
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Confirm Password</label>
-        <div class="col-sm-10"><input type="password" name="confirm_password" required class="form-control" ng-model="tempUser.confirm_password" placeholder="Re-enter the password" minlength="8" maxlength="21"></div>
+        <div class="col-sm-10"><input type="password" name="confirm_password" required class="form-control" ng-model="tempUser.confirm_password" placeholder="Re-enter the password" minlength="8"></div>
     </div>
     <div class="form-group">
 

@@ -188,6 +188,12 @@ var ISGH = {
             $(this).removeClass("appear");
         });
         
+        $("input[ng-model $= 'username']").on("keypress" , function(e){
+            var pressedKey = String.fromCharCode(e.charCode).toLocaleLowerCase();
+            if(pressedKey == " ")
+                return false;
+        });
+        
     }
     
 }

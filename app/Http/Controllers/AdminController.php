@@ -1,8 +1,10 @@
 <?php namespace App\Http\Controllers;
 
+use App\AssociateDirector;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\IslamicCenter;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -15,7 +17,9 @@ class AdminController extends Controller {
      * @return \Illuminate\View\create_islamic_center
      */
 	public function Create_Islamic_Center(){
-        return view("admin.create_islamic_center");
+        $directors = AssociateDirector::select("name","id")->where("name","!=" , "")->get();
+
+        return view("admin.create_islamic_center",compact("directors"));
     }
 
     /**
@@ -67,6 +71,36 @@ class AdminController extends Controller {
             return "true";
         }
     }
+
+    /**
+     * @return mixed
+     * get cell phone for the director
+     */
+    public function getCellPhone(){
+        $id = Input::get("id");
+        $phone = AssociateDirector::whereid($id)->first();
+        return $phone->phone ;
+    }
+
+
+    /**
+     * @return mixed
+     * create new islamic center
+     */
+    public function createIslamicCenter(){
+        $input = Input::all();
+        $name = Input::get("name") ;
+        $islamic_center = IslamicCenter::wherename($name)->first();
+        if(empty($islamic_center)){
+            return IslamicCenter::addNewIslamicCenter($input);
+        }else{
+            return "false";
+        }
+    }
+
+
+
+
 
 
 }
