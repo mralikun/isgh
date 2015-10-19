@@ -19,6 +19,15 @@ angular.module("isgh" , [])
                 
         }
         
+        scope.updateDirectorCellPhone = function(){
+            http.post("/user/getCellPhone" , {"id" : scope.center.director_name})
+                .then(function(resp){
+                scope.center.director_cell_phone = resp.data;
+            } , function(err){
+                ISGH.alertBox.init("something went wrong retriving the director's cell phone." , false);
+            });
+        }
+        
         scope.update = function(){
             
         }

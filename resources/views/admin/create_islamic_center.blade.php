@@ -20,7 +20,7 @@ Create Islamic Center
 @section("content")
 
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
-<form class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()">
+<form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()">
 
    <div class="form-group">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
@@ -61,7 +61,11 @@ Create Islamic Center
 
    <div class="form-group">
        <label class="col-sm-2 control-label">Director Name <sup>*</sup></label>
-       <div class="col-sm-10"><select name="director_name" class="form-control" required ng-model="center.director_name"></select></div>
+       <div class="col-sm-10"><select name="director_name" class="form-control" required ng-model="center.director_name" ng-change="updateDirectorCellPhone()">
+           @foreach($directors as $director)
+           <option value="{{$director->id}}">{{$director->name}}</option>
+           @endforeach
+       </select></div>
    </div>
 
    <div class="form-group">
