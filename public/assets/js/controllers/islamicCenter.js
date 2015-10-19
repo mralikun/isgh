@@ -6,7 +6,7 @@ angular.module("isgh" , [])
         scope.create = function(){
             ISGH.updateAddressComponents(scope.center);
             if(!ISGH.Validator.required(["name" , "address" , "country" , "locality" , "administrative_area_level_1" , "postal_code" , "director_name" , "khutbah_start" , "khutbah_end" , "parking_information"] , scope.center)){
-                ISGH.alertBox.init("Some required fields are missing, Please review all form fields and make shure that nothing required is missing");
+                ISGH.alertBox.init("Some required fields are missing, Please review all form fields and make sure that nothing required is missing");
                 return false;
             }
             

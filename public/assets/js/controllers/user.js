@@ -37,9 +37,7 @@ angular.module("isgh" , [])
         };
         scope.update = function (){
             // updating the address manually to the model becuase the model doesn't respond to input auto fill.
-            ISGH.updateAddressComponents(scope.user);
-            // Use ISGH.Validator.required to check for all fields
-            
+//            ISGH.updateAddressComponents(scope.user);
         }
 
         // available to admins ONLY
@@ -47,6 +45,7 @@ angular.module("isgh" , [])
         scope.delete = function ( ){}
 
         scope.create = function ( _temp ){
+            
             if( !ISGH.Validator.required( ["username" , "password" , "confirm_password" , "role"] , _temp ) ){
                 ISGH.alertBox.init("Some required fields are missing ,Please review all form fields and make sure nothing is missing" , false);
                 return false;
@@ -58,17 +57,23 @@ angular.module("isgh" , [])
             http.post("/admin/createUser" , _temp)
                 .then(function(resp){
                 
-                // success callback , check if ahmed going to return anything from the server.
-                // should return if this user exists to alert the admin of such thing.
-                // also if the user exists but with different role , we should alert the admin if he wants to change the user's role to the selected one.
+                if(resp.data == "true"){
+                    ISGH.alertBox.init("This user already exists" , false);
+                }else
+                    ISGH.notify("The user " + _temp.username + " has been successfully created!");
                 
                 delete _temp;
+                delete scope.tempUser.username;
+                delete scope.tempUser.password;
+                delete scope.tempUser.confirm_password;
+                delete scope.tempUser.role;
                 
             } , function(err){
                 
                 ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again" , false);
                 
             });
+            
         }
 
         ////////////////////////////////////
