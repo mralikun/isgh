@@ -229,11 +229,6 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
     width: 100%;
     color: rgba(0,0,0,.7);
     font-weight: bold;
-    transition: transform 300ms;
-}
-
-#login-form input:not([type="submit"]):not([type="checkbox"]):focus {
-    transform: scale(1.03 , 1);
 }
 
 #login-form input[type="submit"]:not([type="checkbox"]){

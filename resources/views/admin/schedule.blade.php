@@ -6,6 +6,7 @@
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 <li><a href="/admin/schedule">Manage Schedule</a></li>
+<li><a href="/auth/logout">Logout</a></li>
 
 @stop
 
