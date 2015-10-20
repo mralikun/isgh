@@ -37,9 +37,9 @@ angular.module("isgh" , ["ngMessages"])
             }
         };
         
-        scope.update = function (){
+        scope.update = function (_event){
             // updating the address manually to the model becuase the model doesn't respond to input auto fill.
-//            ISGH.updateAddressComponents(scope.user);
+
         }
 
         // available to admins ONLY

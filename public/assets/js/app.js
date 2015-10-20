@@ -151,6 +151,14 @@ var ISGH = {
         
         $(".profile-pic").on("change" , function(event){
             
+            var file = this.files[0];
+            var types = ["png" , "jpg" , "jpeg"];
+            var fileType = file.type.substring(file.type.lastIndexOf("/") + 1 , file.type.length);
+            if( types.indexOf(fileType) == -1 ){
+                ISGH.alertBox.init("Please Choose another image ,Supported formats are '.png' , '.jpg' and '.jpeg'" , false);
+                return false;
+            }
+            
             var reader = new FileReader();
             reader.onload = function(e){
                 $(".edit-img").css("background-image" , "url("+ e.target.result +")");
@@ -158,6 +166,27 @@ var ISGH = {
             reader.readAsDataURL(this.files[0]);
             
         });
+        
+//        $("#update-profile").on("submit" , function(){
+//            var fd = new FormData(this);
+//            $.ajax({
+//                url: "/user/updateProfile",
+//                type: "POST",
+//                data: fd,
+//                xhr: function(){
+//                    var x = $.ajaxSettings.xhr();
+//                    if(x.upload){
+//                        
+//                    }
+//                    else
+//                        ;
+//                },
+//                cache: false,
+//                contentType: false,
+//                processData: false
+//                
+//            });
+//        });
         
         $(".dates-calendar").on("click" , ".date" , function(e){
             
