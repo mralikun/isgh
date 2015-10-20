@@ -34,7 +34,7 @@ Edit/Delete Islamic Center
         
         <tr>
             <td>Islamic Center</td>
-            <td><button>Edit</button><button>Delete</button></td>
+            <td><button class="btn btn-isgh">Edit</button><button class="btn btn-isgh">Delete</button></td>
         </tr>
         
     </tbody>

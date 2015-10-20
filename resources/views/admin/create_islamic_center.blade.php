@@ -20,7 +20,7 @@ Create Islamic Center
 @section("content")
 
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
-<form class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create(center)">
+<form class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()">
 
    <div class="form-group">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
@@ -97,7 +97,7 @@ Create Islamic Center
        <div class="col-sm-10"><textarea name="other_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please include any additional instructions" ng-model="center.other_information"></textarea></div>
    </div>
 
-   <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center">
+   <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center" ng-disabled="!center.name||!center.director_name||!center.khutbah_start||!center.khutbah_end||!center.parking_information">
 
 </form>
 

@@ -18,6 +18,7 @@ class CreateAssociateDirectorTable extends Migration {
             $table->string('name');
             $table->string('email');
             $table->integer('phone');
+            $table->boolean("reviewer");
             $table->string('address');
             $table->string('bio');
             $table->integer('post_code');

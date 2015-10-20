@@ -28,10 +28,10 @@ Available/Blocked Dates
     <button class="btn btn-isgh reverse-select">Reverse Selection</button>
     
 </div>
-<form>
+<form ng-controller="UserController as uc">
     <div class="dates-calendar">
 
-       <div class="date">
+       <div class="date" id="5" ng-click="setBlockedDates()">
            <div class="date-content">
                <h4>Friday</h4>
                <h5>12 / 11 / 2015</h5>
@@ -107,7 +107,7 @@ Available/Blocked Dates
        
 
     </div>
-    <input type="submit" value="Submit" class="btn btn-primary pull-right">
+    <input type="submit" value="Submit" class="btn btn-primary pull-right" ng-disabled="dates.available.length == 0">
 </form>
 
 @stop

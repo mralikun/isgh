@@ -110,11 +110,11 @@ var ISGH = {
          */
         
         required: function ( fields , objModel ){
-            for( var key in objModel ){
-                if( fields.indexOf(key) == -1 )
+            
+            for(var i = 0; i < fields.length; i++){
+                if(!objModel.hasOwnProperty(fields[i]))
                     return false;
             }
-            
             return true;
         },
         
