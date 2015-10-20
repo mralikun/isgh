@@ -11,6 +11,7 @@ return array(
     'CreateAssociateDirectorTable' => $baseDir . '/database/migrations/2015_10_16_125156_create_AssociateDirector_table.php',
     'CreateCycleTable' => $baseDir . '/database/migrations/2015_10_19_111634_create_cycle_table.php',
     'CreateFridaysTable' => $baseDir . '/database/migrations/2015_10_19_111619_create_fridays_table.php',
+    'CreateIslamicCenterTable' => $baseDir . '/database/migrations/2015_10_20_114045_create_islamic_center_table.php',
     'CreateKhateebTable' => $baseDir . '/database/migrations/2015_10_16_125138_create_Khateeb_table.php',
     'CreateKhateebselectedfridaysTable' => $baseDir . '/database/migrations/2015_10_19_115657_create_Khateebselectedfridays_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
