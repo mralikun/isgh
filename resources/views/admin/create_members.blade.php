@@ -6,7 +6,7 @@
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 <li><a href="/admin/schedule">Manage Schedule</a></li>
-<li><a href="admin/members/edit" class="sub-link">Edit/Delete Members</a></li>
+<li><a href="/admin/members/edit" class="sub-link">Edit/Delete Members</a></li>
 
 @stop
 
@@ -22,7 +22,7 @@ Create new member
 
 <span class="note text-right">All of the following fields are required</span>
 
-<form action="#" class="form-horizontal" id="members-form" ng-controller="UserController as uc" ng-submit="create(tempUser)">
+<form action="" class="form-horizontal" id="members-form" ng-controller="UserController as uc" ng-submit="create(tempUser)">
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Username </label>
