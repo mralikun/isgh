@@ -168,7 +168,12 @@ var ISGH = {
         });
         
 //        $("#update-profile").on("submit" , function(){
+
+//        });
+        
+//        $("form#update-profile-form").on("submit" , function(){
 //            var fd = new FormData(this);
+//            console.log(fd);
 //            $.ajax({
 //                url: "/user/updateProfile",
 //                type: "POST",
@@ -179,7 +184,8 @@ var ISGH = {
 //                        
 //                    }
 //                    else
-//                        ;
+//                        console.log("Not Here!");
+//                    return x;
 //                },
 //                cache: false,
 //                contentType: false,
@@ -187,7 +193,7 @@ var ISGH = {
 //                
 //            });
 //        });
-        
+//        
         $(".dates-calendar").on("click" , ".date" , function(e){
             
             $(this).toggleClass("available");

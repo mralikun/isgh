@@ -39,6 +39,7 @@ angular.module("isgh" , ["ngMessages"])
         
         scope.update = function (_event){
             // updating the address manually to the model becuase the model doesn't respond to input auto fill.
+            console.log("here");
 
         }
 
