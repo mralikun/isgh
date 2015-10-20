@@ -173,6 +173,10 @@ a:hover {
     transform: translateX(0);
 }
 
+autio {
+    display: none;
+}
+
 /**
 
     LOGIN PAGE AND LOGIN FORM

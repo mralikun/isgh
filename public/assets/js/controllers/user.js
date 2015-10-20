@@ -61,9 +61,12 @@ angular.module("isgh" , [])
                 
                 if(resp.data == "true"){
                     ISGH.alertBox.init("This user already exists" , false);
-                }else
+                }else{
                     ISGH.notify("The user " + _temp.username + " has been successfully created!");
-                
+                    var au = document.getElementsByTagName("audio")[0];
+                    au.play();
+                }
+                    
                 delete _temp;
                 delete scope.tempUser.username;
                 delete scope.tempUser.password;

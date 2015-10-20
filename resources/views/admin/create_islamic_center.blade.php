@@ -103,7 +103,7 @@ Create Islamic Center
    <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center" ng-disabled="!center.name||!center.director_name||!center.khutbah_start||!center.khutbah_end||!center.parking_information">
 
 </form>
-
+<audio src="/assets/alert.mp3"></audio>
 @stop
 
 

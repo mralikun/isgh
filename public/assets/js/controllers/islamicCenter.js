@@ -13,8 +13,11 @@ angular.module("isgh" , [])
             http.post("/admin/createIslamicCenter" , scope.center)
                 .then(function(resp){
                 
-                if(resp.data == "true")
+                if(resp.data == "true"){
                     ISGH.notify("The Islamic center " + scope.center.name+ " has been successfully created!");
+                    var au = document.getElementsByTagName("audio")[0];
+                    au.play();
+                }
                 else
                     ISGH.alertBox.init("This Islamic center already exists" , false);
                 

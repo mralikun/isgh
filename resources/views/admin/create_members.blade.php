@@ -76,5 +76,5 @@ Create new member
     </div>
 
 </form>
-
+<audio src="/assets/alert.mp3"></audio>
 @stop
