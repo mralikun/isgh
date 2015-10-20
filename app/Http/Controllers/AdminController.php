@@ -61,7 +61,7 @@ class AdminController extends Controller {
      */
     public function createUser(){
         $username = Input::get("username");
-        $user = User::whereemail($username)->first();
+        $user = User::whereusername($username)->first();
 
         if($user == "" ){
             $input = Input::all();

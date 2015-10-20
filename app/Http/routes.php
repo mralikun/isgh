@@ -60,4 +60,7 @@ Route::get('/user/rating', 'UserController@getRatingPage');
 // route for editing user profile
 Route::get('/user/edit_profile', 'UserController@getEditProfile');
 
+// route for getting user profile
+Route::get('/user/profile', 'UserController@getProfile');
+
 
