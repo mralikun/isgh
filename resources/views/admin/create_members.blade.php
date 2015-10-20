@@ -22,21 +22,40 @@ Create new member
 
 <span class="note text-right">All of the following fields are required</span>
 
-<form method="POST" class="form-horizontal" id="members-form" ng-controller="UserController as uc" ng-submit="create(tempUser)">
+<form method="POST" class="form-horizontal" id="members-form" ng-controller="UserController as uc" ng-submit="create(tempUser)" name="registerForm">
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Username </label>
-        <div class="col-sm-10"><input type="text" class="form-control" required ng-model="tempUser.username" placeholder="Username: 6 ~ 32 Characters" minlength="6" maxlength="32"></div>
+        <div class="col-sm-10" ng-class="{'has-success': tempUser.username}">
+            <input type="text" class="form-control" name="Name" placeholder="Username: 6 ~ 32 Characters" ng-model="tempUser.username" ng-minlength="6" ng-maxlength="32" required>
+            <div ng-messages="registerForm.Name.$error" role="alert">
+                <div ng-message="required">Username is required</div>
+                <div ng-message="minlength">Username is too short</div>
+                <div ng-message="maxlength">Username is too long</div>
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Password </label>
-        <div class="col-sm-10"><input type="password" name="password" required class="form-control" ng-model="tempUser.password" placeholder="Password: at least 8 Characters" minlength="8"></div>
+        <div class="col-sm-10" ng-class="{'has-success': tempUser.password}">
+            <input type="password" class="form-control" name="password" placeholder="Password: at least 8 Characters" ng-model="tempUser.password"  ng-minlength="8" required>
+            <div ng-messages="registerForm.password.$error" role="alert">
+                <div ng-message="required">Password is required</div>
+                <div ng-message="minlength">Password is too short</div>
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Confirm Password</label>
-        <div class="col-sm-10"><input type="password" name="confirm_password" required class="form-control" ng-model="tempUser.confirm_password" placeholder="Re-enter the password" minlength="8"></div>
+        <div class="col-sm-10" ng-class="{'has-success': tempUser.confirm_password}">
+            <input type="password" name="confirm_password" required class="form-control" ng-model="tempUser.confirm_password" placeholder="Re-enter the password" ng-minlength="8">
+            <div ng-messages="registerForm.confirm_password.$error" role="alert">
+                <div ng-message="required">Please Confirm the password</div>
+                <div ng-message="minlength">Confirmed Password is too short</div>
+            </div>
+        </div>
     </div>
     <div class="form-group">
 
@@ -70,7 +89,7 @@ Create new member
         </div>
         
     </div>
-
+    
     <div class="form-group">
         <input type="submit" class="btn btn-primary pull-right" value="Add Member" ng-disabled="!tempUser.username||!tempUser.password||!tempUser.confirm_password||!tempUser.role||tempUser.password!==tempUser.confirm_password">
     </div>

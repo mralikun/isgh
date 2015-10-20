@@ -67,6 +67,7 @@
         <script src="/assets/js/core/bootstrap.min.js"></script>
         <script src="/assets/js/app.js"></script>
         <script src="/assets/js/controllers/user.js"></script>
+        <script src="/assets/js/core/angular-messages.min.js"></script>
         @yield("scripts")
         <script>
         

@@ -6,7 +6,7 @@
 
 */
     
-angular.module("isgh" , [])
+angular.module("isgh" , ["ngMessages"])
     .controller("UserController" , ["$scope" , "$http" , function( scope , http ){
 
         // we will make a request to get the online user's data.
@@ -60,18 +60,17 @@ angular.module("isgh" , [])
                 .then(function(resp){
                 
                 if(resp.data == "true"){
-                    ISGH.alertBox.init("This user already exists" , false);
+                    ISGH.alertBox.init("The user '"+ _temp.username +"' already exists" , false);
                 }else{
-                    ISGH.notify("The user " + _temp.username + " has been successfully created!");
+                    ISGH.notify("The user '" + _temp.username + "' has been successfully created!");
                     var au = document.getElementsByTagName("audio")[0];
                     au.play();
+                    delete scope.tempUser.username;
+                    delete scope.tempUser.password;
+                    delete scope.tempUser.confirm_password;
+                    delete scope.tempUser.role;
+                    scope.registerForm.$setPristine(true);
                 }
-                    
-                delete _temp;
-                delete scope.tempUser.username;
-                delete scope.tempUser.password;
-                delete scope.tempUser.confirm_password;
-                delete scope.tempUser.role;
                 
             } , function(err){
                 

@@ -1,8 +1,7 @@
-angular.module("isgh" , [])
+angular.module("isgh" , ["ngMessages"])
     .controller("IslamicCenterController" , ["$scope", "$http" , function(scope , http){
         
         scope.center = {};
-        
         scope.create = function(){
             ISGH.updateAddressComponents(scope.center);
             //if(!ISGH.Validator.required(["name" , "address" , "country" , "locality" , "administrative_area_level_1" , "postal_code" , "director_name" , "khutbah_start" , "khutbah_end" , "parking_information"] , scope.center)){
@@ -14,12 +13,14 @@ angular.module("isgh" , [])
                 .then(function(resp){
                 
                 if(resp.data == "true"){
-                    ISGH.notify("The Islamic center " + scope.center.name+ " has been successfully created!");
+                    ISGH.notify("The Islamic center '" + scope.center.name+ "' has been successfully created!");
                     var au = document.getElementsByTagName("audio")[0];
                     au.play();
+                    delete scope.center;
+                    scope.icForm.$setPristine(true);
                 }
                 else
-                    ISGH.alertBox.init("This Islamic center already exists" , false);
+                    ISGH.alertBox.init("The Islamic center '" + scope.center.name + "' already exists" , false);
                 
             } , function(err){
                 ISGH.alertBox.init("Something went wrong, Please refresh and try again" , false);

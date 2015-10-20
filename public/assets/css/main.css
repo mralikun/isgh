@@ -159,6 +159,8 @@ a:hover {
     opacity: 0;
     color: #007bb3;
     font-size: 1.15em;
+    z-index: 900;
+    background-color: white;
     transform: translateX(25px);
     cursor: pointer;
     transition: transform 500ms , opacity 500ms , box-shadow 500ms;
@@ -173,8 +175,17 @@ a:hover {
     transform: translateX(0);
 }
 
-autio {
+audio {
     display: none;
+}
+
+div[ng-messages] {
+    color: maroon;
+    padding: 0 15px;
+}
+
+input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , textarea.ng-pristine + div[ng-messages]{
+    visibility: hidden;
 }
 
 /**
