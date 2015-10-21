@@ -14,8 +14,6 @@ angular.module("isgh" , ["ngMessages"])
                 
                 if(resp.data == "true"){
                     ISGH.notify("The Islamic center '" + scope.center.name+ "' has been successfully created!");
-                    var au = document.getElementsByTagName("audio")[0];
-                    au.play();
                     delete scope.center;
                     scope.icForm.$setPristine(true);
                 }

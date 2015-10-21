@@ -3,13 +3,14 @@
 
 @section("navigation")
 
+@if($firstTime == "false")
 <li><a href="/user/dates">Available/Blocked Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
+@endif
 <li><a href="/auth/logout">Logout</a></li>
 
 @stop
-
 
 @section("pageTitle")
 
@@ -20,15 +21,13 @@ Update Profile
 @section("content")
 
 <span class="text-right note">All of the following fields are required</span>
-
-
 <form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
-
-    <input type="hidden" name="_token" value="{{csrf_token()}}" >
+   
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="form-group">
         <label class="control-label col-sm-3">Name</label>
         <div class="col-sm-9">
-            <input type="text" name="name" class="form-control" placeholder="Enter your name" ng-model="user.name" required>
+            <input type="text" name="name" class="form-control" placeholder="Enter your name" required value="{{$result->name}}">
             <div ng-messages="profile.name.$error">
                 <div ng-message="required">Please enter your name</div>
             </div>
@@ -37,7 +36,7 @@ Update Profile
     <div class="form-group">
         <label for="" class="control-label col-sm-3">Address</label>
         <div class="col-sm-9">
-            <input type="text" name="address" class="form-control">
+            <input type="text" name="address" class="form-control" value="{{$result->address}}">
         </div>
         <div class="col-sm-9 col-sm-offset-3">
 
@@ -58,7 +57,7 @@ Update Profile
                 <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control" disabled placeholder="State"/></div>
 
                 <label class="col-sm-2">Postal Code</label>
-                <div class="col-sm-3"><input name="postal_code" class="form-control" type="text" disabled placeholder="Postal Code"/></div>
+                <div class="col-sm-3"><input name="postal_code" class="form-control" type="text" disabled placeholder="Postal Code" value="{{$result->post_code}}"/></div>
 
             </div>
 
@@ -68,7 +67,7 @@ Update Profile
     <div class="form-group">
         <label for="" class="control-label col-sm-3">Cell Phone</label>
         <div class="col-sm-9">
-            <input type="tel" name="cell_phone" class="form-control" placeholder="Cell phone number" ng-model="user.cell_phone" required>
+            <input type="tel" name="cell_phone" class="form-control" placeholder="Cell phone number" required value="{{$result->phone}}">
             <div ng-messages="profile.cell_phone.$error">
                 <div ng-message="required">Please Enter your cell phone</div>
             </div>
@@ -77,22 +76,22 @@ Update Profile
     <div class="form-group">
         <label for="" class="control-label col-sm-3">Biography</label>
         <div class="col-sm-9">
-            <textarea name="bio" rows="5" class="form-control" placeholder="Tell us about yourself" ng-model="user.bio" required></textarea>
+            <textarea name="bio" rows="5" class="form-control" placeholder="Tell us about yourself" required>{{$result->bio}}</textarea>
             <div ng-messages="profile.bio.$error">
                 <div ng-message="required">Please provide your biography</div>
             </div>
         </div>
     </div>   
-    <div class="form-group" ng-show="userRole == 'khateeb'">
+    <div class="form-group" ng-show="userRole == 2">
         <label for="" class="control-label col-sm-3">Educational Background</label>
         <div class="col-sm-9">
-            <input type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" ng-model="user.edu_background" />
+            <input type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" value="{{$result->edu_background}}"/>
         </div>
     </div>
     <div class="form-group">
         <label for="" class="control-label col-sm-3">E-mail</label>
         <div class="col-sm-9">
-            <input type="email" name="email" class="form-control" placeholder="E-mail" ng-model="user.email" required>
+            <input type="email" name="email" class="form-control" placeholder="E-mail" required value="{{$result->email}}">
             <div ng-messages="profile.email.$error">
                 <div ng-message="required">Please Enter E-mail</div>
             </div>
@@ -102,14 +101,19 @@ Update Profile
         <input type="submit" class="btn btn-primary pull-right" value="Update Information">
     </div>
 
+<audio src="/assets/alert.mp3"></audio>
 
 @stop
 
 @section("aside")
-<div ng-show="userRole == 'khateeb'">
+<div>
    
-    <div class="edit-img thumbnail"></div>
+    <div class="edit-img thumbnail" style="background-image: url(/images/khateeb_pictures/{{$result->picture_url}})"></div>
+    @if($result->picture_url != "")
+    <input type="file" name="profile_picture" class="form-control profile-pic">
+    @else
     <input type="file" name="profile_picture" class="form-control profile-pic" required>
+    @endif
 
 </div>
 

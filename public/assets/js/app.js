@@ -84,19 +84,6 @@ var ISGH = {
         
     },
     
-    /**
-     * This function is used to manually update an address components to an object.
-     * @param Object _for  The object to update these attributes for.
-     */
-    
-    updateAddressComponents: function( _for ){
-        _for.country = $("input[name='country']").val();
-        _for.city = $("input[name='locality']").val();
-        _for.state = $("input[name='administrative_area_level_1']").val();
-        _for.postal_code = $("input[name='postal_code']").val();
-        _for.address = $("input[name='address']").val();
-    },
-    
     // This object is used for data validation
     
     Validator:  {
@@ -144,10 +131,20 @@ var ISGH = {
     notify:function(msg){
         $(".notification p").text(msg);
         $(".notification").addClass("appear");
+        var au = document.getElementsByTagName("audio")[0];
+        au.play();
         window.setTimeout(function(){$(".notification").removeClass("appear")} , 5000);
     },
     
-    init: function(){
+    initHelperFunctions: function(){
+        
+        this.updateAddressComponents = function( _for ){
+            _for.country = $("input[name='country']").val();
+            _for.city = $("input[name='locality']").val();
+            _for.state = $("input[name='administrative_area_level_1']").val();
+            _for.postal_code = $("input[name='postal_code']").val();
+            _for.address = $("input[name='address']").val();
+        }
         
         Array.prototype.reflectValues = Array.prototype.reflectValues || function(target){
             
@@ -159,26 +156,12 @@ var ISGH = {
             return reflected;
         }
         
-        $(".profile-pic").on("change" , function(event){
-            
-            var file = this.files[0];
-            var types = ["png" , "jpg" , "jpeg"];
-            var fileType = file.type.substring(file.type.lastIndexOf("/") + 1 , file.type.length);
-            if( types.indexOf(fileType) == -1 ){
-                ISGH.alertBox.init("Please Choose another image ,Supported formats are '.png' , '.jpg' and '.jpeg'" , false);
-                return false;
-            }
-            
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $(".edit-img").css("background-image" , "url("+ e.target.result +")");
-            }
-            reader.readAsDataURL(this.files[0]);
-            
-        });
-        
+    },
+    
+    floodStack: function(){
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
+            
             var fields =  {
                 name: "Name",
                 address: "Address",
@@ -191,6 +174,7 @@ var ISGH = {
                 edu_bg: "Educational Background",
                 email: "E-mail"
             };
+            
             $.ajax({
                 url: "/user/updateProfile",
                 type: "POST",
@@ -251,6 +235,30 @@ var ISGH = {
             if(pressedKey == " ")
                 return false;
         });
+        
+        $(".profile-pic").on("change" , function(event){
+            
+            var file = this.files[0];
+            var types = ["png" , "jpg" , "jpeg"];
+            var fileType = file.type.substring(file.type.lastIndexOf("/") + 1 , file.type.length);
+            if( types.indexOf(fileType) == -1 ){
+                ISGH.alertBox.init("Please Choose another image ,Supported formats are '.png' , '.jpg' and '.jpeg'" , false);
+                return false;
+            }
+            
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $(".edit-img").css("background-image" , "url("+ e.target.result +")");
+            }
+            reader.readAsDataURL(this.files[0]);
+            
+        });
+    },
+    
+    init: function(){
+        
+        this.initHelperFunctions();
+        this.floodStack();
         
     }
     

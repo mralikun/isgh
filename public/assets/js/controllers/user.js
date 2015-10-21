@@ -13,11 +13,16 @@ angular.module("isgh" , ["ngMessages"])
         scope.userRole = undefined;
         http.post("/user/onlineUserRole")
             .then(function(resp){
-            scope.userRole = resp.data;
+            var temp = resp.data;
+            if(temp == "khateeb")
+                scope.userRole = 2;
+            else if( temp = "admin" )
+                scope.userRole = 1;
+            else if(scope.userRole = "ad")
+                scope.userrole = 3;
         } , function(err){
             ISGH.alertBox.init("Something went wrong, Please refresh the page!" , false);
         });
-        scope.user = {};
         // we should request this if the user goes to the dates page.
         scope.cycleDates = [];
         
@@ -70,8 +75,6 @@ angular.module("isgh" , ["ngMessages"])
                     ISGH.alertBox.init("The user '"+ _temp.username +"' already exists" , false);
                 }else{
                     ISGH.notify("The user '" + _temp.username + "' has been successfully created!");
-                    var au = document.getElementsByTagName("audio")[0];
-                    au.play();
                     delete scope.tempUser.username;
                     delete scope.tempUser.password;
                     delete scope.tempUser.confirm_password;
