@@ -81,7 +81,7 @@ Update Profile
             </div>
         </div>
     </div>   
-    <div class="form-group">
+    <div class="form-group" ng-show="userRole == 'khateeb'">
         <label for="" class="control-label col-sm-3">Educational Background</label>
         <div class="col-sm-9">
             <input type="text" name="edu_bg" placeholder="Please insert your educational background" class="form-control" ng-model="user.edu_bg" />
@@ -104,8 +104,12 @@ Update Profile
 @stop
 
 @section("aside")
-<div class="edit-img thumbnail"></div>
-<input type="file" name="profile_picture" class="form-control profile-pic" required>
+<div ng-show="userRole == 'khateeb'">
+   
+    <div class="edit-img thumbnail"></div>
+    <input type="file" name="profile_picture" class="form-control profile-pic" required>
+
+</div>
 
 @stop
 </form>
