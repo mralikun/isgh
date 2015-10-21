@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'Navigator@index');
+Route::get('/home', 'Navigator@index');
 
 
 /**
