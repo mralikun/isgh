@@ -24,7 +24,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', "role_id", "user_id"];
+    protected $fillable = ['name', 'username', 'password', "role_id", "user_id"];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -56,7 +56,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     private function add_new_user($username , $password , $role , $user_id){
         $user = new User();
-        $user->email = $username ;
+        $user->username = $username ;
         $password = Hash::make($password);
         $user->password = $password ;
         $user->user_id = $user_id ;
@@ -135,6 +135,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return $admin->id;
         } else {
             return "true";
+        }
+    }
+
+
+    public static function getUserData($user_id , $role_id){
+        switch($role_id){
+            case 1 :
+                return Admin::whereid($user_id)->first();
+                break ;
+            case 2 :
+                return Khateeb::whereid($user_id)->first();
+                break ;
+            case 3 :
+                return AssociateDirector::whereid($user_id)->first();
+                break ;
         }
     }
 

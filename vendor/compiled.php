@@ -1954,6 +1954,9 @@ class Kernel implements KernelContract
 }
 namespace Illuminate\Foundation\Auth;
 
+use App\AssociateDirector;
+use App\Khateeb;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -1980,13 +1983,55 @@ trait AuthenticatesAndRegistersUsers
     }
     public function postLogin(Request $request)
     {
-        $this->validate($request, array('email' => 'required|email', 'password' => 'required'));
-        $credentials = $request->only('email', 'password');
+        $this->validate($request, array('username' => 'required', 'password' => 'required'));
+        $credentials = $request->only('username', 'password');
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
-            return redirect()->intended($this->redirectPath());
+
+            $user =  $this->returnUserRole($credentials) ;
+            return $this->performNavigation($user,$request);
+
         }
-        return redirect($this->loginPath())->withInput($request->only('email', 'remember'))->withErrors(array('email' => $this->getFailedLoginMessage()));
+        return redirect($this->loginPath())->withInput($request->only('username', 'remember'))->withErrors(array('username' => $this->getFailedLoginMessage()));
     }
+
+    private function returnUserRole($credentials){
+        $username = $credentials["username"];
+        $user = User::whereusername($username)->first();
+        return $user ;
+    }
+
+    private function performNavigation($user,$request){
+        $role = $user->role_id ;
+        $user_id = $user->user_id ;
+        switch($role){
+            case 1 :
+                    return redirect()->intended("/admin/members/create");
+                break ;
+            case 2 :
+                $khateeb = Khateeb::whereid($user_id)->first();
+
+                if($khateeb->email == ""){
+                    return redirect()->intended("/user/edit_profile");
+                }else{
+                    return redirect()->intended("/user/profile");
+                }
+                break ;
+            case 3 :
+                $ad = AssociateDirector::whereid($user_id)->first();
+                if($ad->email == ""){
+                    return redirect()->intended("/user/edit_profile");
+                }else{
+                    return redirect()->intended("/user/profile");
+                }
+                break ;
+            default :
+                return redirect($this->loginPath())
+                    ->withInput($request->only('username', 'remember'))
+                    ->withErrors(array('username' => "Can not find this username"));
+        }
+    }
+
+
     protected function getFailedLoginMessage()
     {
         return 'These credentials do not match our records.';
@@ -2001,11 +2046,11 @@ trait AuthenticatesAndRegistersUsers
         if (property_exists($this, 'redirectPath')) {
             return $this->redirectPath;
         }
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/profile';
     }
     public function loginPath()
     {
-        return property_exists($this, 'loginPath') ? $this->loginPath : '/auth/login';
+        return property_exists($this, 'loginPath') ? $this->loginPath : '/';
     }
 }
 namespace Illuminate\Foundation\Auth;
@@ -12783,7 +12828,8 @@ class LineFormatter extends NormalizerFormatter
             return $str;
         }
         return strtr($str, array('
-' => ' ', '' => ' ', '
+' => ' ', '
+' => ' ', '
 ' => ' '));
     }
 }

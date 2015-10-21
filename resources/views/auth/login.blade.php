@@ -16,14 +16,14 @@
 <body>
 
 <header><h2>ISGH</h2></header>
-<form action="/login" method="POST" id="login-form">
+<form action="{{ url('/auth/login') }}" method="POST" id="login-form">
 
     <img src="/assets/images/auth.jpg" alt="Unknown" id="auth-img">
 
     <legend>Login</legend>
 
     <div class="form-group">
-
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="checkbox" name="remember"> <label> Remember Me</label>
