@@ -17,12 +17,14 @@ Update Profile
 
 @stop
 
-
 @section("content")
 
 <span class="text-right note">All of the following fields are required</span>
+
+
 <form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
 
+    <input type="hidden" name="_token" value="{{csrf_token()}}" >
     <div class="form-group">
         <label class="control-label col-sm-3">Name</label>
         <div class="col-sm-9">
@@ -84,7 +86,7 @@ Update Profile
     <div class="form-group" ng-show="userRole == 'khateeb'">
         <label for="" class="control-label col-sm-3">Educational Background</label>
         <div class="col-sm-9">
-            <input type="text" name="edu_bg" placeholder="Please insert your educational background" class="form-control" ng-model="user.edu_bg" />
+            <input type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" ng-model="user.edu_background" />
         </div>
     </div>
     <div class="form-group">
