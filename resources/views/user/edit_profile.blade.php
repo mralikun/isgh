@@ -19,7 +19,9 @@ Update Profile
 @stop
 
 @section("content")
-
+@if($firstTime == "true")
+<h4 class="first-time">It seems this is your first time loggin into ISGH System ,Please take a minute to update your personal information</h4>
+@endif
 <span class="text-right note">All of the following fields are required</span>
 <form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
    
@@ -106,7 +108,7 @@ Update Profile
 @stop
 
 @section("aside")
-<div>
+<div class="pic-holder">
    
     <div class="edit-img thumbnail" style="background-image: url(/images/khateeb_pictures/{{$result->picture_url}})"></div>
     @if($result->picture_url != "")
