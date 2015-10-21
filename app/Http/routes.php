@@ -50,4 +50,14 @@ Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
 
 
 
+// routes related to User
+// route for creating getting blocked dates
+Route::get('/user/dates', 'UserController@getIslamicCenterBlockedDates');
+
+// route for creating getting rating page
+Route::get('/user/rating', 'UserController@getRatingPage');
+
+// route for editing user profile
+Route::get('/user/edit_profile', 'UserController@getEditProfile');
+
 
