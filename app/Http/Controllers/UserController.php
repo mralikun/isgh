@@ -30,7 +30,7 @@ class UserController extends Controller {
             $firstTime = "true";
         }
 
-        return view("user.edit_profile")->with("results",$result);
+        return view("user.edit_profile" , compact("firstTime" , "result"));
     }
 
     public function getProfile(){
