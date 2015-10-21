@@ -167,33 +167,34 @@ var ISGH = {
             
         });
         
-//        $("#update-profile").on("submit" , function(){
-
-//        });
+        $("form#update-profile-form").on("submit" , function(){
+            var fd = new FormData(this);
+            
+            $.ajax({
+                url: "/user/updateProfile",
+                type: "POST",
+                data: fd,
+                dataType: "json",
+                xhr: function(){
+                    var x = $.ajaxSettings.xhr();
+                    return x;
+                },
+                success: function(resp){
+                    if(resp instanceof Array){
+                        ISGH.alertBox.init("Field(s) " + resp.join(",") + " are missing" , false);
+                    }else{
+                        ISGH.notify("Your information was updated successfully!");
+                    }
+                },
+                error: function(err){
+                    ISGH.alertBox.init("Something went wrong ,Please refresh and try again");
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
         
-//        $("form#update-profile-form").on("submit" , function(){
-//            var fd = new FormData(this);
-//            console.log(fd);
-//            $.ajax({
-//                url: "/user/updateProfile",
-//                type: "POST",
-//                data: fd,
-//                xhr: function(){
-//                    var x = $.ajaxSettings.xhr();
-//                    if(x.upload){
-//                        
-//                    }
-//                    else
-//                        console.log("Not Here!");
-//                    return x;
-//                },
-//                cache: false,
-//                contentType: false,
-//                processData: false
-//                
-//            });
-//        });
-//        
         $(".dates-calendar").on("click" , ".date" , function(e){
             
             $(this).toggleClass("available");
