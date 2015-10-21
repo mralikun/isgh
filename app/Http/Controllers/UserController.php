@@ -45,6 +45,7 @@ class UserController extends Controller {
 
 
     public function updateProfile(){
+        
         $answer = User::validateAllFields(Input::all());
 
         if($answer == "true"){
