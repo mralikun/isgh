@@ -149,6 +149,16 @@ var ISGH = {
     
     init: function(){
         
+        Array.prototype.reflectValues = Array.prototype.reflectValues || function(target){
+            
+            var reflected = [];
+            
+            for(var i = 0; i < this.length; i++){
+                reflected.push(target[this[i]]);
+            }
+            return reflected;
+        }
+        
         $(".profile-pic").on("change" , function(event){
             
             var file = this.files[0];
@@ -169,7 +179,18 @@ var ISGH = {
         
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
-            
+            var fields =  {
+                name: "Name",
+                address: "Address",
+                country: "Country",
+                locality: "City",
+                administrative_area_level_1: "State",
+                postal_code: "Postal Code",
+                cell_phone: "Cell Phone",
+                bio: "Biography",
+                edu_bg: "Educational Background",
+                email: "E-mail"
+            };
             $.ajax({
                 url: "/user/updateProfile",
                 type: "POST",
@@ -181,7 +202,8 @@ var ISGH = {
                 },
                 success: function(resp){
                     if(resp instanceof Array){
-                        ISGH.alertBox.init("Field(s) " + resp.join(",") + " are missing" , false);
+                        resp = resp.reflectValues(fields);
+                        ISGH.alertBox.init("Field(s) " + resp.join(" , ") + " are missing" , false);
                     }else{
                         ISGH.notify("Your information was updated successfully!");
                     }

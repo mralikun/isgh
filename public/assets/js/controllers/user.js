@@ -10,6 +10,13 @@ angular.module("isgh" , ["ngMessages"])
     .controller("UserController" , ["$scope" , "$http" , function( scope , http ){
 
         // we will make a request to get the online user's data.
+        scope.userRole = undefined;
+        http.post("/user/onlineUserRole")
+            .then(function(resp){
+            scope.userRole = resp.data;
+        } , function(err){
+            ISGH.alertBox.init("Something went wrong, Please refresh the page!" , false);
+        });
         scope.user = {};
         // we should request this if the user goes to the dates page.
         scope.cycleDates = [];
@@ -25,13 +32,12 @@ angular.module("isgh" , ["ngMessages"])
                 }else {
                     where.push(ID)
                 }
-                
-                console.log(this.available);
             },
             
             exists: function(ID , where){
                 return where.indexOf(ID) !== -1;
             },
+            
             remove: function(what ,where){
                 where.splice(where.indexOf(what) , 1);
             }
