@@ -16,7 +16,7 @@
     <body>
         
         <header><h2>ISGH</h2></header>
-        <form action="#" id="login-form">
+        <form action="/login" method="POST" id="login-form">
 
             <img src="assets/images/auth.jpg" alt="Unknown" id="auth-img">
 

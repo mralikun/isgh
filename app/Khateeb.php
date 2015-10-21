@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class Khateeb extends Model {
@@ -13,13 +14,6 @@ class Khateeb extends Model {
         $user_id = Auth::user()->user_id ;
         $khateeb = Khateeb::whereid($user_id)->first();
 
-        // checking if khateeb has old picture and replace it
-        $old_picture_url = $khateeb->picture_url ;
-
-        if($old_picture_url != ""){
-            \File::Delete(public_path()."/images/khateeb_pictures/".$old_picture_url);
-        }
-
         $khateeb->name = $info["name"];
         $khateeb->email = $info["email"];
         $khateeb->phone = $info["cell_phone"];
@@ -28,24 +22,36 @@ class Khateeb extends Model {
         $khateeb->edu_background = $info["edu_background"];
         $khateeb->post_code = $info["postal_code"];
 
-        // section for adding image
-        if ($info["profile_picture"]) {
-            $file = $info["profile_picture"];
+        // checking if khateeb has old picture and replace it
+        $old_picture_url = $khateeb->picture_url ;
 
-            $file_original_name = $file->getClientOriginalName();
-            $filename = str_random(32) . $file->getClientOriginalName();
+        if(array_key_exists("profile_picture",$info)){
 
-            $destination = public_path() . '/images/khateeb_pictures/';
+            // section for adding image
+                $file = $info["profile_picture"];
 
-            $slider = $info["profile_picture"]->getRealPath();
+                $filename = str_random(32) . $file->getClientOriginalName();
 
-            if($info["profile_picture"]->move($destination, $filename)){
-                $khateeb->picture_url = $filename;
+                $destination = public_path() . '/images/khateeb_pictures/';
 
-                $khateeb->save();
-                return "true";
-            }
+                if($info["profile_picture"]->move($destination, $filename)){
+                    $khateeb->picture_url = $filename;
+
+                    // checking if khateeb has old picture and replace it
+                    $khateeb->save();
+                    if($old_picture_url != ""){
+                        \File::Delete(public_path()."/images/khateeb_pictures/".$old_picture_url);
+                    }
+
+                    return "true";
+                }
+
+        }else{
+            $khateeb->picture_url = $old_picture_url ;
+            $khateeb->save();
         }
+
+
     }
 
 }
