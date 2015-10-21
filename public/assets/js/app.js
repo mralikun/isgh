@@ -193,7 +193,7 @@ var ISGH = {
                     }
                 },
                 error: function(err){
-                    ISGH.alertBox.init("Something went wrong ,Please refresh and try again");
+                    ISGH.alertBox.init("Something went wrong ,Please refresh and try again" , false);
                 },
                 cache: false,
                 contentType: false,

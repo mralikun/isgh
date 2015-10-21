@@ -10,16 +10,13 @@ angular.module("isgh" , ["ngMessages"])
     .controller("UserController" , ["$scope" , "$http" , function( scope , http ){
 
         // we will make a request to get the online user's data.
-        scope.userRole = undefined;
         http.post("/user/onlineUserRole")
             .then(function(resp){
             var temp = resp.data;
-            if(temp == "khateeb")
-                scope.userRole = 2;
-            else if( temp = "admin" )
-                scope.userRole = 1;
-            else if(scope.userRole = "ad")
-                scope.userrole = 3;
+            if(temp != "khateeb"){
+                $(".pic-holder").remove();
+                $("input[name='edu_background']").parents(".form-group").remove();
+            }
         } , function(err){
             ISGH.alertBox.init("Something went wrong, Please refresh the page!" , false);
         });
@@ -47,12 +44,6 @@ angular.module("isgh" , ["ngMessages"])
                 where.splice(where.indexOf(what) , 1);
             }
         };
-        
-        scope.update = function (_event){
-            // updating the address manually to the model becuase the model doesn't respond to input auto fill.
-            console.log("here");
-
-        }
 
         // available to admins ONLY
 
@@ -115,11 +106,6 @@ angular.module("isgh" , ["ngMessages"])
             // console.log($(arr1).not(arr2).get());
             
         }
-        
-        scope.sayHello = function (){
-            console.log("Hello!");
-        }
-
         ////////////////////////////////////
 
 }]);
