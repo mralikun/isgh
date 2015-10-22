@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller {
 
+    public function __construct()
+    {
+        $this->middleware('admin');
+        $this->middleware('auth');
+    }
+
     /**
      * here for returning view for creating new islamic center
      * @return \Illuminate\View\create_islamic_center

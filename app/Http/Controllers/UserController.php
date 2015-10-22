@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller {
 
+    public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('user');
+    }
 
 	public function getIslamicCenterBlockedDates(){
         return view("user.blocked_dates");
@@ -30,7 +34,7 @@ class UserController extends Controller {
             $firstTime = "true";
         }
 
-        return view("user.edit_profile")->with("results",$result);
+        return view("user.edit_profile",compact("firstTime","result"));
     }
 
     public function getProfile(){
