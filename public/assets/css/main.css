@@ -195,6 +195,52 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
     visibility: hidden;
 }
 
+.tabs-links {
+    text-align: center;
+}
+
+.tabs-links button {
+    width: 45%;
+    padding: 10px 0;
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: 700;
+    border: 1px solid rgba(128,128,128,.75);
+    background-color: white;
+    color: #007bb3;
+}
+
+.content-tabs{
+    position: relative;
+}
+
+.tab-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+}
+
+.active-tab {
+    background-color: #007bb3!important;
+    color: white!important;
+}
+
+.tab-content > h3 {
+    padding: 10px 55px;
+}
+
+tr {
+    transition: all 500ms;
+}
+
+.removed {
+    transform: translateX(-120px);
+    opacity: 0;
+    visibility: hidden;
+}
+
 /**
 
     LOGIN PAGE AND LOGIN FORM
