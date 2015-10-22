@@ -20,7 +20,7 @@ Edit/Delete Islamic Center
 
 @section("content")
 
-<table class="table table-bordered">
+<table class="table table-bordered" ng-controller="IslamicCenterController as icc">
     
     <thead>
         
@@ -33,10 +33,15 @@ Edit/Delete Islamic Center
     
     <tbody>
         
-        <tr>
-            <td>Islamic Center</td>
-            <td><button class="btn btn-isgh">Edit</button><button class="btn btn-isgh">Delete</button></td>
+        @foreach($all as $ic)
+        <tr ng-click="delete($event)">
+
+            <td><h4>{{$ic->name}}</h4></td>
+            <td><button class="btn btn-isgh" data-member="{{$ic->id}}">Edit</button><button class="btn btn-isgh opt-delete" data-member="{{$ic->id}}">Delete</button></td>
+
         </tr>
+
+        @endforeach
         
     </tbody>
     
