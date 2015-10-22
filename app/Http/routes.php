@@ -72,4 +72,3 @@ Route::post('/user/onlineUserRole', 'UserController@onlineUserRole');
 
 
 
-
