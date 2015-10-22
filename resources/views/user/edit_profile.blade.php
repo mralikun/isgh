@@ -17,13 +17,14 @@ Update Profile
 
 @stop
 
-
 @section("content")
 
 <span class="text-right note">All of the following fields are required</span>
-<form class="form-horizontal" method="POST" action="/user/updateProfile" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
-    <input type="hidden" name="_token" value="{{csrf_token()}}" >
 
+
+<form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
+
+    <input type="hidden" name="_token" value="{{csrf_token()}}" >
     <div class="form-group">
         <label class="control-label col-sm-3">Name</label>
         <div class="col-sm-9">

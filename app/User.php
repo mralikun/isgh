@@ -153,5 +153,39 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    public static function validateAllFields($input){
+        $values = array_values($input);
+        $keys = array_keys($input);
+        $errors = array();
+        for($i=0 ; $i<sizeof($input) ; $i++){
+            if($values[$i]==""){
+                array_push($errors , $keys[$i]);
+            }
+        }
+        if(empty($errors)){
+            return "true";
+        }else{
+            return $errors ;
+        }
+    }
+
+    // getting role for this user in my website
+    public static function getRole(){
+        $role = Auth::user()->role_id ;
+        switch($role){
+            case 1 :
+                return "admin";
+                break;
+            case 2 :
+                return "khateeb";
+                break ;
+            case 3 :
+                return "ad";
+                break;
+            default:
+                return "false";
+        }
+    }
+
 
 }

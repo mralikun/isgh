@@ -151,12 +151,48 @@ var ISGH = {
         
         $(".profile-pic").on("change" , function(event){
             
+            var file = this.files[0];
+            var types = ["png" , "jpg" , "jpeg"];
+            var fileType = file.type.substring(file.type.lastIndexOf("/") + 1 , file.type.length);
+            if( types.indexOf(fileType) == -1 ){
+                ISGH.alertBox.init("Please Choose another image ,Supported formats are '.png' , '.jpg' and '.jpeg'" , false);
+                return false;
+            }
+            
             var reader = new FileReader();
             reader.onload = function(e){
                 $(".edit-img").css("background-image" , "url("+ e.target.result +")");
             }
             reader.readAsDataURL(this.files[0]);
             
+        });
+        
+        $("form#update-profile-form").on("submit" , function(){
+            var fd = new FormData(this);
+            
+            $.ajax({
+                url: "/user/updateProfile",
+                type: "POST",
+                data: fd,
+                dataType: "json",
+                xhr: function(){
+                    var x = $.ajaxSettings.xhr();
+                    return x;
+                },
+                success: function(resp){
+                    if(resp instanceof Array){
+                        ISGH.alertBox.init("Field(s) " + resp.join(",") + " are missing" , false);
+                    }else{
+                        ISGH.notify("Your information was updated successfully!");
+                    }
+                },
+                error: function(err){
+                    ISGH.alertBox.init("Something went wrong ,Please refresh and try again");
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
         });
         
         $(".dates-calendar").on("click" , ".date" , function(e){
