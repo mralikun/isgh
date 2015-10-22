@@ -39,8 +39,18 @@ angular.module("isgh" , ["ngMessages"])
             
         }
         
-        scope.delete = function(){
-            
+        scope.delete = function(_event){
+            var target = _event.target;
+            if(!$(target).hasClass("opt-delete"))
+                return;
+            var ID = target.getAttribute("data-member");
+            var url = "/admin/DeleteIslamicCenter/" + ID;
+            http.delete(url)
+                .then(function(){
+                $(target).parents("tr").addClass("removed");
+            } , function(){
+                ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again!");
+            });
         }
         
     }]);

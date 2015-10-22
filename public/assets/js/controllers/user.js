@@ -47,7 +47,25 @@ angular.module("isgh" , ["ngMessages"])
 
         // available to admins ONLY
 
-        scope.delete = function ( ){}
+        scope.delete = function ( obj ){
+            
+            var target = obj._ev.target;
+            if(!$(target).hasClass("opt-delete"))
+                return;
+            var ID = target.getAttribute("data-member");
+            var url = "";
+            if(obj.role == 2)
+                url = "/admin/DeleteKhateeb/" + ID;
+            else if(obj.role == 3)
+                url = "/admin/DeleteAd/" + ID;
+            
+            http.delete(url)
+                .then(function(){
+                $(target).parents("tr").addClass("removed");
+            } , function(){
+                ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again!");
+            });
+        }
 
         scope.create = function ( _temp ){
             
