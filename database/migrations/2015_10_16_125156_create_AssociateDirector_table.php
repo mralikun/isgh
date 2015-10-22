@@ -21,7 +21,7 @@ class CreateAssociateDirectorTable extends Migration {
             $table->boolean("reviewer");
             $table->string('address');
             $table->string('bio');
-            $table->integer('post_code');
+            $table->string('post_code');
             $table->timestamps();
         });
 	}

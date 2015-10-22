@@ -22,7 +22,7 @@ class CreateKhateebTable extends Migration {
             $table->string('bio');
             $table->string('edu_background');
             $table->boolean('member_isgh');
-            $table->integer('post_code');
+            $table->string('post_code');
             $table->string('picture_url');
             $table->timestamps();
         });

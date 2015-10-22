@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller {
 
+
 	public function getIslamicCenterBlockedDates(){
         return view("user.blocked_dates");
     }
@@ -20,7 +21,16 @@ class UserController extends Controller {
     }
 
     public function getEditProfile(){
-        return view("user.edit_profile");
+        $user_id = Auth::user()->user_id ;
+        $role = Auth::user()->role_id ;
+        $result = User::getUserData($user_id , $role);
+
+        $firstTime = "false";
+        if($result->email == ""){
+            $firstTime = "true";
+        }
+
+        return view("user.edit_profile")->with("results",$result);
     }
 
     public function getProfile(){
