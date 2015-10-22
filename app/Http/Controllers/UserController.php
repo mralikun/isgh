@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\AssociateDirector;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -10,6 +11,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller {
+
+
+app/Http/Controllers/AdminController.php
+app/Http/Controllers/UserController.php
+app/Http/routes.php
+app/Khateeb.php
+vendor/compiled.php
+
 
     public function __construct(){
         $this->middleware('auth');
@@ -45,6 +54,7 @@ class UserController extends Controller {
 
 
     public function updateProfile(){
+        return Input::all();
         $answer = User::validateAllFields(Input::all());
 
         if($answer == "true"){
@@ -69,4 +79,16 @@ class UserController extends Controller {
     public function onlineUserRole(){
         return User::getRole();
     }
+
+    /**
+     * @return mixed
+     * get cell phone for the director
+     */
+    public function getCellPhone(){
+        $id = Input::get("id");
+        $phone = AssociateDirector::whereid($id)->first();
+        return $phone->phone ;
+    }
+
+
 }

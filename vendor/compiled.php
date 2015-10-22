@@ -4,6 +4,7 @@ namespace Illuminate\Contracts\Container;
 use Closure;
 interface Container
 {
+
     public function bound($abstract);
     public function alias($abstract, $alias);
     public function tag($abstracts, $tags);
