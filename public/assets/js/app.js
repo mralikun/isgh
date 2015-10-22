@@ -1,5 +1,39 @@
 var ISGH = {
     
+    Tabs: {
+        
+        activate: function(contentNum){
+            this.deactivate(contentNum);
+            setTimeout(function(){
+                $(".tab-content[data-content='"+ contentNum +"']").fadeIn(300);
+            } , 400);
+            
+        },
+        deactivate: function(Num){
+            
+            $(".tab-content[data-content!='"+ Num +"']").fadeOut(300);
+            
+        },
+        init: function(){
+            
+            var self = this;
+            $(".tabs-links").on("click" , "button" , function(){
+                var active = $(this).hasClass("active-tab");
+                if(active){
+                    return;
+                } else {
+                    $(this).addClass("active-tab").siblings("button").removeClass("active-tab");
+                }
+                self.activate(this.getAttribute("data-content"));
+            });
+            
+            var activeTab = $(".tabs-links > button.active-tab").attr("data-content");
+            
+            $(".tab-content[data-content='"+ activeTab +"']").fadeIn(300);
+            
+        }
+    },
+    
     /**
         This object manages the alert box which will appear to user when any warning
         or errors occur
