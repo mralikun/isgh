@@ -103,9 +103,8 @@ class AdminController extends Controller {
     /**
      * Here for deleting Khateebs from the system
      */
-    public function DeleteKhateeb(){
-        $input = Input::all();
-        $result = Khateeb::DeleteMembers($input);
+    public function DeleteKhateeb($id){
+        $result = Khateeb::DeleteMembers($id);
         if($result == "true"){
             return "true";
         }else{
@@ -118,9 +117,8 @@ class AdminController extends Controller {
     /**
      * Here for deleting Associative Directories from the system
      */
-    public function DeleteAd(){
-        $input = Input::all();
-        $result = AssociateDirector::DeleteMembers($input);
+    public function DeleteAd($id){
+        $result = AssociateDirector::DeleteMembers($id);
         if($result == "true"){
             return "true";
         }else{
@@ -128,18 +126,12 @@ class AdminController extends Controller {
         }
     }
 
-app/Http/Controllers/UserController.php
-app/Http/routes.php
-app/IslamicCenter.php
-app/Khateeb.php
-app/User.php
 
     /**
      * Here for deleting Islamic Centers from the system
      */
-    public function DeleteIslamicCenter(){
-        $input = Input::all();
-        $result = IslamicCenter::DeleteMembers($input);
+    public function DeleteIslamicCenter($id){
+        $result = IslamicCenter::DeleteMembers($id);
         if($result == "true"){
             return "true";
         }else{

@@ -50,13 +50,13 @@ Route::post("/admin/createUser",'AdminController@createUser');
 Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
 
 // here the route for Deleting Users
-Route::delete("/admin/DeleteKhateeb",'AdminController@DeleteKhateeb');
+Route::delete("/admin/DeleteKhateeb/{id}",'AdminController@DeleteKhateeb');
 
 // here the route for Deleting Users
-Route::delete("/admin/DeleteAd",'AdminController@DeleteAd');
+Route::delete("/admin/DeleteAd/{id}",'AdminController@DeleteAd');
 
 // here the route for Deleting Users
-Route::delete("/admin/DeleteIslamicCenter",'AdminController@DeleteIslamicCenter');
+Route::delete("/admin/DeleteIslamicCenter/{id}",'AdminController@DeleteIslamicCenter');
 
 // here the route for getting cell phone for director to create islamic center
 Route::post("/user/getCellPhone",'AdminController@getCellPhone');
