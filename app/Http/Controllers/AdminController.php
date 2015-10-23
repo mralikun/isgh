@@ -5,6 +5,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\IslamicCenter;
+use App\Khateeb;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -49,9 +50,12 @@ class AdminController extends Controller {
      * @return \Illuminate\View\edit_members
      */
     public function Edit_Members_Information(){
-        return view("admin.edit_members");
+        $allKhateebs =  Khateeb::select("id","name")->get();
+        return view("admin.edit_members",compact("allKhateebs"));
     }
-
+app/AssociateDirector.php
+app/Http/Controllers/AdminController.php
+app/Http/routes.php
     /**
      * here for returning view for edit islamic center
      * @return \Illuminate\View\edit_islamic_center

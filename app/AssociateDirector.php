@@ -22,11 +22,6 @@ class AssociateDirector extends Model
         $ad->bio = $info["bio"];
         $ad->post_code = $info["postal_code"];
 
-        app/AssociateDirector.php
- app/Http/Controllers/UserController.php
- app/Khateeb.php
-
-
         $ad->save();
         return "true";
     }

@@ -30,12 +30,16 @@ Route::controllers([
 // routes related to admin
 // route for creating new islamic center
 Route::get('/admin/islamic_center/create', 'AdminController@Create_Islamic_Center');
+
 // route for creating new members
 Route::get('/admin/members/create', 'AdminController@Create_members');
+
 // route for managing schedule
 Route::get('/admin/schedule', 'AdminController@Manage_schedule');
+
 // route for edit information about members
 Route::get('/admin/members/edit', 'AdminController@Edit_Members_Information');
+
 // route for edit information about islamic center
 Route::get('/admin/islamic_center/edit', 'AdminController@Edit_Islamic_Center_Information');
 
@@ -44,7 +48,6 @@ Route::post("/admin/createUser",'AdminController@createUser');
 
 // here the route for creating islamic center
 Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
-
 
 
 
