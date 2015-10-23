@@ -188,5 +188,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * Deleting user from the system
+     */
+    public static function deleteUser($user_id , $role){
+        $user = User::where("user_id",$user_id)->where("role_id",$role)->first();
+        if(User::destroy($user->id)){
+            return "true";
+        }
+        else{
+            return "false";
+        }
+    }
+
 
 }

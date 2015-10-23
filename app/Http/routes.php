@@ -49,6 +49,17 @@ Route::post("/admin/createUser",'AdminController@createUser');
 // here the route for creating islamic center
 Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
 
+// here the route for Deleting Users
+Route::delete("/admin/DeleteKhateeb",'AdminController@DeleteKhateeb');
+
+// here the route for Deleting Users
+Route::delete("/admin/DeleteAd",'AdminController@DeleteAd');
+
+// here the route for Deleting Users
+Route::delete("/admin/DeleteIslamicCenter",'AdminController@DeleteIslamicCenter');
+
+// here the route for getting cell phone for director to create islamic center
+Route::post("/user/getCellPhone",'AdminController@getCellPhone');
 
 
 // routes related to User
@@ -70,7 +81,5 @@ Route::post('/user/updateProfile', 'UserController@updateProfile');
 // route for detecting who is in the site ( admin , k , ad )
 Route::post('/user/onlineUserRole', 'UserController@onlineUserRole');
 
-// here the route for getting cell phone for director to create islamic center
-Route::post("/user/getCellPhone",'UserController@getCellPhone');
 
 

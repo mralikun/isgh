@@ -26,4 +26,22 @@ class AssociateDirector extends Model
         return "true";
     }
 
+    /**
+     * @param $ad_id
+     * @return string
+     * delete members
+     */
+    public static function DeleteMembers($ad_id){
+        $role = 3 ;
+        if(User::deleteUser($ad_id , $role ) == "true"){
+            if(AssociateDirector::destroy($ad_id)){
+                return "true";
+            }else{
+                return "false" ;
+            }
+        }else{
+            return "false";
+        }
+    }
+
 }

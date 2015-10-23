@@ -51,17 +51,19 @@ class AdminController extends Controller {
      */
     public function Edit_Members_Information(){
         $allKhateebs =  Khateeb::select("id","name")->get();
-        return view("admin.edit_members",compact("allKhateebs"));
+        $allAds =  AssociateDirector::select("id","name")->get();
+        $all=["khateebs"=>$allKhateebs , "ads"=>$allAds];
+
+        return view("admin.edit_members",compact("all"));
     }
-app/AssociateDirector.php
-app/Http/Controllers/AdminController.php
-app/Http/routes.php
+
     /**
      * here for returning view for edit islamic center
      * @return \Illuminate\View\edit_islamic_center
      */
     public function Edit_Islamic_Center_Information(){
-        return view("admin.edit_islamic_center");
+        $all = IslamicCenter::select("id","name")->get();
+        return view("admin.edit_islamic_center",compact("all"));
     }
 
     /**
@@ -98,7 +100,62 @@ app/Http/routes.php
         }
     }
 
+    /**
+     * Here for deleting Khateebs from the system
+     */
+    public function DeleteKhateeb(){
+        $input = Input::all();
+        $result = Khateeb::DeleteMembers($input);
+        if($result == "true"){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
 
+
+
+    /**
+     * Here for deleting Associative Directories from the system
+     */
+    public function DeleteAd(){
+        $input = Input::all();
+        $result = AssociateDirector::DeleteMembers($input);
+        if($result == "true"){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
+app/Http/Controllers/UserController.php
+app/Http/routes.php
+app/IslamicCenter.php
+app/Khateeb.php
+app/User.php
+
+    /**
+     * Here for deleting Islamic Centers from the system
+     */
+    public function DeleteIslamicCenter(){
+        $input = Input::all();
+        $result = IslamicCenter::DeleteMembers($input);
+        if($result == "true"){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
+    /**
+     * @return mixed
+     * get cell phone for the director
+     */
+    public function getCellPhone(){
+        $id = Input::get("id");
+        $phone = AssociateDirector::whereid($id)->first();
+        return $phone->phone ;
+    }
 
 
 

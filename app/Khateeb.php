@@ -10,6 +10,12 @@ class Khateeb extends Model {
 
     protected $fillable = ["id", "name", "email", "phone", "address", "bio","edu_background","member_isgh","post_code","picture_url"];
 
+    /**
+     * @param $info
+     * @return string
+     * take the data khateeb sent to update his profile and add this data to his profile which returns
+     * the result which is true or false .
+     */
     public static function addFields($info){
         $user_id = Auth::user()->user_id ;
         $khateeb = Khateeb::whereid($user_id)->first();
@@ -52,7 +58,19 @@ class Khateeb extends Model {
             return "true";
         }
 
+    }
 
+    public static function DeleteMembers($khateeb_id){
+        $role = 2 ;
+        if(User::deleteUser($khateeb_id , $role ) == "true"){
+            if(Khateeb::destroy($khateeb_id)){
+                return "true";
+            }else{
+                return "false" ;
+            }
+        }else{
+            return "false";
+        }
     }
 
 }

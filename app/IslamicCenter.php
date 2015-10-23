@@ -34,4 +34,15 @@ class IslamicCenter extends Model {
        }
     }
 
+
+    /**
+     * Delete Islamic Center
+     */
+    public static function DeleteMembers($islamic_center_id){
+        if(IslamicCenter::destroy($islamic_center_id)){
+            return "true";
+        }else{
+            return "false" ;
+        }
+    }
 }

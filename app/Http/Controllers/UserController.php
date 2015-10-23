@@ -78,15 +78,7 @@ class UserController extends Controller {
         return User::getRole();
     }
 
-    /**
-     * @return mixed
-     * get cell phone for the director
-     */
-    public function getCellPhone(){
-        $id = Input::get("id");
-        $phone = AssociateDirector::whereid($id)->first();
-        return $phone->phone ;
-    }
+
 
 
 }
