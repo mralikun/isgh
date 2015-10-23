@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\Input;
 class UserController extends Controller {
 
 
-app/Http/Controllers/AdminController.php
-app/Http/Controllers/UserController.php
-app/Http/routes.php
-app/Khateeb.php
-vendor/compiled.php
-
 
     public function __construct(){
         $this->middleware('auth');
@@ -66,7 +60,12 @@ vendor/compiled.php
                     return "false";
                 }
             }elseif(Auth::user()->role_id == 3){
-                return "ad";
+                $result = AssociateDirector::addFields(Input::all());
+                if($result == "true"){
+                    return "true";
+                }else{
+                    return "false";
+                }
             }
         }else{
             // there are some fields did not inserted correctly

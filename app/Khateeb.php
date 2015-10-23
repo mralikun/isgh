@@ -49,6 +49,7 @@ class Khateeb extends Model {
         }else{
             $khateeb->picture_url = $old_picture_url ;
             $khateeb->save();
+            return "true";
         }
 
 
