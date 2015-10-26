@@ -20,6 +20,7 @@ Edit/Delete Islamic Center
 
 @section("content")
 
+@if(sizeof($all) > 0)
 <table class="table table-bordered" ng-controller="IslamicCenterController as icc">
     
     <thead>
@@ -46,5 +47,10 @@ Edit/Delete Islamic Center
     </tbody>
     
 </table>
+@else
+
+<h4 class="text-center">There're no islamic centers yet, <a href="/admin/islamic_center/create" class="inline-link">Create New Islamic Center</a></h4>
+
+@endif
 
 @stop

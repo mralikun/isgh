@@ -21,7 +21,7 @@ Profile
 <div class="row">
 
 <div class="col-sm-4 col-md-4 col-lg-4">
-    <img src="assets/images/user.jpg" alt="User">
+    <img src="/assets/images/user.jpg" alt="User">
 </div>
 <div class="col-sm-8 col-md-8 col-lg-8 username"><h1>User name</h1></div>
 

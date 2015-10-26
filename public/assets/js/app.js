@@ -1,3 +1,5 @@
+var app = angular.module("isgh" , ["ngMessages"]);
+
 var ISGH = {
     
     Tabs: {
@@ -7,7 +9,6 @@ var ISGH = {
             setTimeout(function(){
                 $(".tab-content[data-content='"+ contentNum +"']").fadeIn(300);
             } , 400);
-            
         },
         deactivate: function(Num){
             
@@ -224,6 +225,12 @@ var ISGH = {
                         ISGH.alertBox.init("Field(s) " + resp.join(" , ") + " are missing" , false);
                     }else{
                         ISGH.notify("Your information was updated successfully!");
+                        window.setTimeout(function(){
+                            var r = new RegExp(window.location.pathname); 
+                            var url = window.location.href.replace(r,"/user/profile");
+                            window.location.assign(url);
+                        } , 3000);
+
                     }
                 },
                 error: function(err){

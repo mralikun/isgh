@@ -62,7 +62,8 @@ class Khateeb extends Model {
 
     public static function DeleteMembers($khateeb_id){
         $role = 2 ;
-        if(User::deleteUser($khateeb_id , $role ) == "true"){
+        $result = User::deleteUser($khateeb_id , 2 ) ;
+        if($result == "true"){
             if(Khateeb::destroy($khateeb_id)){
                 return "true";
             }else{

@@ -1,5 +1,4 @@
-angular.module("isgh" , ["ngMessages"])
-    .controller("IslamicCenterController" , ["$scope", "$http" , function(scope , http){
+app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope , http){
         
         scope.center = {};
         scope.create = function(){
@@ -48,8 +47,11 @@ angular.module("isgh" , ["ngMessages"])
             http.delete(url)
                 .then(function(){
                 $(target).parents("tr").addClass("removed");
+                setTimeout(function(){
+                    $(target).parents("tr").remove();
+                } , 500);
             } , function(){
-                ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again!");
+                ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again!" , false);
             });
         }
         

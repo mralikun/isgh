@@ -231,14 +231,27 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
     padding: 10px 55px;
 }
 
+.tab-content h4 {
+    padding: 15px;
+}
+
 tr {
     transition: all 500ms;
 }
 
+tbody tr:hover {
+    color: white;
+    background-color: #007bb3;
+}
+
 .removed {
+
     transform: translateX(-120px);
     opacity: 0;
-    visibility: hidden;
+}
+
+.inline-link:hover {
+    color: #007bb3;
 }
 
 /**
@@ -481,6 +494,7 @@ th , td {
 }
 
 td > button {
+    margin: 15px 5px!important;
     transition: box-shadow 300ms;
 }
 

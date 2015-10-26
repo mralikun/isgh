@@ -28,7 +28,9 @@ Edit/Delete Members
 <div class="content-tabs" ng-controller="UserController as uc">
     
     <div class="tab-content" data-content="2">
-       <h3>All Khateebs</h3>
+
+     @if(sizeof($all["khateebs"]) > 0)
+      <h3>All Khateebs</h3>
         <table class="table table-bordered">
 
             <thead>
@@ -55,10 +57,16 @@ Edit/Delete Members
             </tbody>
 
         </table>
+        @else
+        
+        <h4 class="text-center">There're no khateebs registered in the system. <a href="/admin/members/create" class="inline-link">Create New Member</a></h4>
+        
+        @endif
     </div>
     
     <div class="tab-content" data-content="3">
         
+        @if(sizeof($all["ads"]) > 0)
        <h3>All Associate Directors</h3>
         <table class="table table-bordered">
 
@@ -87,6 +95,12 @@ Edit/Delete Members
 
         </table>
         
+        @else
+        
+        <h4 class="text-center">There're no associate directors registered in the system. <a href="/admin/members/create" class="inline-link">Create New Member</a></h4>
+        
+        @endif
+        
     </div>
     
 </div>
@@ -97,9 +111,7 @@ Edit/Delete Members
 @section("scripts")
 
 <script>
-
     ISGH.Tabs.init();
-    
 </script>
 
 @stop

@@ -6,8 +6,7 @@
 
 */
     
-angular.module("isgh" , ["ngMessages"])
-    .controller("UserController" , ["$scope" , "$http" , function( scope , http ){
+    app.controller("UserController" , ["$scope" , "$http" , function( scope , http ){
 
         // we will make a request to get the online user's data.
         http.post("/user/onlineUserRole")
@@ -62,8 +61,11 @@ angular.module("isgh" , ["ngMessages"])
             http.delete(url)
                 .then(function(){
                 $(target).parents("tr").addClass("removed");
+                setTimeout(function(){
+                    $(target).parents("tr").remove();
+                } , 500);
             } , function(){
-                ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again!");
+                ISGH.alertBox.init("Something went wrong ,Please refresh the page and try again!" , false);
             });
         }
 

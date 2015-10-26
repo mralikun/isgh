@@ -20,7 +20,7 @@ Update Profile
 
 @section("content")
 @if($firstTime == "true")
-<h4 class="first-time">It seems this is your first time loggin into ISGH System ,Please take a minute to update your personal information</h4>
+<h4 class="first-time">It seems this is your first time logging into ISGH System ,Please take a minute to update your personal information</h4>
 @endif
 <span class="text-right note">All of the following fields are required</span>
 <form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
@@ -84,7 +84,7 @@ Update Profile
             </div>
         </div>
     </div>   
-    <div class="form-group" ng-show="userRole == 2">
+    <div class="form-group">
         <label for="" class="control-label col-sm-3">Educational Background</label>
         <div class="col-sm-9">
             <input type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" value="{{$result->edu_background}}"/>
@@ -110,10 +110,12 @@ Update Profile
 @section("aside")
 <div class="pic-holder">
    
-    <div class="edit-img thumbnail" style="background-image: url(/images/khateeb_pictures/{{$result->picture_url}})"></div>
+    
     @if($result->picture_url != "")
+    <div class="edit-img thumbnail" style="background-image: url(/images/khateeb_pictures/{{$result->picture_url}})"></div>
     <input type="file" name="profile_picture" class="form-control profile-pic">
     @else
+    <div class="edit-img thumbnail" style="background-image: url(/assets/images/user.jpg)"></div>
     <input type="file" name="profile_picture" class="form-control profile-pic" required>
     @endif
 
