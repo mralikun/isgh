@@ -22,7 +22,9 @@ Create Islamic Center
 
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
 <form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
-
+  @if(isset($adminEditing) and $adminEditing != null)
+  <input type="hidden" value="{{$adminEditing}}" name="userID">
+  @endif
    <div class="form-group">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
        <div class="col-sm-10">
@@ -46,10 +48,10 @@ Create Islamic Center
            <div class="row form-group">
 
                 <label class="col-sm-2">Country <sup>*</sup></label>
-                <div class="col-sm-3"><input type="text" name="country" class="form-control" disabled placeholder="Country" required ng-model="center.auto"/></div>
+                <div class="col-sm-3"><input type="text" name="country" class="form-control" disabled placeholder="Country" required/></div>
 
                 <label class="col-sm-2">City <sup>*</sup></label>
-                <div class="col-sm-3"><input type="text" name="locality" class="form-control" disabled placeholder="City" required ng-model="center.auto"/></div>
+                <div class="col-sm-3"><input type="text" name="locality" class="form-control" disabled placeholder="City" required/></div>
 
            </div>
 
@@ -57,10 +59,10 @@ Create Islamic Center
             <div class="row form-group">
 
                 <label class="col-sm-2">State <sup>*</sup></label>
-                <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control" disabled placeholder="State" required ng-model="center.auto"/></div>
+                <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control" disabled placeholder="State" required/></div>
 
                 <label class="col-sm-2">Postal Code <sup>*</sup></label>
-                <div class="col-sm-3"><input name="postal_code" class="form-control" type="text" disabled placeholder="Postal Code" required ng-model="center.auto"/></div>
+                <div class="col-sm-3"><input name="postal_code" class="form-control" type="text" disabled placeholder="Postal Code" required/></div>
 
             </div>
 

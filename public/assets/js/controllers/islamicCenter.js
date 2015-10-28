@@ -8,6 +8,13 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
             //    return false;
             //}
             
+            var $edit = $("form > input[name='userID']");
+            if($edit.length){
+                scope.update($edit.val());
+                return;
+            }
+
+            
             http.post("/admin/createIslamicCenter" , scope.center)
                 .then(function(resp){
                 
@@ -34,8 +41,19 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
             });
         }
         
-        scope.update = function(){
-            
+        scope.update = function( _id ){
+            http.post("/admin/createIslamicCenter/" + _id , scope.center)
+                .then(function(resp){
+                if(resp.data == "true"){
+                    ISGH.notify("The Islamic center '" + scope.center.name+ "' has been successfully created!");
+                    delete scope.center;
+                    scope.icForm.$setPristine(true);
+                }else {
+                    ISGH.alertBox.init("The Islamic center '" + scope.center.name + "' already exists" , false);
+                }
+            } , function(err){
+                ISGH.alertBox.init("Something went wrong, Please refresh and try again" , false);
+            });
         }
         
         scope.delete = function(_event){

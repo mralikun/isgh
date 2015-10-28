@@ -38,7 +38,7 @@ Edit/Delete Islamic Center
         <tr ng-click="delete($event)">
 
             <td><h4>{{$ic->name}}</h4></td>
-            <td><button class="btn btn-isgh" data-member="{{$ic->id}}">Edit</button><button class="btn btn-isgh opt-delete" data-member="{{$ic->id}}">Delete</button></td>
+            <td><a class="btn btn-isgh" data-member="{{$ic->id}}" href="/admin/islamic_center/create/{{$ic->id}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$ic->id}}">Delete</button></td>
 
         </tr>
 

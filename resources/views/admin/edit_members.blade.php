@@ -48,7 +48,7 @@ Edit/Delete Members
                 <tr ng-click="delete({_ev: $event, role: 2})">
                     
                     <td><h4>{{$khateeb->name}}</h4></td>
-                    <td><button class="btn btn-isgh" data-member="{{$khateeb->id}}">Edit</button><button class="btn btn-isgh opt-delete" data-member="{{$khateeb->id}}">Delete</button></td>
+                    <td><a class="btn btn-isgh" data-member="{{$khateeb->id}}" href="/user/edit_profile/{{$khateeb->id}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$khateeb->id}}">Delete</button></td>
                     
                 </tr>
                 
@@ -85,7 +85,7 @@ Edit/Delete Members
                 <tr ng-click="delete({_ev: $event, role: 3})">
                     
                     <td><h4>{{$ad->name}}</h4></td>
-                    <td><button class="btn btn-isgh" data-member="{{$ad->id}}">Edit</button><button class="btn btn-isgh opt-delete" data-member="{{$ad->id}}">Delete</button></td>
+                    <td><a class="btn btn-isgh" data-member="{{$ad->id}}" href="/user/edit_profile/{{$ad->id}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$ad->id}}">Delete</button></td>
                     
                 </tr>
                 

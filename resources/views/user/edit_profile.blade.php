@@ -24,6 +24,9 @@ Update Profile
 @endif
 <span class="text-right note">All of the following fields are required</span>
 <form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
+  @if(isset($adminEditing) and $adminEditing != null)
+  <input type="hidden" value="{{$adminEditing}}" name="userID">
+  @endif
    
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="form-group">

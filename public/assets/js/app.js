@@ -196,7 +196,8 @@ var ISGH = {
     floodStack: function(){
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
-            
+            var $editingUser = $(this).find("input[name='userID']");
+            var url = ($editingUser.length) ? "/user/updateProfile/"+ $editingUser.val() : "";
             var fields =  {
                 name: "Name",
                 address: "Address",
@@ -211,7 +212,7 @@ var ISGH = {
             };
             
             $.ajax({
-                url: "/user/updateProfile",
+                url: url,
                 type: "POST",
                 data: fd,
                 dataType: "json",
