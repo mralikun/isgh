@@ -73,7 +73,7 @@
             <div class="col-sm-10"><input type="email" name="email" class="form-control" placeholder="E-mail Address"></div>
         </div>
         
-        <input type="submit" class="btn btn-isgh" value="Reset Password">
+        <input type="submit" class="btn btn-isgh" value="Send Reset Password Mail">
     </form>
 </div>
 
@@ -110,6 +110,7 @@
                         alert("Something went wrong, Please refresh and try again");
                     }
                 });
+                $("input[name='email']").val("");
                 return false;
             });
             $("#forgot-password").on("click" , function(ev){
