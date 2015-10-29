@@ -1,45 +1,46 @@
 app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope , http){
         
         scope.center = {};
+    //  CREATE A NEW ISLAMIC CENTER
         scope.create = function(){
             ISGH.updateAddressComponents(scope.center);
-            //if(!ISGH.Validator.required(["name" , "address" , "country" , "locality" , "administrative_area_level_1" , "postal_code" , "director_name" , "khutbah_start" , "khutbah_end" , "parking_information"] , scope.center)){
-            //    ISGH.alertBox.init("Some required fields are missing, Please review all form fields and make shure that nothing required is missing");
-            //    return false;
-            //}
             
-            var $edit = $("form > input[name='userID']");
-            if($edit.length){
-                scope.update($edit.val());
-                return;
-            }
-
-            
-            http.post("/admin/createIslamicCenter" , scope.center)
-                .then(function(resp){
-                
-                if(resp.data == "true"){
-                    ISGH.notify("The Islamic center '" + scope.center.name+ "' has been successfully created!");
-                    delete scope.center;
-                    scope.icForm.$setPristine(true);
+                var $edit = $("form > input[name='userID']");
+                if($edit.length){
+                    scope.update($edit.val());
+                    return;
                 }
-                else
-                    ISGH.alertBox.init("The Islamic center '" + scope.center.name + "' already exists" , false);
-                
-            } , function(err){
-                ISGH.alertBox.init("Something went wrong, Please refresh and try again" , false);
-            });
+
+
+                http.post("/admin/createIslamicCenter" , scope.center)
+                    .then(function(resp){
+
+                    if(resp.data == "true"){
+                        ISGH.notify("The Islamic center '" + scope.center.name+ "' has been successfully created!");
+                        delete scope.center;
+                        scope.icForm.$setPristine(true);
+                    }
+                    else
+                        ISGH.alertBox.init("The Islamic center '" + scope.center.name + "' already exists" , false);
+
+                } , function(err){
+                    ISGH.alertBox.init("Something went wrong, Please refresh and try again" , false);
+                });
                 
         }
+        
+        //  REQUEST THE DIRECTOR'S CELL PHONE ONCE IT'S SELECTED
         
         scope.updateDirectorCellPhone = function(){
             http.post("/user/getCellPhone" , {"id" : scope.center.director_name})
                 .then(function(resp){
                 scope.center.director_cell_phone = resp.data;
             } , function(err){
-                ISGH.alertBox.init("something went wrong retriving the director's cell phone." , false);
+                ISGH.alertBox.init("Something went wrong retriving the director's cell phone." , false);
             });
         }
+        
+        //  UPDATES AN ISLAMIC CENTER'S DATA
         
         scope.update = function( _id ){
             http.post("/admin/createIslamicCenter/" + _id , scope.center)
@@ -55,6 +56,8 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
                 ISGH.alertBox.init("Something went wrong, Please refresh and try again" , false);
             });
         }
+        
+        //  DELETES AN EXISTING ISLAMIC CENTER
         
         scope.delete = function(_event){
             var target = _event.target;

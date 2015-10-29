@@ -140,27 +140,6 @@ var ISGH = {
             return true;
         },
         
-        /**
-         * Checks the length of the obj and returns whether of not it's bigger than or equal to the given limit
-         * @param   Object obj   the object to check its length.
-         * @param   Number limit an integer to compare the object length to.
-         * @returns Boolean whether or not the object length is bigger than or equals to limit.
-         */
-        
-        atLeast: function( obj , limit ){
-            return ( typeof limit == "number" ) ? obj.length >= limit : undefined;
-        },
-        
-        /**
-         *  Checks the length of the obj and returns whether of not it's lower than or equal to the given limit
-         * @param   Object obj   the object to check its length.
-         * @param   Number limit an integer to compare the object length to.
-         * @returns @returns Boolean whether or not the object length is lower than or equals to limit.
-         */
-        
-        atMost: function( obj , limit ){
-            return ( typeof limit == "number" ) ? obj.length <= limit : undefined;
-        }
     },
     
     notify:function(msg){
@@ -194,10 +173,13 @@ var ISGH = {
     },
     
     floodStack: function(){
+        /**
+            UPDATING PROFILE INFORMATION FOR KHATEEB / AD
+        */
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
             var $editingUser = $(this).find("input[name='userID']");
-            var url = ($editingUser.length) ? "/user/updateProfile/"+ $editingUser.val() : "";
+            var url = "/user/updateProfile/" + (($editingUser.length) ? $editingUser.val() : "");
             var fields =  {
                 name: "Name",
                 address: "Address",
@@ -243,23 +225,31 @@ var ISGH = {
             });
         });
         
+        //  HANDLING CLICK EVENT FOR DATES.
+        
         $(".dates-calendar").on("click" , ".date" , function(e){
             
-            $(this).toggleClass("available");
+            $(this).toggleClass("available"); // scales the date
             var $checkbox = $(this).find("[type='checkbox']");
-            $checkbox.prop("checked" , !$checkbox.prop("checked"));
+            $checkbox.prop("checked" , !$checkbox.prop("checked")); // toggles the checkbox
             
         });
+        
+        //  SELECTS ALL DATES.
         
         $(".select-all").on("click" , function(){
             $(".dates-calendar input[type='checkbox']").prop("checked" , true);
             $(".dates-calendar .date").addClass("available");
         });
         
+        //  DESELECT ALL DATES
+        
         $(".unselect-all").on("click" , function(){
             $(".dates-calendar input[type='checkbox']").prop("checked" , false);
             $(".dates-calendar .date").removeClass("available");
         });
+        
+        //  SELECTS ALL UNSELECTED DATES AND DESELECT ALL SELECTED DATES
         
         $(".reverse-select").on("click" , function(){
             $(".dates-calendar input[type='checkbox']").each(function(index , element){
@@ -268,15 +258,21 @@ var ISGH = {
             $(".dates-calendar .date").toggleClass("available");
         });
         
+        // WHEN CLICKING ON THE NOTIFICATION...IT HIDES
+        
         $(".notification").on("click" , function(){
             $(this).removeClass("appear");
         });
+        
+        //  CANCELING THE SPACE BAR FROM THE USERNAME FIELD
         
         $("input[ng-model $= 'username']").on("keypress" , function(e){
             var pressedKey = String.fromCharCode(e.charCode).toLocaleLowerCase();
             if(pressedKey == " ")
                 return false;
         });
+        
+        //  SHOWING THE SELECTED IMAGE LOCALLY BEFORE UPLOADING IT.
         
         $(".profile-pic").on("change" , function(event){
             
@@ -296,6 +292,8 @@ var ISGH = {
             
         });
     },
+    
+    //  STARTS THE MAGIC
     
     init: function(){
         
