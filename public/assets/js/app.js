@@ -89,7 +89,6 @@ var ISGH = {
                 // we will need a way to return the result.
                 self._result = parseInt( this.getAttribute("data-confirm") ) == 1;
                 self.hide();
-                console.log(self._result);
                 
             });
             
@@ -173,9 +172,11 @@ var ISGH = {
     },
     
     floodStack: function(){
+        
         /**
             UPDATING PROFILE INFORMATION FOR KHATEEB / AD
         */
+        
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
             var $editingUser = $(this).find("input[name='userID']");
@@ -203,8 +204,8 @@ var ISGH = {
                     return x;
                 },
                 success: function(resp){
-                    if(resp.data instanceof Array){
-                        var res = resp.data.reflectValues(fields);
+                    if(resp instanceof Array){
+                        var res = resp.reflectValues(fields);
                         ISGH.alertBox.init("Field(s) " + res.join(" , ") + " are missing" , false);
                     }else{
                         ISGH.notify("Your information was updated successfully!");

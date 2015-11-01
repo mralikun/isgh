@@ -7,18 +7,6 @@
 */
     
     app.controller("UserController" , ["$scope" , "$http" , function( scope , http ){
-
-        // we will make a request to get the online user's role.
-        http.post("/user/onlineUserRole")
-            .then(function(resp){
-            var temp = resp.data;
-            if(temp != "khateeb"){
-                $(".pic-holder").remove();
-                $("input[name='edu_background']").parents(".form-group").remove();
-            }
-        } , function(err){
-            ISGH.alertBox.init("Something went wrong, Please refresh the page!" , false);
-        });
         
         //  DELETES AN EXISTING USER
 
