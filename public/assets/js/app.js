@@ -171,12 +171,33 @@ var ISGH = {
         
     },
     
+    Dates: {
+        choosen: [],
+        select: function(_id){
+            if(this.choosen.indexOf(_id) === -1)
+                this.choosen.push(_id);
+        },
+        deselect: function(id){
+            if(this.choosen.indexOf(id) !== -1)
+                this.choosen.splice( this.choosen.indexOf(id) , 1 );
+        },
+        patch: function(){
+            $.ajax({
+                url: "/user/setAvailableDates",
+                type: "POST",
+                data: {dates: this.choosen},
+                success: function(){},
+                error: function(){}
+            });
+        }
+    },
+    
     floodStack: function(){
         
         /**
             UPDATING PROFILE INFORMATION FOR KHATEEB / AD
         */
-        
+        var self = this;
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
             var $editingUser = $(this).find("input[name='userID']");
@@ -226,9 +247,28 @@ var ISGH = {
         
         $(".dates-calendar").on("click" , ".date" , function(e){
             
+            // handling the view part
+            
             $(this).toggleClass("available"); // scales the date
             var $checkbox = $(this).find("[type='checkbox']");
             $checkbox.prop("checked" , !$checkbox.prop("checked")); // toggles the checkbox
+            
+            // handling the data part.
+            
+            var ID = undefined;
+            
+            if(!$(this).hasClass("date")){
+                ID = parseInt( $(this).parents(".date").attr("id") );
+                
+            }else {
+                ID = parseInt( $(this).attr("id") );
+            }
+            
+            if($(this).hasClass("available")){
+                self.Dates.select(ID);
+            }else {
+                self.Dates.deselect(ID);
+            }
             
         });
         
@@ -236,14 +276,30 @@ var ISGH = {
         
         $(".select-all").on("click" , function(){
             $(".dates-calendar input[type='checkbox']").prop("checked" , true);
-            $(".dates-calendar .date").addClass("available");
+            $(".dates-calendar .date").addClass("available").each(function(index , element){
+                var ID = undefined;
+                if($(element).hasClass("date"))
+                    ID = parseInt( $(element).attr("id") );
+                else
+                    ID = parseInt( $(element).parent("date").attr("id") );
+                
+                self.Dates.select(ID);
+            });
         });
         
         //  DESELECT ALL DATES
         
         $(".unselect-all").on("click" , function(){
             $(".dates-calendar input[type='checkbox']").prop("checked" , false);
-            $(".dates-calendar .date").removeClass("available");
+            $(".dates-calendar .date").removeClass("available").each(function(index , element){
+                var ID = undefined;
+                if($(element).hasClass("date"))
+                    ID = parseInt( $(element).attr("id") );
+                else
+                    ID = parseInt( $(element).parent("date").attr("id") );
+                
+                self.Dates.deselect(ID);
+            });
         });
         
         //  SELECTS ALL UNSELECTED DATES AND DESELECT ALL SELECTED DATES
@@ -252,7 +308,20 @@ var ISGH = {
             $(".dates-calendar input[type='checkbox']").each(function(index , element){
                 $(element).prop("checked" , !$(element).prop("checked"));
             });
-            $(".dates-calendar .date").toggleClass("available");
+            $(".dates-calendar .date").toggleClass("available").each(function(index , element){
+                
+                var ID = undefined;
+                if($(element).hasClass("date"))
+                    ID = parseInt( $(element).attr("id") );
+                else
+                    ID = parseInt( $(element).parent("date").attr("id") );
+                
+                if($(element).hasClass("available"))
+                    self.Dates.select(ID);
+                else
+                    self.Dates.deselect(ID);
+                
+            });
         });
         
         // WHEN CLICKING ON THE NOTIFICATION...IT HIDES

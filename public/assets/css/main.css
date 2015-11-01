@@ -426,6 +426,10 @@ i.star-off-png , i.star-on-png, .raty-cancel {
     color: #007bb3;
 }
 
+#submit-rates {
+    margin: 15px;
+}
+
 /**
 
     AVAILABLE/BLOCKED DATES

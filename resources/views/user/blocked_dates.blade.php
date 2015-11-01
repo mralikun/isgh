@@ -32,74 +32,74 @@ Available/Blocked Dates
 <form ng-controller="UserController as uc">
     <div class="dates-calendar">
 
-       <div class="date" id="5" ng-click="handleDatesClick($event)">
+       <div class="date" id="1">
            <div class="date-content">
                <h4>Friday</h4>
                <h5>12 / 11 / 2015</h5>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="2">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="3">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="4">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="5">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="6">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="7">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="8">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="9">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="10">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="11">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date">
+       <div class="date" id="12">
            <div class="date-content">
                <h4>Friday</h4>
                <input type="checkbox" disabled>

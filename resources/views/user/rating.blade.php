@@ -54,7 +54,7 @@ Rating
     <div class="col-sm-7 col-md-7 col-lg-7 stars" id="12"></div>
 
 </div>
-<button class="btn btn-isgh pull-right" id="submit-rates">Submit</button>
+<button class="btn btn-primary pull-right" id="submit-rates">Submit</button>
 
 @stop
 
@@ -63,32 +63,6 @@ Rating
 
 <link rel="stylesheet" href="/assets/js/services/raty/lib/jquery.raty.css">
 <script src="/assets/js/services/raty/lib/jquery.raty.js"></script>
-<script>
-
-    var rates = {};
-    $(".stars").raty({
-        number: 7,
-        starType: "i",
-        cancel: true,
-        click: function(score , event){
-            rates[this.id] = (!!score) ? score : 0;
-            console.log(rates);
-        }
-    });
-    // Token Mismatch error.........although its not a form!
-    $("#submit-rates").on("click" , function(){
-        $.ajax({
-            url: "/user/rating",
-            type: "POST",
-            data: {ratings: rates},
-            success: function(resp){},
-            error: function(err){
-                ISGH.alertBox.init("Something went wrong, Please refresh and try again!" , false);
-            }
-        })
-    });
-    
-</script>
-
+<script src="/assets/js/services/rating.js"></script>
 
 @stop
