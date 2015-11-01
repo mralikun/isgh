@@ -20,6 +20,14 @@ Schedule Management
 
 @section("content")
 
+<div class="text-right schedule-opts">
+    
+    <button class="btn btn-isgh">Approve To Schedule</button>
+    <button class="btn btn-isgh">Edit Schedule</button>
+    <button class="btn btn-isgh">Export Excel</button>
+    
+</div>
+
 <table class="table schedule">
     
     <thead>
@@ -34,6 +42,12 @@ Schedule Management
     </thead>
     <tbody>
         
+        <tr>
+            <td>12/10/2015</td>
+            <td>Ahmed</td>
+            <td>Mohamed</td>
+            <td>The khutbah starts at 12:10 P.M and ends at 12:30 P.M</td>
+        </tr>
         <tr>
             <td>12/10/2015</td>
             <td>Ahmed</td>

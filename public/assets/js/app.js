@@ -209,11 +209,7 @@ var ISGH = {
                         ISGH.alertBox.init("Field(s) " + res.join(" , ") + " are missing" , false);
                     }else{
                         ISGH.notify("Your information was updated successfully!");
-                        window.setTimeout(function(){
-                            var r = new RegExp(window.location.pathname); 
-                            var url = window.location.href.replace(r,"/user/profile");
-                            window.location.assign(url);
-                        } , 3000);
+                        // After the information update...
 
                     }
                 },
