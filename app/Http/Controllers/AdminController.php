@@ -8,6 +8,7 @@ use App\IslamicCenter;
 use App\Khateeb;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 
@@ -50,10 +51,7 @@ class AdminController extends Controller {
      * @return \Illuminate\View\edit_members
      */
     public function Edit_Members_Information(){
-        $allKhateebs =  Khateeb::select("id","name")->get();
-        $allAds =  AssociateDirector::select("id","name")->get();
-        $all=["khateebs"=>$allKhateebs , "ads"=>$allAds];
-
+        $all = User::getUserNames();
         return view("admin.edit_members",compact("all"));
     }
 

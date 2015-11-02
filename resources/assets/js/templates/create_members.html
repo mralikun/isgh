@@ -1,0 +1,57 @@
+<main>
+<h2 class="page-title">Create new member</h2>
+
+<div class="container-fluid" ng-controller="UserController as uc">
+
+    <div class="col-sm-6 col-md-6 col-lg-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">        
+
+        <form action="#" class="form-horizontal" id="members-form">
+
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Username <sup>*</sup></label>
+                <div class="col-sm-10"><input type="text" class="form-control" required ng-model="user.username"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Password <sup>*</sup></label>
+                <div class="col-sm-10"><input type="password" name="password" required class="form-control" ng-model="user.password"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Confirm Password<sup>*</sup></label>
+                <div class="col-sm-10"><input type="password" name="confirm_password" required class="form-control" ng-model="user.confirm_password"></div>
+            </div>
+            <div class="form-group">
+                
+                <label class="col-sm-2 control-label">Role <sup>*</sup></label>
+                <div class="col-sm-10">
+                    
+                    <label for="" class="control-label col-sm-3"><input type="radio" name="role" value="0" ng-model="user.role"> Associate Director </label>
+                    <label for="" class="control-label col-sm-3"><input type="radio" name="role" value="1" ng-model="user.role"> Khateeb </label>
+                    <label for="" class="control-label col-sm-3"><input type="radio" name="role" value="2" ng-model="user.role"> Admin </label>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="form-group" ng-show="user.role == 0">
+                
+                <label class="control-label col-sm-2">Reviewer ?</label>
+                <div class="col-sm-10">
+                    <label class="col-sm-3 control-label"><input type="radio" name="reviewer"> Yes </label>
+                    <label class="col-sm-3 control-label"><input type="radio" name="reviewer" checked> No </label>
+                </div>
+                
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary pull-right" value="Add Member">
+            </div>
+            
+        </form>
+
+    </div>
+
+</div>
+
+</main>

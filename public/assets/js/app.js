@@ -203,9 +203,9 @@ var ISGH = {
                     return x;
                 },
                 success: function(resp){
-                    if(resp instanceof Array){
-                        resp = resp.reflectValues(fields);
-                        ISGH.alertBox.init("Field(s) " + resp.join(" , ") + " are missing" , false);
+                    if(resp.data instanceof Array){
+                        var res = resp.data.reflectValues(fields);
+                        ISGH.alertBox.init("Field(s) " + res.join(" , ") + " are missing" , false);
                     }else{
                         ISGH.notify("Your information was updated successfully!");
                         window.setTimeout(function(){

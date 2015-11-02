@@ -16,7 +16,7 @@ class UserController extends Controller {
 
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('user');
+        $this->middleware('user',["except"=>["getEditProfile"]]);
     }
 
 	public function getIslamicCenterBlockedDates(){
@@ -27,16 +27,28 @@ class UserController extends Controller {
         return view("user.rating");
     }
 
-    public function getEditProfile(){
-        $user_id = Auth::user()->user_id ;
-        $role = Auth::user()->role_id ;
+    public function getEditProfile($id = null){
+
+        if($id == null){
+            // if he is user trying to edit his information
+            $user_id = Auth::user()->user_id ;
+            $role = Auth::user()->role_id ;
+        }else{
+            // if he is admin editing user information
+            $user_id = $id ;
+            $user = User::whereid($user_id)->first();
+            $role = $user->role_id ;
+            $user_id = $user->user_id ;
+        }
+
         $result = User::getUserData($user_id , $role);
 
         $firstTime = "false";
+
         if($result->email == ""){
             $firstTime = "true";
         }
-        return view("user.edit_profile",compact("firstTime","result"));
+        return view("user.edit_profile",compact("firstTime","result","user_id"));
     }
 
     public function getProfile(){
@@ -47,26 +59,36 @@ class UserController extends Controller {
     }
 
 
-    public function updateProfile(){
-        $answer = User::validateAllFields(Input::all());
+    public function updateProfile($id = null){
+       $answer = User::validateAllFields(Input::all());
 
         if($answer == "true"){
             // okay all fields inserted and every thing is okay
-            if(Auth::user()->role_id == 2){
-                $result = Khateeb::addFields(Input::all());
-                if($result == "true"){
-                    return "true";
-                }else{
-                    return "false";
+            // if admin then id will not equal null
+            if($id == null){
+                // here if user editing his information
+                if(Auth::user()->role_id == 2){
+                    $result = Khateeb::addFields(Input::all());
+                    if($result == "true"){
+                        return "true";
+                    }else{
+                        return "false";
+                    }
+                }elseif(Auth::user()->role_id == 3){
+                    $result = AssociateDirector::addFields(Input::all());
+                    if($result == "true"){
+                        return "true";
+                    }else{
+                        return "false";
+                    }
                 }
-            }elseif(Auth::user()->role_id == 3){
-                $result = AssociateDirector::addFields(Input::all());
-                if($result == "true"){
-                    return "true";
-                }else{
-                    return "false";
+            }else{
+                // here if admin is editing user information
+                if(Auth::user()->role_id == 1){
+                    return $id ;
                 }
             }
+
         }else{
             // there are some fields did not inserted correctly
             return $answer ;

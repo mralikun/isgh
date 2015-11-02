@@ -47,8 +47,8 @@ Edit/Delete Members
                 @foreach($all["khateebs"] as $khateeb)
                 <tr ng-click="delete({_ev: $event, role: 2})">
                     
-                    <td><h4>{{$khateeb->name}}</h4></td>
-                    <td><a class="btn btn-isgh" data-member="{{$khateeb->id}}" href="/user/edit_profile/{{$khateeb->id}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$khateeb->id}}">Delete</button></td>
+                    <td><h4>{{$khateeb[1]}}</h4></td>
+                    <td><a class="btn btn-isgh" data-member="{{$khateeb[0]}}" href="/user/edit_profile/{{$khateeb[0]}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$khateeb[0]}}">Delete</button></td>
                     
                 </tr>
                 
@@ -84,8 +84,8 @@ Edit/Delete Members
                 @foreach($all["ads"] as $ad)
                 <tr ng-click="delete({_ev: $event, role: 3})">
                     
-                    <td><h4>{{$ad->name}}</h4></td>
-                    <td><a class="btn btn-isgh" data-member="{{$ad->id}}" href="/user/edit_profile/{{$ad->id}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$ad->id}}">Delete</button></td>
+                    <td><h4>{{$ad[1]}}</h4></td>
+                    <td><a class="btn btn-isgh" data-member="{{$ad[0]}}" href="/user/edit_profile/{{$ad[0]}}" target="_blank">Edit</a><button class="btn btn-isgh opt-delete" data-member="{{$ad[0 ]}}">Delete</button></td>
                     
                 </tr>
                 

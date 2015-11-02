@@ -70,13 +70,13 @@ Route::get('/user/dates', 'UserController@getIslamicCenterBlockedDates');
 Route::get('/user/rating', 'UserController@getRatingPage');
 
 // route for editing user profile
-Route::get('/user/edit_profile', 'UserController@getEditProfile');
+Route::get('/user/edit_profile/{id?}', 'UserController@getEditProfile');
 
 // route for getting user profile
 Route::get('/user/profile', 'UserController@getProfile');
 
 // route for receiving data from update profile page and save user data
-Route::post('/user/updateProfile', 'UserController@updateProfile');
+Route::post('/user/updateProfile{id?}', 'UserController@updateProfile');
 
 // route for detecting who is in the site ( admin , k , ad )
 Route::post('/user/onlineUserRole', 'UserController@onlineUserRole');

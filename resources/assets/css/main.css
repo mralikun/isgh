@@ -1,0 +1,258 @@
+@font-face {
+    font-family: gothic;
+    src: url(../fonts/font.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+/**
+    GENERAL STYLES
+*/
+
+body {
+    max-width: 1920px;
+    margin: auto;
+    font-family: gothic;
+}
+
+header , #login-form {
+    background-color: #007bb3;
+    color: white;
+}
+
+header {
+    padding: 25px;
+}
+
+nav {
+    display: block;
+    margin-top: 20px;
+}
+
+nav ul {
+    list-style: none;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    padding: 2px 15px;
+}
+
+nav ul li:not(:last-child){
+    border-right: 2px solid white;
+}
+
+nav ul li a {
+    color: white;
+    padding: 20px;
+}
+
+label {
+    text-align: left!important;
+    color: #007bb3; 
+}
+
+textarea {
+    resize: none;
+}
+
+.page-title {
+    width: 15%;
+    display: inline-block;
+    padding: 15px;
+    background-color: #007bb3;
+    color: white;
+    text-align: center;
+}
+
+.form-group {
+    margin: 10px auto;
+}
+
+.note {
+    display: block;
+    padding: 15px;
+    color: #007bb3;
+}
+
+sup {
+    color: red;
+    font-size: 0.8em;
+}
+
+/**
+
+    LOGIN PAGE AND LOGIN FORM
+
+*/
+
+#login-form {
+    width: 25%;
+    margin: 10% auto;
+    padding: 5%;
+    padding-top: 0;
+}
+
+#auth-img {
+    display: block;
+    margin: auto;
+    max-width: 82px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 15px rgba(0,0,0,.5);
+}
+
+#login-form legend {
+    border: none;
+    font-size: 3em;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+#login-form input {
+    display: block;
+    margin: 5px auto;
+    min-height: 32px;
+    text-align: center;
+}
+
+#login-form input:not([type="submit"]){
+    width: 100%;
+    color: rgba(0,0,0,.7);
+    font-weight: bold;
+}
+
+#login-form input[type="submit"]{
+    color: #007bb3;
+    background-color: white;
+    border: 2px solid #ccc;
+    font-size: 1.75em;
+    padding: 3px 15px;
+}
+
+#login-form a {
+    display: block;
+    color: #ccc;
+    text-align: right;
+    padding: 5px;
+}
+
+/**
+
+    PROFILE PAGE
+
+*/
+
+.bio {
+    padding: 35px;
+    margin: 15px;
+    min-height: 250px;
+    box-shadow: 0 0 2px rgba(0,0,0,.5);
+}
+
+.username {
+    margin-top: 80px;
+    transform: translateY(-40px);
+}
+
+/**
+
+    UPDATE PROFILE
+
+*/
+
+
+
+
+/**
+
+    CREATE ISLAMIC CENTER
+
+*/
+
+label[for="start_time"] , label[for="end_time"] {
+    margin-top: 7px;
+}
+
+
+
+/**
+    NEW MEMBERS
+*/
+
+#members-form .form-group{
+    margin-bottom: 15px;
+}
+
+#members-form input[name="reviewer"] , #members-form input[name="role"]{
+    transform: translateY(3.5px);
+}
+
+/**
+
+    RATING PAGE
+
+*/
+
+.rating-row {
+    padding: 15px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid gray;
+}
+
+.rating-img {
+    max-height: 92px;
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+
+.rating-name {
+    margin-top: 30px;
+}
+
+.stars {
+    margin-top: 30px;
+    text-align: right;
+}
+
+i.star-off-png , i.star-on-png {
+    width: 22px;
+    height: 22px;
+    margin: 5px;
+    color: #007bb3;
+}
+
+/**
+
+    AVAILABLE/BLOCKED DATES
+
+*/
+
+
+.dates-calendar {
+    background-color: #e6e6e6;
+    padding: 10px;
+    box-shadow: 0 0 25px gray;
+    width: 800px;
+    margin: auto;
+}
+
+.date {
+    display: inline-block;
+    width: 175px;
+    height: 175px;
+    margin: 5px 8px;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 0 5px gray;
+}
+
+.date input[type="checkbox"]{
+    display: block;
+    margin: 15px auto;
+}
+
+.dates-calendar + input[type="submit"]{
+    margin: 15px;
+}

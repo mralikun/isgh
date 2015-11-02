@@ -37,18 +37,6 @@ class UserMiddleware {
         }
 
 
-        if ($this->auth->user()->role_id == 1)
-        {
-            if ($request->ajax())
-            {
-                return response('false');
-            }
-            else
-            {
-                return redirect()->guest('/admin/members/create');
-            }
-        }
-
 
         return $next($request);
     }

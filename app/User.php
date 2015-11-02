@@ -141,6 +141,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     public static function getUserData($user_id , $role_id){
+
         switch($role_id){
             case 1 :
                 return Admin::whereid($user_id)->first();
@@ -202,4 +203,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
+    /**
+     * @return array
+     * this function for getting khateebs and ad's names associated with their id in user table
+     */
+    public static function getUserNames(){
+        $khateebs_users = User::whererole_id(2)->get();
+        $ads = User::whererole_id(3)->get();
+        $all=["khateebs"=>[] , "ads"=>[]];
+
+        foreach($khateebs_users as $user_khateeb){
+            $khateeb = Khateeb::whereid($user_khateeb->user_id)->first();
+            array_push($all["khateebs"],[$user_khateeb->id , $khateeb->name]) ;
+        }
+
+        foreach($ads as $user_ad){
+            $ad = AssociateDirector::whereid($user_ad->user_id)->first();
+            array_push($all["ads"],[$user_ad->id , $ad->name]) ;
+        }
+        return $all ;
+    }
 }
