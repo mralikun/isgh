@@ -60,6 +60,7 @@ class UserController extends Controller {
 
 
     public function updateProfile($id = null){
+
        $answer = User::validateAllFields(Input::all());
 
         if($answer == "true"){
@@ -83,9 +84,34 @@ class UserController extends Controller {
                     }
                 }
             }else{
+                return $id ;
                 // here if admin is editing user information
                 if(Auth::user()->role_id == 1){
                     return $id ;
+                    $user = User::whereid($id)->first();
+                    $role = $user->role_id ;
+                    $user_id = $user->user_id ;
+
+                    if($role == 2){
+                        $result = Khateeb::addFields(Input::all());
+                        if($result == "true"){
+                            return "true";
+                        }else{
+                            return "false";
+                        }
+                    }elseif($role == 3){
+                        $result = AssociateDirector::addFields(Input::all());
+                        if($result == "true"){
+                            return "true";
+                        }else{
+                            return "false";
+                        }
+                    }else{
+                        return "error";
+                    }
+
+                }else{
+                    return "error";
                 }
             }
 
