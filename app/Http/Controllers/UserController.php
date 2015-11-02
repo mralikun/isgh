@@ -39,6 +39,7 @@ class UserController extends Controller {
             $user = User::whereid($user_id)->first();
             $role = $user->role_id ;
             $user_id = $user->user_id ;
+            $adminEditing = $user_id;
         }
 
         $result = User::getUserData($user_id , $role);
@@ -48,7 +49,11 @@ class UserController extends Controller {
         if($result->email == ""){
             $firstTime = "true";
         }
-        return view("user.edit_profile",compact("firstTime","result","user_id"));
+        if(isset($adminEditing)){
+             return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing"));
+        }else {
+             return view("user.edit_profile",compact("firstTime","result","user_id","role"));
+        }
     }
 
     public function getProfile(){

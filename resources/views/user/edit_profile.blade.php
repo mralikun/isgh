@@ -87,12 +87,14 @@ Update Profile
             </div>
         </div>
     </div>   
+    @if($role == 2)
     <div class="form-group">
         <label for="" class="control-label col-sm-3">Educational Background</label>
         <div class="col-sm-9">
             <input type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" value="{{$result->edu_background}}"/>
         </div>
     </div>
+    @endif
     <div class="form-group">
         <label for="" class="control-label col-sm-3">E-mail</label>
         <div class="col-sm-9">
@@ -111,6 +113,9 @@ Update Profile
 @stop
 
 @section("aside")
+
+@if($role == 2)
+
 <div class="pic-holder">
    
     
@@ -123,6 +128,8 @@ Update Profile
     @endif
 
 </div>
+
+@endif
 
 @stop
 </form>
