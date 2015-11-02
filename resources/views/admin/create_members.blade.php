@@ -62,7 +62,7 @@ Create new member
     <div class="form-group">
 
         <label class="col-sm-2 control-label">Role </label>
-        <div class="col-sm-10">
+        <div class="col-sm-10" ng-init="tempUser.role = 0">
 
             <label for="" class="control-label col-sm-3"><input type="radio" name="role" value="0" ng-model="tempUser.role" required> Associate Director </label>
             <label for="" class="control-label col-sm-3"><input type="radio" name="role" value="1" ng-model="tempUser.role" required> Khateeb </label>
@@ -90,6 +90,14 @@ Create new member
             <label class="col-sm-3 control-label"><input type="radio" name="isgh_member" value="0" ng-model="tempUser.isgh_member"> No </label>
         </div>
         
+    </div>
+    
+    <div class="form-group" ng-show="tempUser.role == 2">
+        <label class="control-label col-sm-2">E-mail</label>
+        <div class="col-sm-10">
+            <input type="email" name="email" class="form-control" placeholder="E-mail Address">
+            <span class="help-block">We will use this email for password recovery and mail notifications for the schedule.</span>
+        </div>
     </div>
     
     <div class="form-group">

@@ -29,7 +29,9 @@ Available/Blocked Dates
     <button class="btn btn-isgh reverse-select">Reverse Selection</button>
     
 </div>
-<form ng-controller="UserController as uc">
+<form id="blocked-dates-form">
+  <!-- Token Mismatch Exception !!!!!! -->
+   <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
 
        <div class="date" id="1">

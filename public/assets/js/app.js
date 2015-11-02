@@ -42,7 +42,7 @@ var ISGH = {
     alertBox: {
         // The message to show to user
         _msg: "",
-        // this attribute indecates whether to show a yes/no option or an Ok button.
+        // this attribute indecates whether to show a yes/no option when true or an Ok button otherwise.
         _confirmable: true,
         
         /**
@@ -141,7 +141,7 @@ var ISGH = {
         
     },
     
-    notify:function(msg){
+    notify: function(msg){
         $(".notification p").text(msg);
         $(".notification").addClass("appear");
         var au = document.getElementsByTagName("audio")[0];
@@ -166,6 +166,7 @@ var ISGH = {
             for(var i = 0; i < this.length; i++){
                 reflected.push(target[this[i]]);
             }
+            
             return reflected;
         }
         
@@ -322,6 +323,14 @@ var ISGH = {
                     self.Dates.deselect(ID);
                 
             });
+        });
+        
+        $("#blocked-dates-form").on("submit" , function(){
+            if(self.Dates.choosen.length === 0){
+                ISGH.alertBox.init("Please choose at least 1 Friday" , false);
+                return false;
+            }
+            self.Dates.patch();
         });
         
         // WHEN CLICKING ON THE NOTIFICATION...IT HIDES
