@@ -24,10 +24,15 @@ class AdminController extends Controller {
      * here for returning view for creating new islamic center
      * @return \Illuminate\View\create_islamic_center
      */
-	public function Create_Islamic_Center(){
+	public function Create_Islamic_Center($id = null){
         $directors = AssociateDirector::select("name","id")->where("name","!=" , "")->get();
+        if($id != null){
+            $ad = AssociateDirector::whereid($id)->first();
+            return view("admin.create_islamic_center",compact("directors","ad"));
+        }else{
+            return view("admin.create_islamic_center",compact("directors"));
+        }
 
-        return view("admin.create_islamic_center",compact("directors"));
     }
 
     /**
@@ -146,8 +151,6 @@ class AdminController extends Controller {
         $phone = AssociateDirector::whereid($id)->first();
         return $phone->phone ;
     }
-
-
 
 
 }

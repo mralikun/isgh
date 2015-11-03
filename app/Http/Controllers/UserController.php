@@ -16,7 +16,7 @@ class UserController extends Controller {
 
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('user',["except"=>["getEditProfile"]]);
+        $this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
     }
 
 	public function getIslamicCenterBlockedDates(){
@@ -49,6 +49,7 @@ class UserController extends Controller {
         if($result->email == ""){
             $firstTime = "true";
         }
+
         if(isset($adminEditing)){
              return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing"));
         }else {
@@ -65,6 +66,7 @@ class UserController extends Controller {
 
 
     public function updateProfile($id = null){
+
        $answer = User::validateAllFields(Input::all());
 
         if($answer == "true"){
@@ -90,7 +92,33 @@ class UserController extends Controller {
             }else{
                 // here if admin is editing user information
                 if(Auth::user()->role_id == 1){
-                    return $id ;
+
+                    $user = User::whereid($id)->first();
+                    $role = $user->role_id ;
+                    $user_id = $user->user_id ;
+
+                    // if khateeb
+                    if($role == 2){
+                        $result = Khateeb::addFields(Input::all());
+                        if($result == "true"){
+                            return "true";
+                        }else{
+                            return "false";
+                        }
+                    // if associative director
+                    }elseif($role == 3){
+                        $result = AssociateDirector::addFields(Input::all());
+                        if($result == "true"){
+                            return "true";
+                        }else{
+                            return "false";
+                        }
+                    }else{
+                        return "error";
+                    }
+
+                }else{
+                    return "error";
                 }
             }
 

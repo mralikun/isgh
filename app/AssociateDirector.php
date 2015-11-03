@@ -12,8 +12,10 @@ class AssociateDirector extends Model
 
     public static function addFields($info){
 
-        $user_id = Auth::user()->user_id ;
-        $ad = AssociateDirector::whereid($user_id)->first();
+        $user_id =  $info["userID"];
+        $user = User::whereid($user_id)->first();
+        $ad_id = $user->user_id ;
+        $ad = AssociateDirector::whereid($ad_id)->first();
 
         $ad->name = $info["name"];
         $ad->email = $info["email"];
@@ -33,8 +35,9 @@ class AssociateDirector extends Model
      */
     public static function DeleteMembers($ad_id){
         $role = 3 ;
-        if(User::deleteUser($ad_id , $role ) == "true"){
-            if(AssociateDirector::destroy($ad_id)){
+        $result = User::deleteUser($ad_id , $role );
+        if($result != "false"){
+            if(AssociateDirector::destroy($result)){
                 return "true";
             }else{
                 return "false" ;
