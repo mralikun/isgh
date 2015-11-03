@@ -39,7 +39,7 @@ class UserController extends Controller {
             $user = User::whereid($user_id)->first();
             $role = $user->role_id ;
             $user_id = $user->user_id ;
-            $adminEditing = $user_id;
+            $adminEditing = $id;
         }
 
         $result = User::getUserData($user_id , $role);
@@ -60,7 +60,7 @@ class UserController extends Controller {
         $user_id = Auth::user()->user_id ;
         $role = Auth::user()->role_id ;
         $user_info = User::getUserData($user_id , $role);
-        return view("user.profile",compact($user_info));
+        return view("user.profile",compact("user_info"));
     }
 
 
