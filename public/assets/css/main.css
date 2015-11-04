@@ -255,6 +255,11 @@ tbody tr:hover {
     color: #007bb3;
 }
 
+.profile-page-picture {
+    max-width: 100%;
+    max-height: 150px;
+}
+
 /**
 
     LOGIN PAGE AND LOGIN FORM
@@ -326,7 +331,10 @@ tbody tr:hover {
 .bio {
     padding: 35px;
     margin: 15px;
+    font-size: 1.25em;
     min-height: 250px;
+    max-height: 550px;
+    overflow-y: auto;
     box-shadow: 0 0 2px rgba(0,0,0,.5);
 }
 
@@ -418,6 +426,10 @@ i.star-off-png , i.star-on-png, .raty-cancel {
     color: #007bb3;
 }
 
+#submit-rates {
+    margin: 15px;
+}
+
 /**
 
     AVAILABLE/BLOCKED DATES
@@ -501,4 +513,17 @@ td > button {
 
 td > button:hover {
     box-shadow: 0 0 15px #007bb3;
+}
+
+/**
+    SCHEDULE
+*/
+
+.schedule-opts {
+    padding: 0 15px;
+    margin: 15px;
+}
+
+.schedule tr {
+    transition: initial;
 }

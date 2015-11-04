@@ -17,15 +17,14 @@ Profile
 
 
 @section("content")
-
 <div class="row">
 
 <div class="col-sm-4 col-md-4 col-lg-4">
-    <img src="/assets/images/user.jpg" alt="User">
+    <img src="/images/khateeb_pictures/{{$user_info->picture_url}}" alt="{{$user_info->name}}" class="thumbnail profile-page-picture">
 </div>
-<div class="col-sm-8 col-md-8 col-lg-8 username"><h1>User name</h1></div>
+<div class="col-sm-8 col-md-8 col-lg-8 username"><h1>{{$user_info->name}}</h1></div>
 
 </div>
-<div class="row"><p class="bio">Biography</p></div>
+<div class="row"><p class="bio text-center">{{$user_info->bio}}</p></div>
 
 @stop

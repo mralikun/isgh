@@ -3,7 +3,7 @@
 
 @section("navigation")
 
-@if($firstTime == "false")
+@if($firstTime == "false" and !isset($adminEditing))
 <li><a href="/user/dates">Available/Blocked Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
@@ -68,7 +68,6 @@ Update Profile
 
        </div>
     </div>
-
     <div class="form-group">
         <label for="" class="control-label col-sm-3">Cell Phone</label>
         <div class="col-sm-9">
