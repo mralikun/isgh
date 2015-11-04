@@ -193,9 +193,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Deleting user from the system
      */
     public static function deleteUser($user_id , $role){
-        $user = User::where("user_id",$user_id)->where("role_id",$role)->first();
+        $user_id ;
+        $user = User::where("id",$user_id)->where("role_id",$role)->first();
+        $user_id = $user->user_id ;
         if(User::destroy($user->id)){
-            return "true";
+            return $user_id;
         }
         else{
             return "false";
@@ -212,15 +214,47 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $ads = User::whererole_id(3)->get();
         $all=["khateebs"=>[] , "ads"=>[]];
 
-        foreach($khateebs_users as $user_khateeb){
-            $khateeb = Khateeb::whereid($user_khateeb->user_id)->first();
-            array_push($all["khateebs"],[$user_khateeb->id , $khateeb->name]) ;
+        // if no khateebs and no associative directors
+        if(empty($khateebs_users) && empty($ads)){
+
+        // if no khateebs but there are associative directories
+        }elseif(empty($khateebs_users) && !empty($ads)){
+            foreach($ads as $user_ad){
+                $ad = AssociateDirector::whereid($user_ad->user_id)->where("email","!=","")->first();
+                // if no ad added his email do not display him
+                if(!empty($ad)) {
+                    array_push($all["ads"], [$user_ad->id, $ad->name]);
+                }
+            }
+        //  if no associative directories but there are khateebs
+        }elseif(empty($ads) && !empty($khateebs_users)){
+            foreach($khateebs_users as $user_khateeb){
+                $khateeb = Khateeb::whereid($user_khateeb->user_id)->where("email","!=","")->first();
+                // if no khateeb added his email do not display him
+                if(!empty($khateeb)) {
+                    array_push($all["khateebs"], [$user_khateeb->id, $khateeb->name]);
+                }
+            }
+        // if there are khateebs and also associative directories
+        }else{
+            foreach($khateebs_users as $user_khateeb){
+                $khateeb = Khateeb::whereid($user_khateeb->user_id)->where("email","!=","")->first();
+                // if no khateeb added his email do not display him
+                if(!empty($khateeb)){
+                    array_push($all["khateebs"],[$user_khateeb->id , $khateeb->name]) ;
+                }
+            }
+
+            foreach($ads as $user_ad){
+
+                $ad = AssociateDirector::whereid($user_ad->user_id)->where("email", "!=", "")->first();
+                // if no ad added his email do not display him
+                if(!empty($ad)) {
+                    array_push($all["ads"], [$user_ad->id, $ad->name]);
+                }
+            }
         }
 
-        foreach($ads as $user_ad){
-            $ad = AssociateDirector::whereid($user_ad->user_id)->first();
-            array_push($all["ads"],[$user_ad->id , $ad->name]) ;
-        }
         return $all ;
     }
 }

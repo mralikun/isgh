@@ -150,4 +150,11 @@ class AdminController extends Controller {
 
 
 
+
+
+app/Khateeb.php
+app/User.php
+
+
+
 }

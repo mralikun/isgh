@@ -17,8 +17,10 @@ class Khateeb extends Model {
      * the result which is true or false .
      */
     public static function addFields($info){
-        $user_id = Auth::user()->user_id ;
-        $khateeb = Khateeb::whereid($user_id)->first();
+        $user_id =  $info["userID"];
+        $user = User::whereid($user_id)->first();
+        $khateeb_id = $user->user_id ;
+        $khateeb = Khateeb::whereid($khateeb_id)->first();
 
         $khateeb->name = $info["name"];
         $khateeb->email = $info["email"];
@@ -63,8 +65,8 @@ class Khateeb extends Model {
     public static function DeleteMembers($khateeb_id){
         $role = 2 ;
         $result = User::deleteUser($khateeb_id , 2 ) ;
-        if($result == "true"){
-            if(Khateeb::destroy($khateeb_id)){
+        if($result != "false"){
+            if(Khateeb::destroy($result)){
                 return "true";
             }else{
                 return "false" ;
