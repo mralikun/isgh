@@ -29,7 +29,7 @@ Route::controllers([
 
 // routes related to admin
 // route for creating new islamic center
-Route::get('/admin/islamic_center/create', 'AdminController@Create_Islamic_Center');
+Route::get('/admin/islamic_center/create/{id?}', 'AdminController@Create_Islamic_Center');
 
 // route for creating new members
 Route::get('/admin/members/create', 'AdminController@Create_members');
