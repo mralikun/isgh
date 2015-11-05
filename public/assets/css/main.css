@@ -406,7 +406,8 @@ label[for="start_time"] , label[for="end_time"] {
 }
 
 .rating-img {
-    max-height: 92px;
+    max-height: 120px;
+    min-height: 92px;
     box-shadow: 0 0 10px rgba(0,0,0,.3);
 }
 
