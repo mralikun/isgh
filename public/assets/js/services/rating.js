@@ -4,20 +4,19 @@ var model = {
 
 var view = {
     render: function(dataArray){
-        console.log(dataArray[0].id);
         for(var i = 0; i < dataArray.length; i++){
-            $("#allUsers").append("<div class='row rating-row'><div class='col-sm-7 sol-md-7 col-lg-7'><div class='row'><div class='col-sm-4 col-md-4 col-lg-4'><img class='img-responsive rating-img' src='/images/khateeb_pictures/"+dataArray[i].picture_url+"'></div><div class='col-sm-8 col-md-8 col-lg-8'><h3 class='rating-name'>"+dataArray[i].name+"</h3></div></div></div><div class='col-sm-5 col-md-5 col-lg-5 stars' id='"+dataArray[i].id+"'></div></div>");
+            $("#allUsers").append("<div class='row rating-row'><div class='col-sm-7 sol-md-7 col-lg-7'><div class='row'><div class='col-sm-4 col-md-4 col-lg-4'><img class='img-responsive rating-img' src='/images/khateeb_pictures/"+dataArray[i].picture_url+"'></div><div class='col-sm-8 col-md-8 col-lg-8'><h3 class='rating-name'>"+dataArray[i].name+"</h3></div></div></div><div class='col-sm-5 col-md-5 col-lg-5 stars' id='"+dataArray[i].id+"' data-rate='"+(dataArray[i].khateeb_rate_ad || dataArray[i].ad_rate_khatteb)+"'></div></div>");
         }
+
     }
 }
 
 $(document).ready(function(){
     var getMoreUsers = function(){
-        var _id = (model.users.length) ? model.users[model.users.length - 1].id : 1;
         $.ajax({
             type: "POST",
             url: "/user/startRate",
-            data: {id: _id , _token: $("input[name='_token']").val()},
+            data: {_token: $("input[name='_token']").val()},
             dataType: "json",
             success: function(resp){
                 view.render(resp);
@@ -25,6 +24,9 @@ $(document).ready(function(){
                     number: 7,
                     starType: "i",
                     cancel: true,
+                    score: function(){
+                        return $(this).attr("data-rate");
+                    },
                     click: function(score , event){
                         var _ID = parseInt($(event.target).parents(".stars").attr("id"));
                         $.ajax({

@@ -20,6 +20,11 @@ Rating
 
 @section("content")
 
+@if($role == 2)
+<h4 class="text-center">Please rate the following Islamic centers from 0 to 7 where 0 is the least preferrable place you want to go to give khutbah and 7 is the most preferrable.</h4>
+@else
+<h4 class="text-center">Please rate the following Khateebs from 0 to 7 where 0 is the least preferrable khateeb you want to give khutbah and 7 is the most preferrable.</h4>
+@endif
 <div id="allUsers">
    <input type="hidden" name="_token" value="{{csrf_token()}}">
 </div>

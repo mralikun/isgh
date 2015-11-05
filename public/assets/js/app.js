@@ -6,6 +6,29 @@ var app = angular.module("isgh" , ["ngMessages"])
 
 var ISGH = {
     
+    Paginator: {
+        currentPage: 1,
+        lastPage: 1,
+        next: function(){
+            (this.currentPage < this.lastPage) && this.currentPage++;
+            this.show();
+        },
+        prev: function(){
+            this.currentPage != 0 && this.currentPage--;
+            this.show();
+        },
+        show: function(pageNum){
+            $(".pagins").hide();
+            if(pageNum !== undefined){
+                $(".pagins[data-page='"+pageNum+"']").show();
+            }else
+                $(".pagins[data-page='"+ this.currentPage +"']").show();
+        },
+        init: function(){
+            
+        }
+    },
+    
     Tabs: {
         
         activate: function(contentNum){
@@ -172,6 +195,14 @@ var ISGH = {
             }
             
             return reflected;
+        }
+        
+        Array.prototype.chunk = Array.prototype.chunk || function(size){
+            var chunked = [];
+            while(this.length){
+                chunked.push(this.splice(0,size))
+            }
+            return chunked;
         }
         
     },
