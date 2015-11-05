@@ -47,7 +47,7 @@ Route::get('/admin/islamic_center/edit', 'AdminController@Edit_Islamic_Center_In
 Route::post("/admin/createUser",'AdminController@createUser');
 
 // here the route for creating islamic center
-Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
+Route::post("/admin/createIslamicCenter/{id?}",'AdminController@createIslamicCenter');
 
 // here the route for Deleting Users
 Route::delete("/admin/DeleteKhateeb/{id}",'AdminController@DeleteKhateeb');
@@ -77,3 +77,6 @@ Route::get('/user/profile', 'UserController@getProfile');
 
 // route for receiving data from update profile page and save user data
 Route::post('/user/updateProfile/{id?}', 'UserController@updateProfile');
+
+// route for returning first ten records to the rating page
+Route::post('/user/startRate', 'UserController@startRate');
