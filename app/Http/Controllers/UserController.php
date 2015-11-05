@@ -146,7 +146,7 @@ class UserController extends Controller {
                 break;
             case 3 :
                 $ad_id = Auth::user()->user_id ;
-                return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = 3 or rating.khateeb_id is null");
+                return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null");
                 break ;
             default:
                 return "false";
