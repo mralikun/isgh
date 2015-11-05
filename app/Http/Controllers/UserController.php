@@ -133,6 +133,19 @@ class UserController extends Controller {
         return User::getRole();
     }
 
+    // returning first ten records to the rating page
+    public function startRate(){
+        switch(Auth::user()->role_id){
+            case 2 :
+                return AssociateDirector::take(10)->get();
+                break;
+            case 3 :
+                return Khateeb::take(10)->get();
+                break ;
+            default:
+                return "false";
+        }
+    }
 
 
 
