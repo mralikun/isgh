@@ -504,6 +504,7 @@ table:not(.schedule) {
 
 th , td {
     text-align: center;
+    padding: 10px;
 }
 
 td > button {
@@ -525,5 +526,6 @@ td > button:hover {
 }
 
 .schedule tr {
+    border-bottom: 1px solid rgba(128,128,128,.5);
     transition: initial;
 }

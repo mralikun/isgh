@@ -1,7 +1,7 @@
 /**
 
     This controller contains all methods needed for managing basic users activity.
-    @version 0.1
+    @version 0.2
     @author Ali Hassan <ali.hassan@tooonme.com>
 
 */
@@ -9,7 +9,7 @@
     app.controller("UserController" , ["$scope" , "$http" , function( scope , http ){
         
         //  DELETES AN EXISTING USER
-
+        
         scope.delete = function ( obj ){
             
             var target = obj._ev.target;

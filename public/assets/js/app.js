@@ -1,4 +1,8 @@
-var app = angular.module("isgh" , ["ngMessages"]);
+var app = angular.module("isgh" , ["ngMessages"])
+    .config(function($interpolateProvider){
+        $interpolateProvider.startSymbol("[[");
+        $interpolateProvider.endSymbol("]]");
+    });
 
 var ISGH = {
     
