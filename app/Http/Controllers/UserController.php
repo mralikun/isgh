@@ -137,10 +137,10 @@ class UserController extends Controller {
     public function startRate(){
         switch(Auth::user()->role_id){
             case 2 :
-                return AssociateDirector::take(10)->get();
+                return AssociateDirector::take(10)->select("id","name")->get();
                 break;
             case 3 :
-                return Khateeb::take(10)->get();
+                return Khateeb::take(10)->select("id","name","picture_url")->get();
                 break ;
             default:
                 return "false";
