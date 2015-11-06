@@ -142,7 +142,7 @@ class UserController extends Controller {
         switch(Auth::user()->role_id){
             case 2 :
                 $khateeb_id = Auth::user()->user_id ;
-                return DB::select("SELECT islamic_center.id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null");
+                return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null");
                 break;
             case 3 :
                 $ad_id = Auth::user()->user_id ;

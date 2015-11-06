@@ -16,7 +16,7 @@ class Rating extends Model {
                 * check if khateeb_id and ad_id is already added
                 */
                 // until getting cycle id
-                $check_exsitence = Rating::where("khateeb_id","=",$user_who_rate_id)->where("ad_id","=",$rated_user)->latest()->first();
+                $check_exsitence = Rating::where("ad_id","=",$rated_user)->where("khateeb_id","=",$user_who_rate_id)->latest()->first();
 
                 if(!empty($check_exsitence)){
                     $rate = Rating::whereid($check_exsitence->id)->first();
@@ -63,5 +63,5 @@ class Rating extends Model {
 
 
 
- 
+
 
