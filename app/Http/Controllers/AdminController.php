@@ -37,9 +37,6 @@ class AdminController extends Controller {
     }
 
 
-app/Http/Controllers/UserController.php
-app/Http/routes.php
-app/IslamicCenter.php
     /**
      * here for returning view for creating new create members
      * @return \Illuminate\View\create_members
