@@ -12,7 +12,12 @@ class AssociateDirector extends Model
 
     public static function addFields($info){
 
-        $user_id =  $info["userID"];
+        if(isset($info["userID"])){
+            $user_id =  $info["userID"];
+        }else{
+            $user_id =  Auth::user()->id;
+        }
+
         $user = User::whereid($user_id)->first();
         $ad_id = $user->user_id ;
         $ad = AssociateDirector::whereid($ad_id)->first();

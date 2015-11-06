@@ -17,9 +17,14 @@ class Khateeb extends Model {
      * the result which is true or false .
      */
     public static function addFields($info){
-        $user_id =  $info["userID"];
-        $user = User::whereid($user_id)->first();
-        $khateeb_id = $user->user_id ;
+        if(isset($info["userID"])){
+            $user_id =  $info["userID"];
+            $user = User::whereid($user_id)->first();
+            $khateeb_id = $user->user_id ;
+        }else{
+            $khateeb_id =  Auth::user()->user_id;
+        }
+
         $khateeb = Khateeb::whereid($khateeb_id)->first();
 
         $khateeb->name = $info["name"];
