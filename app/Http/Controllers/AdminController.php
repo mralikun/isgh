@@ -25,7 +25,8 @@ class AdminController extends Controller {
      * @return \Illuminate\View\create_islamic_center
      */
 	public function Create_Islamic_Center($id = null){
-        $directors = AssociateDirector::select("name","id")->where("name","!=" , "")->get();
+        $directors = DB::select("SELECT associate_director.id , associate_director.name FROM `associate_director`  left JOIN islamic_center on associate_director.id = islamic_center.director_id where islamic_center.director_id IS NULL");
+
         if($id != null){
             $ad = AssociateDirector::whereid($id)->first();
             return view("admin.create_islamic_center",compact("directors","ad"));
@@ -35,6 +36,10 @@ class AdminController extends Controller {
 
     }
 
+
+app/Http/Controllers/UserController.php
+app/Http/routes.php
+app/IslamicCenter.php
     /**
      * here for returning view for creating new create members
      * @return \Illuminate\View\create_members
@@ -92,15 +97,21 @@ class AdminController extends Controller {
      * @return mixed
      * create new islamic center
      */
-    public function createIslamicCenter(){
+    public function createIslamicCenter($id=null){
         $input = Input::all();
-        $name = Input::get("name") ;
-        $islamic_center = IslamicCenter::wherename($name)->first();
-        if(empty($islamic_center)){
-            return IslamicCenter::addNewIslamicCenter($input);
+        //admin create new islamic center
+        if($id == null){
+            $name = Input::get("name");
+            $islamic_center = IslamicCenter::wherename($name)->first();
+            if(empty($islamic_center)){
+                return IslamicCenter::addNewIslamicCenter($input);
+            }else{
+                return "false";
+            }
         }else{
-            return "false";
+            return IslamicCenter::EditExistingIslamicCenter($input ,$id);
         }
+
     }
 
     /**

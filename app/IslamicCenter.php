@@ -34,6 +34,16 @@ class IslamicCenter extends Model {
        }
     }
 
+    public static function EditExistingIslamicCenter($input,$id){
+        $IslamicCenter = IslamicCenter::whereid($id)->first();
+        $input["director_id"] = $input["director_name"];
+       if($IslamicCenter->save($input)){
+            return "true";
+       }else{
+            return "false";
+       }
+    }
+
 
     /**
      * Delete Islamic Center

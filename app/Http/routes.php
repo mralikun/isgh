@@ -47,7 +47,7 @@ Route::get('/admin/islamic_center/edit', 'AdminController@Edit_Islamic_Center_In
 Route::post("/admin/createUser",'AdminController@createUser');
 
 // here the route for creating islamic center
-Route::post("/admin/createIslamicCenter",'AdminController@createIslamicCenter');
+Route::post("/admin/createIslamicCenter/{id?}",'AdminController@createIslamicCenter');
 
 // here the route for Deleting Users
 Route::delete("/admin/DeleteKhateeb/{id}",'AdminController@DeleteKhateeb');
@@ -80,6 +80,9 @@ Route::post('/user/updateProfile/{id?}', 'UserController@updateProfile');
 
 // route for detecting who is in the site ( admin , k , ad )
 Route::post('/user/onlineUserRole', 'UserController@onlineUserRole');
+
+// route for returning first ten records to the rating page
+Route::post('/user/startRate', 'UserController@startRate');
 
 
 
