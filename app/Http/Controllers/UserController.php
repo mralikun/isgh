@@ -4,10 +4,13 @@ use App\AssociateDirector;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\IslamicCenter;
 use App\Khateeb;
+use App\Rating;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller {
@@ -24,7 +27,8 @@ class UserController extends Controller {
     }
 
 	public function getRatingPage(){
-        return view("user.rating");
+        $role = Auth::user()->role_id ;
+        return view("user.rating",compact("role"));
     }
 
     public function getEditProfile($id = null){
@@ -137,14 +141,25 @@ class UserController extends Controller {
     public function startRate(){
         switch(Auth::user()->role_id){
             case 2 :
-                return AssociateDirector::take(10)->select("id","name")->get();
+                $khateeb_id = Auth::user()->user_id ;
+                return DB::select("SELECT islamic_center.id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null");
                 break;
             case 3 :
-                return Khateeb::take(10)->select("id","name","picture_url")->get();
+                $ad_id = Auth::user()->user_id ;
+                return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = 3 or rating.khateeb_id is null");
                 break ;
             default:
                 return "false";
         }
+    }
+
+    // adding rate
+    public function addRate(){
+        $user_who_rate_id = Auth::user()->user_id ;
+        $user_who_rate_role = Auth::user()->role_id ;
+        $rated_user = Input::get("id");
+        $rate = Input::get("rate");
+        return Rating::addRate($user_who_rate_id , $user_who_rate_role , $rated_user , $rate);
     }
 
 

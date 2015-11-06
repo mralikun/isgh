@@ -80,3 +80,6 @@ Route::post('/user/updateProfile/{id?}', 'UserController@updateProfile');
 
 // route for returning first ten records to the rating page
 Route::post('/user/startRate', 'UserController@startRate');
+
+//route for submitting a rate
+Route::post('/user/rate', 'UserController@addRate');

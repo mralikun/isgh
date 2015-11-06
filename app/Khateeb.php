@@ -81,5 +81,4 @@ class Khateeb extends Model {
         }
     }
 
-
 }
