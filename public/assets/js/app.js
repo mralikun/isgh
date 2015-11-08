@@ -267,7 +267,6 @@ var ISGH = {
                     }else{
                         ISGH.notify("Your information was updated successfully!");
                         // After the information update...
-
                     }
                 },
                 error: function(err){

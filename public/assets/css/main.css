@@ -261,7 +261,10 @@ tbody tr:hover {
 
 .profile-page-picture {
     max-width: 100%;
-    max-height: 150px;
+    height: 150px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 /**
@@ -334,7 +337,7 @@ tbody tr:hover {
 
 .bio {
     padding: 35px;
-    margin: 15px;
+    margin: 15px 0;
     font-size: 1.25em;
     min-height: 250px;
     max-height: 550px;
