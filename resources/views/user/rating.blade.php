@@ -36,6 +36,15 @@ Rating
 
 <link rel="stylesheet" href="/assets/js/services/raty/lib/jquery.raty.css">
 <script src="/assets/js/services/raty/lib/jquery.raty.js"></script>
-<script src="/assets/js/services/rating.js"></script>
+<script>
+    function disableImgs(){
+        var role = {{$role}} ;
+        if(role === 2){
+            $(".rating-img").remove();
+            $(".rating-name").parent().removeClass("col-sm-8 col-md-8 col-lg-8").addClass("col-sm-12 col-md-12 col-lg-12");
+        }
+    }
+</script>
 
+<script src="/assets/js/services/rating.js"></script>
 @stop
