@@ -20,13 +20,13 @@ class Navigator extends Controller {
 
         if (Auth::user()->role_id == 1)
         {
-            return view('/admin/profile');
+            return redirect('/admin/members/create');
         }
         elseif (Auth::user()->role_id == 2 || Auth::user()->role_id == 3 )
         {
-            return view('/user/profile');
+            return redirect('/user/profile');
         }else{
-            return view("auth.login");
+            return redirect("auth.login");
         }
 
 	}

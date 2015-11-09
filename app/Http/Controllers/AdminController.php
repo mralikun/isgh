@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\AssociateDirector;
+use App\cycle;
+use App\Fridays;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -18,6 +20,7 @@ class AdminController extends Controller {
     {
         $this->middleware('admin');
         $this->middleware('auth');
+        $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
 
     /**
@@ -43,6 +46,15 @@ class AdminController extends Controller {
      */
     public function Create_members(){
         return view("admin.create_members");
+    }
+
+
+    /**
+     * @return \Illuminate\View\View
+     * return admin to create cycle
+     */
+    public function getCyclePage(){
+        return view("admin.create_cycle");
     }
 
     /**
@@ -158,6 +170,47 @@ class AdminController extends Controller {
         $id = Input::get("id");
         $phone = AssociateDirector::whereid($id)->first();
         return $phone->phone ;
+    }
+
+    /**
+     * @param $startDate
+     * @param $months
+     * @return string
+     */
+    private function getEndDate($startDate , $months){
+        $date = new \DateTime($startDate);
+        $interval = new \DateInterval("P".$months."M");
+
+        $date->add($interval);
+        return $date->format('Y-m-d');
+    }
+
+    /**
+     * creating new cycle and fridays
+     * take start date and end date
+     */
+    public function start_New_Cycle(){
+        $date = Input::get("cycle_start_date");
+        $months = Input::get("months");
+        $newDate = $this::getEndDate($date , $months);
+        $result = cycle::CreateNewCycle($date , $newDate);
+
+        if(is_numeric($result)){
+            $cycle = cycle::whereid($result)->first();
+            $final_result = Fridays::addFridays($cycle,$date ,$this::getEndDate($date , $months));
+            if($final_result == "true"){
+                return redirect("/admin/members/create");
+            }else{
+                return redirect("/admin/members/create");
+            }
+        }elseif($result == "false"){
+            return redirect("/admin/create_cycle");
+        }elseif($result == "Cycle did not finished yet"){
+            return redirect("/admin/create_cycle",compact("result"));
+        }else{
+            $error = "unknown_error";
+            return redirect("/admin/create_cycle",compact("error"));
+        }
     }
 
 

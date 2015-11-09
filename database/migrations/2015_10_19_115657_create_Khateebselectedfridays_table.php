@@ -16,6 +16,7 @@ class CreateKhateebselectedfridaysTable extends Migration {
         {
             $table->increments('id');
             $table->integer('khateeb_id')->unsigned()->index(); // username
+            $table->integer('role_id'); // role id
             $table->integer('friday_id')->unsigned()->index(); // username
             $table->timestamps();
         });

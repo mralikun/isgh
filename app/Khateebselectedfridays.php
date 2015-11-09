@@ -6,6 +6,6 @@ class Khateebselectedfridays extends Model {
 
 	protected $table = "Khateebselectedfridays";
 
-    protected $fillable= ["id","friday_id","khateeb_id"];
+    protected $fillable= ["id","friday_id","khateeb_id","role_id"];
 
 }

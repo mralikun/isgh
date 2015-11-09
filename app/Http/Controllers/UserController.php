@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\AssociateDirector;
+use App\cycle;
+use App\Fridays;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -17,13 +19,31 @@ class UserController extends Controller {
 
 
 
+
+
+
+
+
+
+or commit:
+e>..." to update what will be committed)
+ -- <file>..." to discard changes in worki
+
+
+
+app/Khateebselectedfridays.php
+
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
     }
 
 	public function getIslamicCenterBlockedDates(){
-        return view("user.blocked_dates");
+        $name = Auth::user()->name ;
+        $role = Auth::user()->role_id ;
+        $cycle = cycle::latest()->first();
+        $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
+        return view("user.blocked_dates",compact("name","role","fridays"));
     }
 
 	public function getRatingPage(){

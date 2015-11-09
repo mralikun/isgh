@@ -61,6 +61,14 @@ Route::delete("/admin/DeleteIslamicCenter/{id}",'AdminController@DeleteIslamicCe
 // here the route for getting cell phone for director to create islamic center
 Route::post("/user/getCellPhone",'AdminController@getCellPhone');
 
+// this route responsible for taking start date and the number of months and then generate new cycle and
+// generate fridays to start the system .
+Route::post("/admin/create_cycle",'AdminController@start_New_Cycle');
+
+// return Add new cycle page
+Route::get("/admin/cycle",'AdminController@getCyclePage');
+Route::get("/admin/startNewCycle/{date}/{months}",'AdminController@start_New_Cycle');
+
 
 // routes related to User
 // route for creating getting blocked dates
