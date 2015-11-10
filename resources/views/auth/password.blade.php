@@ -1,4 +1,19 @@
-@extends('app')
+@extends("templates.master")
+
+
+@section("navigation")
+
+    <li><a href="/user/dates">Login</a></li>
+
+@stop
+
+
+@section("pageTitle")
+
+    Passeord Reset Link
+
+@stop
+
 
 @section('content')
 <div class="container-fluid">
