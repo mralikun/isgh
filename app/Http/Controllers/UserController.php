@@ -25,8 +25,10 @@ class UserController extends Controller {
     }
 
 	public function getIslamicCenterBlockedDates(){
-        $name = Auth::user()->name ;
+        $user_id = Auth::user()->user_id ;
         $role = Auth::user()->role_id ;
+        $user_data = User::getUserData($user_id , $role);
+        $name = $user_data->name ;
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         return view("user.blocked_dates",compact("name","role","fridays"));
