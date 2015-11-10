@@ -221,9 +221,13 @@ var ISGH = {
             $.ajax({
                 url: "/user/setAvailableDates",
                 type: "POST",
-                data: {dates: this.choosen},
-                success: function(){},
-                error: function(){}
+                data: {dates: this.choosen , _token: $("input[name='_token']").val()},
+                success: function(){
+                    ISGH.notify("Your selection has been saved!");
+                },
+                error: function(){
+                    ISGH.alertBox.init("Couldn't set your selection, Please refresh and try again!" , false);
+                }
             });
         }
     },

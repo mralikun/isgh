@@ -34,81 +34,16 @@ Available/Blocked Dates
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
 
-       <div class="date" id="1">
+       @foreach($fridays as $friday)
+       <div class="date" id="{{$friday->id}}">
            <div class="date-content">
                <h4>Friday</h4>
-               <h5>12 / 11 / 2015</h5>
+               <h5>{{$friday->date}}</h5>
                <input type="checkbox" disabled>
            </div>
        </div>
-       <div class="date" id="2">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="3">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="4">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="5">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="6">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="7">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="8">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="9">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="10">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="11">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
-       <div class="date" id="12">
-           <div class="date-content">
-               <h4>Friday</h4>
-               <input type="checkbox" disabled>
-           </div>
-       </div>
+       @endforeach
        
-
     </div>
     <input type="submit" value="Submit" class="btn btn-primary pull-right" ng-disabled="dates.available.length == 0">
 </form>
