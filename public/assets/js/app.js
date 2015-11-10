@@ -269,7 +269,7 @@ var ISGH = {
                         var res = resp.reflectValues(fields);
                         ISGH.alertBox.init("Field(s) " + res.join(" , ") + " are missing" , false);
                     }else{
-                        ISGH.notify("Your information was updated successfully!");
+                        ISGH.notify("The information was updated successfully!");
                         // After the information update...
                     }
                 },

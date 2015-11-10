@@ -42,6 +42,8 @@
                 return false;
             }
             
+            if(_temp.role)
+            
             var roles = ["ad" , "khateeb" , "admin"];
             _temp.role = roles[_temp.role];
             

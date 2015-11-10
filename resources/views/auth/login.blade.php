@@ -55,7 +55,7 @@
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="checkbox" name="remember"> <label> Remember Me</label>
-        <a href="#" id="forgot-password">Forgot Password?</a>
+        <a href="/password/email" id="forgot-password">Forgot Password?</a>
         <input type="submit" value="Login">
     </div>
 
@@ -76,57 +76,6 @@
         <input type="submit" class="btn btn-isgh" value="Send Reset Password Mail">
     </form>
 </div>
-
-<script>
-    
-    var RecoverPasswordService = {
-        show: function(){
-            $(".forgot").fadeIn();
-        },
-        hide: function(){
-            $(".forgot").fadeOut();
-        },
-        init: function(){
-            var self = this;
-            $("#recover-password").on("click" , function(ev){
-                ev.stopPropagation();
-            });
-            $("#recover-password").on("submit" , function(ev){
-                ev.stopPropagation();
-                var email = $("input[name='email']").val();
-                if(email.length < 6 && email.split("").lastIndexOf("@") == -1){
-                    alert("Please enter a valid email address!");
-                    return false;
-                }
-                $.ajax({
-                    url: "/user/recoverPassword",
-                    type: "POST",
-                    data: {email: email},
-                    success: function(){
-                        self.hide();
-                        alert("An email has been sent to your mail with further instructions ,Please check your mail");
-                    },
-                    error: function(){
-                        alert("Something went wrong, Please refresh and try again");
-                    }
-                });
-                $("input[name='email']").val("");
-                return false;
-            });
-            $("#forgot-password").on("click" , function(ev){
-                ev.stopPropagation();
-                self.show();
-                return;
-            });
-            $(".close , .forgot").on("click" , function(ev){
-                ev.stopPropagation();
-                self.hide();
-            });
-        }
-    }
-    
-    RecoverPasswordService.init();
-</script>
 
 </body>
 

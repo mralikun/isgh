@@ -5,12 +5,12 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default" style="margin-top: 20px; padding-bottom: 10px;">
-                <div dir="rtl" style=";background-color: #0E3843 !important;border-radius: 0" class="panel-heading">إعادة تعيين كلمة السر</div>
+                <div dir="rtl" style=";background-color: #0E3843 !important;border-radius: 0" class="panel-heading">Password Reset</div>
                 <div class="panel-body" style="padding: 20px;">
                     <div  style="padding: 20px;">
                         @if (count($errors) > 0)
-                            <div class="alert alert-danger" dir="rtl">
-                                <strong>للأسف يوجد بعض الأخطاء</strong>.<br><br>
+                            <div class="alert alert-danger">
+                                <strong>We encountered some errors.</strong>.<br><br>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>

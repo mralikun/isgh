@@ -20,8 +20,13 @@ Available/Blocked Dates
 
 @section("content")
 
-<h3>Name</h3>
+<h3>{{$name}}</h3>
+@if($role == 2)
 <span class="hint"><strong>Check the box for all dates you're willing to give khutbah in and leave the box blank if you don't want to give any khutbah at that day , <mark>You must check at least 1 box.</mark></strong></span>
+@else
+<span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
+@endif
+
 <div class="options">
     
     <button class="btn btn-isgh select-all">Select All</button>
