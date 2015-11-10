@@ -42,7 +42,10 @@
                 return false;
             }
             
-            if(_temp.role)
+            if(_temp.role == 2 && !_temp.email){
+                ISGH.alertBox.init("Please Insert your email first!" , false);
+                return false;
+            }
             
             var roles = ["ad" , "khateeb" , "admin"];
             _temp.role = roles[_temp.role];
@@ -58,6 +61,7 @@
                     delete scope.tempUser.password;
                     delete scope.tempUser.confirm_password;
                     delete scope.tempUser.role;
+                    delete scope.tempUser.email;
                     scope.registerForm.$setPristine(true);
                 }
                 

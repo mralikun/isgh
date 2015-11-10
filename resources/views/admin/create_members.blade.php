@@ -95,7 +95,7 @@ Create new member
     <div class="form-group" ng-show="tempUser.role == 2">
         <label class="control-label col-sm-2">E-mail</label>
         <div class="col-sm-10">
-            <input type="email" name="admin_email" class="form-control" placeholder="E-mail Address">
+            <input type="email" name="admin_email" class="form-control" placeholder="E-mail Address" ng-model="tempUser.email">
             <span class="help-block">We will use this email for password recovery and mail notifications for the schedule.</span>
         </div>
     </div>

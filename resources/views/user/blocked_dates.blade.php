@@ -52,5 +52,5 @@ Available/Blocked Dates
     </div>
     <input type="submit" value="Submit" class="btn btn-primary pull-right" ng-disabled="dates.available.length == 0">
 </form>
-
+<audio src="/assets/alert.mp3"></audio>
 @stop
