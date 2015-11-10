@@ -9,9 +9,7 @@
 
 
 @section("pageTitle")
-
     Password Reset
-
 @stop
 
 

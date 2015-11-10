@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\AdBlockedDates;
 use App\AssociateDirector;
 use App\cycle;
 use App\Fridays;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\IslamicCenter;
 use App\Khateeb;
+use App\Khateebselectedfridays;
 use App\Rating;
 use App\User;
 use Illuminate\Http\Request;
@@ -166,6 +168,23 @@ class UserController extends Controller {
         return Rating::addRate($user_who_rate_id , $user_who_rate_role , $rated_user , $rate);
     }
 
+    /**
+     * in this function khateeb or ad can add
+     * khateeb : choose his available dates
+     * ad : choose islamic center blocked dates
+     */
+    public function setDates(){
+        $role = Auth::user()->role_id ;
+        $user_id = Auth::user()->user_id ;
+
+        if($role == 2){
+            return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
+        }elseif($role == 3){
+            return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$user_id,$role);
+        }else{
+            return false ;
+        }
+    }
 
 
 }

@@ -17,6 +17,7 @@ class CreateAdBlockedDatesTable extends Migration {
             $table->increments('id');
             $table->integer('ad_id')->unsigned()->index(); // username
             $table->integer('friday_id')->unsigned()->index(); // username
+            $table->integer('cycle_id')->unsigned()->index(); // username
             $table->timestamps();
         });
 
@@ -28,6 +29,11 @@ class CreateAdBlockedDatesTable extends Migration {
         Schema::table('ad_blocked_dates', function(Blueprint $table)
         {
             $table->foreign("friday_id")->references("id")->on("fridays")->onDelete("cascade");
+        });
+
+        Schema::table('ad_blocked_dates', function(Blueprint $table)
+        {
+            $table->foreign("cycle_id")->references("id")->on("cycle")->onDelete("cascade");
         });
 	}
 
@@ -44,6 +50,10 @@ class CreateAdBlockedDatesTable extends Migration {
 
         Schema::table('ad_blocked_dates', function(Blueprint $table) {
             $table->dropForeign("ad_blocked_dates_friday_id_foreign");
+        });
+
+        Schema::table('ad_blocked_dates', function(Blueprint $table) {
+            $table->dropForeign("ad_blocked_dates_cycle_id_foreign");
         });
 
         Schema::dropIfExists("ad_blocked_dates");
