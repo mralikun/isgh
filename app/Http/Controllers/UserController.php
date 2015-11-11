@@ -17,22 +17,6 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller {
 
-
-
-
-
-
-
-
-
-or commit:
-e>..." to update what will be committed)
- -- <file>..." to discard changes in worki
-
-
-
-app/Khateebselectedfridays.php
-
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);

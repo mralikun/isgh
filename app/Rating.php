@@ -23,10 +23,15 @@ class Rating extends Model {
                 }else{
                     $rate = new Rating();
                 }
+
+                // get current cycle id
+                $cycle = cycle::latest()->first();
+                $cycle_id= $cycle->id ;
+
                 $rate->ad_id = $rated_user ;
                 $rate->khateeb_id = $user_who_rate_id ;
                 $rate->khateeb_rate_ad = $rate_id ;
-                $rate->cycle_id = 1 ;
+                $rate->cycle_id = $cycle_id ;
                 if($rate->save()){
                     return "true";
                 }else{
@@ -43,10 +48,13 @@ class Rating extends Model {
                 }else{
                     $rate = new Rating();
                 }
+                $cycle = cycle::latest()->first();
+                $cycle_id= $cycle->id ;
+
                 $rate->ad_id =  $user_who_rate_id;
                 $rate->khateeb_id =  $rated_user;
                 $rate->ad_rate_khateeb = $rate_id ;
-                $rate->cycle_id = 1 ;
+                $rate->cycle_id = $cycle_id ;
                 if($rate->save()){
                     return "true";
                 }else{
