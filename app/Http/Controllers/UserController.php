@@ -25,8 +25,10 @@ class UserController extends Controller {
     }
 
 	public function getIslamicCenterBlockedDates(){
-        $name = Auth::user()->name ;
+        $user_id = Auth::user()->user_id ;
         $role = Auth::user()->role_id ;
+        $user_data = User::getUserData($user_id , $role);
+        $name = $user_data->name ;
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         return view("user.blocked_dates",compact("name","role","fridays"));
@@ -188,14 +190,3 @@ class UserController extends Controller {
 
 
 }
-
-modified:
-        modified:   
-        modified:   app/Http/routes.php
-        modified:   app/Khateeb.php
-        modified:   app/Khateebselectedfridays.php
-        modified:   app/User.php
-        modified:   database/migrations/2015_10_19_115657_create_Khateebselectedfridays_table.php
-        modified:   database/migrations/2015_10_19_120432_create_ad_blocked_dates_table.php
-        modified:   database/seeds/DatabaseSeeder.php
-        modified:   resources/views/auth/password.blade.php
