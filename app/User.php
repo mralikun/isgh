@@ -141,7 +141,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     public static function getUserData($user_id , $role_id){
-
         switch($role_id){
             case 1 :
                 return Admin::whereid($user_id)->first();

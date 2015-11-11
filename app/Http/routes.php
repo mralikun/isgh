@@ -91,3 +91,6 @@ Route::post('/user/startRate', 'UserController@startRate');
 
 //route for submitting a rate
 Route::post('/user/rate', 'UserController@addRate');
+
+// choosing
+Route::post('/user/setAvailableDates', 'UserController@setDates');

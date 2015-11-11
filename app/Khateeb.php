@@ -67,6 +67,11 @@ class Khateeb extends Model {
 
     }
 
+    /**
+     * @param $khateeb_id
+     * @return string
+     * this section resbonsible for deleting khateebs
+     */
     public static function DeleteMembers($khateeb_id){
         $role = 2 ;
         $result = User::deleteUser($khateeb_id , 2 ) ;
@@ -80,5 +85,6 @@ class Khateeb extends Model {
             return "false";
         }
     }
+    
 
 }

@@ -9,9 +9,7 @@
 
 
 @section("pageTitle")
-
     Passeord Reset Link
-
 @stop
 
 

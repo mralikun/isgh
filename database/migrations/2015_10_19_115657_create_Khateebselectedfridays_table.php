@@ -18,6 +18,7 @@ class CreateKhateebselectedfridaysTable extends Migration {
             $table->integer('khateeb_id')->unsigned()->index(); // username
             $table->integer('role_id'); // role id
             $table->integer('friday_id')->unsigned()->index(); // username
+            $table->integer('cycle_id')->unsigned()->index(); // username
             $table->timestamps();
         });
 
@@ -29,6 +30,11 @@ class CreateKhateebselectedfridaysTable extends Migration {
         Schema::table('Khateebselectedfridays', function(Blueprint $table)
         {
             $table->foreign("friday_id")->references("id")->on("fridays")->onDelete("cascade");
+        });
+
+        Schema::table('Khateebselectedfridays', function(Blueprint $table)
+        {
+            $table->foreign("cycle_id")->references("id")->on("cycle")->onDelete("cascade");
         });
 	}
 
@@ -45,6 +51,10 @@ class CreateKhateebselectedfridaysTable extends Migration {
 
 		Schema::table('Khateebselectedfridays', function(Blueprint $table) {
             $table->dropForeign("Khateebselectedfridays_friday_id_foreign");
+        });
+
+		Schema::table('Khateebselectedfridays', function(Blueprint $table) {
+            $table->dropForeign("Khateebselectedfridays_cycle_id_foreign");
         });
 
 		Schema::dropIfExists("Khateebselectedfridays");
