@@ -71,10 +71,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if($admin_id == "true"){
             return "true" ;
         }else{
-            $username = $input["username"];
-            $password = $input["password"];
-            $role = 1 ;
-            $this->add_new_user($username , $password , $role , $admin_id);
+
+            $user = new User();
+            $user->username = $input["username"] ;
+            $user->email = $input["email"] ;
+            $password = Hash::make($input["password"]);
+            $user->password = $password ;
+            $user->user_id = $admin_id ;
+            $user->role_id =  1 ;
+            $user->save();
             return "false";
         }
     }
@@ -141,6 +146,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 
     public static function getUserData($user_id , $role_id){
+        return $role_id ;
         switch($role_id){
             case 1 :
                 return Admin::whereid($user_id)->first();
