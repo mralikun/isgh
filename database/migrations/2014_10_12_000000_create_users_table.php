@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration {
             $table->integer("user_id");
             $table->integer("role_id")->unsigned()->index(); // reference id in table Roles
 			$table->string('password', 60);
+            $table->string('email')->nullable();
 			$table->rememberToken();
 			$table->timestamps();
 		});

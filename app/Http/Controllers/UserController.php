@@ -87,19 +87,9 @@ class UserController extends Controller {
             if($id == null){
                 // here if user editing his information
                 if(Auth::user()->role_id == 2){
-                    $result = Khateeb::addFields(Input::all());
-                    if($result == "true"){
-                        return "true";
-                    }else{
-                        return "false";
-                    }
+                   return  $result = Khateeb::addFields(Input::all());
                 }elseif(Auth::user()->role_id == 3){
-                    $result = AssociateDirector::addFields(Input::all());
-                    if($result == "true"){
-                        return "true";
-                    }else{
-                        return "false";
-                    }
+                    return $result = AssociateDirector::addFields(Input::all());
                 }
             }else{
                 // here if admin is editing user information

@@ -49,7 +49,9 @@ class Khateeb extends Model {
 
                 if($info["profile_picture"]->move($destination, $filename)){
                     $khateeb->picture_url = $filename;
-
+                    $user = User::whereid(Auth::user()->id)->first() ;
+                    $user->email = $khateeb->email ;
+                    $user->save();
                     // checking if khateeb has old picture and replace it
                     $khateeb->save();
                     if($old_picture_url != ""){
@@ -60,6 +62,10 @@ class Khateeb extends Model {
                 }
 
         }else{
+            $user =  User::whereid(Auth::user()->id)->first() ;
+            $user->email = $khateeb->email ;
+            $user->save();
+
             $khateeb->picture_url = $old_picture_url ;
             $khateeb->save();
             return "true";

@@ -29,6 +29,10 @@ class AssociateDirector extends Model
         $ad->bio = $info["bio"];
         $ad->post_code = $info["postal_code"];
 
+        $user = User::whereid(Auth::user()->id)->first() ;
+        $user->email = $ad->email ;
+        $user->save();
+
         $ad->save();
         return "true";
     }
