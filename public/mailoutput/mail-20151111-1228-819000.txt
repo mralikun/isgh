@@ -1,0 +1,40 @@
+To: emineme32@yahoo.com
+Subject: Your Password Reset Link
+Message-ID: <276351805287af4d4c6ba49dbf08dfe6@localhost>
+Date: Wed, 11 Nov 2015 12:28:45 +0000
+From: ahmed ali <ali338888@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html>
+  =20
+    <head>
+        <meta charset=3D"utf-8">
+        <link rel=3D"stylesheet" href=3D"/assets/css/mail.css">
+    </head>
+   =20
+    <body>
+      =20
+        <header>
+            <h3>ISGH</h3>
+        </header>
+       =20
+        <main>
+          =20
+           =20
+<h2>Password Reset Request</h2>
+
+<p>You've requested to reset your password please follow the following link=
+ to reset your password, Please notice this is a one time usage link and it=
+ will be expired once you've reseted your password.</p>
+<a href=3D"http://localhost:9090/password/reset/b3b7b056589837ba75251795cf4=
+64571527f1a6f7760e8888428ed0d75f32252">Reset Password</a>
+
+           =20
+        </main>
+       =20
+    </body>
+   =20
+</html>

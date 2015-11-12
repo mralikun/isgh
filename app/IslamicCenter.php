@@ -10,6 +10,11 @@ class IslamicCenter extends Model {
      */
     protected $table = 'islamic_center';
 
+    public function Ad()
+    {
+        return $this->belongsTo('App\AssociateDirector');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

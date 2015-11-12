@@ -198,23 +198,96 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * @param $email
+     * this function takes email and validate if there is one email with this email with this data and user_id is different do not add it
+     */
+    protected static function checkEmail($email,$user_id ,$process){
+            // we are editing user so we must check and we know we will find a row with this email we we will not find return okay
+        if($process == null){
+            $emails = User::select("id","user_id","email")->whereemail($email)->get();
+            $checker = 0 ;
+            $availability = 0 ;
+            foreach($emails as $row){
+                // if so the check if this email for this user by checking the id
+                if($email == $row["email"]){
+                    if($user_id == $row["user_id"]){
+                        // here is the user and this is his email this email belongs to this user
+                        $checker ++;
+                    }else{
+                        $availability ++;
+                    }
+                }
+            }
+
+            if($checker == 0 && $availability == 0){
+            // here we did not found any users with this email
+                return "true";
+            }elseif($availability > 0){
+            // here we found that there are users have this email
+                return "false";
+            }elseif($checker == 1){
+            // here we found that this user have this email and you can take it
+                return "true";
+            }else{
+                return "false";
+            }
+        }else{
+            // we are creating new user
+            $emails = User::select("id","user_id","email")->whereemail($email)->get();
+            $checker = 0 ;
+            $availability = 0 ;
+            foreach($emails as $row){
+                // if so the check if this email for this user by checking the id
+                if($email == $row["email"]){
+                    $checker ++ ;
+                }
+            }
+            if($checker == 0){
+                return "true" ;
+            }else{
+                return "false";
+            }
+        }
+
+    }
+
+    /**
      * @param $input
      * @return array|string
      * validate all fields that there is no null in the data
+     * $process if null
      */
-    public static function validateAllFields($input){
+    public static function validateAllFields($input , $process = null){
+        // if $process = null we are creating new record
+        if(isset($input["userID"])){
+            $result = self::checkEmail($input["email"],$input["userID"],$process);
+        }else{
+            $result = self::checkEmail($input["email"],Auth::user()->user_id,$process);
+        }
+
         $values = array_values($input);
         $keys = array_keys($input);
-        $errors = array();
+        $errors = [
+            "missing"=>[],
+            "email"=>false
+        ];
         for($i=0 ; $i<sizeof($input) ; $i++){
             if($values[$i]==""){
-                array_push($errors , $keys[$i]);
+                array_push($errors["missing"] , $keys[$i]);
             }
         }
-        if(empty($errors)){
+
+        if(empty($errors["missing"]) && $result == "true"){
             return "true";
-        }else{
+        }elseif(empty($errors["missing"]) && $result =="false"){
             return $errors ;
+        }elseif(!empty($errors["missing"]) && $result =="false"){
+            return $errors ;
+        }elseif(!empty($errors["missing"]) && $result =="true"){
+            $errors["email"]= true ;
+            return $errors ;
+        }else{
+            return "false"  ;
         }
     }
 
@@ -271,6 +344,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // if no ad added his email do not display him
                 if(!empty($ad)) {
                     array_push($all["ads"], [$user_ad->id, $ad->name]);
+                }else{
+                    array_push($all["ads"], [$user_ad->id, $user_ad->username]);
                 }
             }
         //  if no associative directories but there are khateebs
@@ -280,6 +355,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // if no khateeb added his email do not display him
                 if(!empty($khateeb)) {
                     array_push($all["khateebs"], [$user_khateeb->id, $khateeb->name]);
+                }else{
+                    array_push($all["khateebs"], [$user_khateeb->id, $user_khateeb->username]);
                 }
             }
         // if there are khateebs and also associative directories
@@ -289,6 +366,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // if no khateeb added his email do not display him
                 if(!empty($khateeb)){
                     array_push($all["khateebs"],[$user_khateeb->id , $khateeb->name]) ;
+                }else{
+                    array_push($all["khateebs"],[$user_khateeb->id , $user_khateeb->username]) ;
                 }
             }
 
@@ -298,6 +377,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // if no ad added his email do not display him
                 if(!empty($ad)) {
                     array_push($all["ads"], [$user_ad->id, $ad->name]);
+                }else{
+                    array_push($all["ads"], [$user_ad->id, $user_ad->username]);
                 }
             }
         }

@@ -34,7 +34,8 @@ class UserController extends Controller {
         $name = $user_data->name ;
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
-        return view("user.blocked_dates",compact("name","role","fridays"));
+        $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->select("friday_id")->get();
+        return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
     }
 
     /**
@@ -103,9 +104,8 @@ class UserController extends Controller {
      * id = null khateeb edit his data
      */
     public function updateProfile($id = null){
-
         // validate fields no thing null if there is null return the null data
-       $answer = User::validateAllFields(Input::all());
+       $answer = User::validateAllFields(Input::all(),$id);
 
         //if there is no null data in the data passed
         if($answer == "true"){
@@ -167,11 +167,11 @@ class UserController extends Controller {
         switch(Auth::user()->role_id){
             case 2 :
                 $khateeb_id = Auth::user()->user_id ;
-                return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null");
+                return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null and name !=''");
                 break;
             case 3 :
                 $ad_id = Auth::user()->user_id ;
-                return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null");
+                return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null and name !='' ");
                 break ;
             default:
                 return "false";

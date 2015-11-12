@@ -10,6 +10,7 @@ use App\IslamicCenter;
 use App\Khateeb;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
@@ -28,15 +29,21 @@ class AdminController extends Controller {
      * @return \Illuminate\View\create_islamic_center
      */
 	public function Create_Islamic_Center($id = null){
-        $directors = DB::select("SELECT associate_director.id , associate_director.name FROM `associate_director`  left JOIN islamic_center on associate_director.id = islamic_center.director_id where islamic_center.director_id IS NULL");
+        $directors = DB::select("SELECT associate_director.id , associate_director.name FROM `associate_director`  left JOIN islamic_center on associate_director.id = islamic_center.director_id where islamic_center.director_id IS NULL and associate_director.name !='' ");
 
+        /**
+         * Her i want to return the ad attached to the islamic center and his phone and his id
+         * admin trying to edit ad information
+         */
+        // create new islamic center
         if($id != null){
-            $ad = AssociateDirector::whereid($id)->first();
-            return view("admin.create_islamic_center",compact("directors","ad"));
+            $islamic_center = IslamicCenter::whereid($id)->first();
+            $director_id  = $islamic_center->director_id ;
+            $director_data = AssociateDirector::whereid($director_id)->select("id","name","phone")->first();
+            return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
         }else{
             return view("admin.create_islamic_center",compact("directors"));
         }
-
     }
 
 

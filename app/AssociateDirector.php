@@ -10,6 +10,11 @@ class AssociateDirector extends Model
 
     protected $fillable = ["id", "name", "email", "phone", "address", "bio", "post_code"];
 
+    public function islamicCenter(){
+        return $this->hasOne("App\IslamicCenter");
+    }
+
+
     /**
      * @param $info
      * @return string
