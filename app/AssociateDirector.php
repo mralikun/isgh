@@ -14,7 +14,6 @@ class AssociateDirector extends Model
         return $this->hasOne("App\IslamicCenter");
     }
 
-
     /**
      * @param $info
      * @return string

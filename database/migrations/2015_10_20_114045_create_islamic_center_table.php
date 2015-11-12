@@ -19,8 +19,8 @@ class CreateIslamicCenterTable extends Migration {
             $table->string('name')->unique()->index();
 
             $table->integer('director_id')->unsigned()->index();
-            $table->date('khutbah_start');
-            $table->date('khutbah_end');
+            $table->timestamp('khutbah_start');
+            $table->timestamp('khutbah_end');
 
             $table->string('other_information');
             $table->string('website');
@@ -38,6 +38,11 @@ class CreateIslamicCenterTable extends Migration {
         {
             $table->foreign("director_id")->references("id")->on("associate_director")->onDelete("cascade");
         });
+        // this section related to the ad blocked dates
+        Schema::table('ad_blocked_dates', function(Blueprint $table)
+        {
+            $table->foreign("ic_id")->references("id")->on("islamic_center")->onDelete("cascade");
+        });
 	}
 
 	/**
@@ -49,6 +54,11 @@ class CreateIslamicCenterTable extends Migration {
 	{
         Schema::table('islamic_center', function(Blueprint $table) {
             $table->dropForeign("islamic_center_director_id_foreign");
+        });
+
+         // this section related to the ad blocked dates
+        Schema::table('ad_blocked_dates', function(Blueprint $table) {
+            $table->dropForeign("ad_blocked_dates_ic_id_foreign");
         });
 
         Schema::dropIfExists("islamic_center");

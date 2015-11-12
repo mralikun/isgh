@@ -69,4 +69,11 @@ class IslamicCenter extends Model {
     }
 
 
+    /**
+     * this function takes a date start or end time nad transfor it to 10:05:AM
+     */
+    public static function TransformDate($date){
+        $date = new \DateTime($date);
+        return $date->format('h:i a');
+    }
 }
