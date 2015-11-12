@@ -240,10 +240,3 @@ class UserController extends Controller {
 
 
 }
-modified:   .idea/workspace.xml
-        modified:
-        modified:
-        modified:   
-        modified:   app/IslamicCenter.php
-        modified:   database/migrations/2015_10_19_120432_create_ad_blocked_dates_table.php
-        modified:   database/migrations/2015_10_20_114045_create_islamic_center_table.php
