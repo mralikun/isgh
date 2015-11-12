@@ -8,9 +8,17 @@ class Fridays extends Model {
 
     protected $fillable = ["id", "date","cycle_id"];
 
+    /**
+     * @param $cycle
+     * @param $start
+     * @param $end
+     * @return string
+     * get all fridays within a period of time the cycle period and add this fridays to the database and assign to it the cycle_id
+     */
     public static function addFridays($cycle , $start , $end){
         $cycle =  $cycle->id ;
 
+        // strtotime transform the date to seconds from 1970
         $start = strtotime($start); // your start/end dates here
         $end = strtotime($end);
 

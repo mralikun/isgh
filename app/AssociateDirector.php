@@ -10,6 +10,11 @@ class AssociateDirector extends Model
 
     protected $fillable = ["id", "name", "email", "phone", "address", "bio", "post_code"];
 
+    /**
+     * @param $info
+     * @return string
+     * add fields to the associative director if userID then he is admin adding data to ad else ad trying to edit his data
+     */
     public static function addFields($info){
 
         if(isset($info["userID"])){

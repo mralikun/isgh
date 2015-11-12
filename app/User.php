@@ -35,6 +35,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $hidden = ['password', 'remember_token'];
 
 
+    /**
+     * @param $input
+     * @return string
+     * admin add new user khateeb , admin , ad
+     * this calls a function responsible for run the add method for each role
+     */
     public function addnewuser($input)
     {
         $role = $input["role"] ;
@@ -66,12 +72,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return "false" ;
     }
 
+    /**
+     * @param $input
+     * @return string
+     * this function responsible for adding new admin
+     */
     private function run_add_admin($input){
         $admin_id = $this->add_new_admin($input);
         if($admin_id == "true"){
             return "true" ;
         }else{
-
             $user = new User();
             $user->username = $input["username"] ;
             $user->email = $input["email"] ;
@@ -84,6 +94,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * @param $input
+     * @return string
+     * this function responsible for adding new khateeb take's khateeb data
+     */
     private function run_add_khateeb($input){
         $khateeb_id = $this->add_new_khateeb($input);
         if($khateeb_id == "true"){
@@ -97,7 +112,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-
+    /**
+     * @param $input
+     * @return string
+     * this function responsible for adding new ad take's ad data
+     */
     private function run_add_ad($input){
         $ad_id = $this->add_new_ad($input);
         if($ad_id == "true"){
@@ -111,7 +130,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-
+    /**
+     * @param $input
+     * @return string
+     * this function responsible for new khateeb when admin create new khateeb
+     */
     private function add_new_khateeb($input)
     {
         $khateeb = new Khateeb();
@@ -123,6 +146,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * @param $input
+     * @return string
+     * this function responsible for new ad when admin create new ad
+     */
     private function add_new_ad($input)
     {
         $ad = new AssociateDirector();
@@ -134,6 +162,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * @param $input
+     * @return string
+     * this function responsible for new admin when admin create new admin
+     */
     private function add_new_admin($input)
     {
         $admin = new Admin();
@@ -144,9 +177,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-
+    /**
+     * @param $user_id
+     * @param $role_id
+     * @return mixed
+     * return user data used in all controllers
+     */
     public static function getUserData($user_id , $role_id){
-        return $role_id ;
         switch($role_id){
             case 1 :
                 return Admin::whereid($user_id)->first();
@@ -160,6 +197,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * @param $input
+     * @return array|string
+     * validate all fields that there is no null in the data
+     */
     public static function validateAllFields($input){
         $values = array_values($input);
         $keys = array_keys($input);

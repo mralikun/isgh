@@ -19,11 +19,10 @@ class IslamicCenter extends Model {
                             "parking_information","country","city","address","postal_code","state","website"];
 
     /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
+     * @param $input
+     * @return string
+     * this function takes the islamic center data from the admin and create new islamic center
      */
-
     public static function addNewIslamicCenter($input){
 
         $input["director_id"] = $input["director_name"];
@@ -34,6 +33,12 @@ class IslamicCenter extends Model {
        }
     }
 
+    /**
+     * @param $input
+     * @param $id
+     * @return string
+     *  this function takes the islamic center data from the admin and edit new islamic center
+     */
     public static function EditExistingIslamicCenter($input,$id){
         $IslamicCenter = IslamicCenter::whereid($id)->first();
         $input["director_id"] = $input["director_name"];
@@ -46,7 +51,9 @@ class IslamicCenter extends Model {
 
 
     /**
-     * Delete Islamic Center
+     * @param $islamic_center_id
+     * @return string
+     * delete islamic center
      */
     public static function DeleteMembers($islamic_center_id){
         if(IslamicCenter::destroy($islamic_center_id)){
