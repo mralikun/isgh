@@ -286,6 +286,14 @@ var ISGH = {
                         ISGH.alertBox.init("Something went wrong, Please refresh and try again!");
                     }else if(resp == true){
                         ISGH.notify("The information was updated successfully!");
+                        if(!isAdmin()){
+                            var preg = new RegExp(window.location.pathname);
+                            var url = window.location.href.replace(preg , "/user/profile");
+                            setTimeout(function(){
+                                window.location.assign(url);
+                            },1500);
+                            
+                        }
                         // After the information update...
                         // i need to know who is editing wether its the user or the admin!!!!
                     }

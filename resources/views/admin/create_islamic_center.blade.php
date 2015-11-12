@@ -19,7 +19,6 @@ Create Islamic Center
 
 
 @section("content")
-
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
 <form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
   @if(isset($adminEditing) and $adminEditing != null)

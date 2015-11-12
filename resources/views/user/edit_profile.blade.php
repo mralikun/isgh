@@ -137,5 +137,11 @@ Update Profile
 
 <script src="/assets/js/services/google-geocode.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByh3oCcAHKsHhGrd2widWjrkH2a14hVfU&signed_in=true&libraries=places&callback=initAutocomplete"></script>
+<script>
 
+    function isAdmin(){
+        return {{ isset($adminEditing) }} ;
+    }
+
+</script>
 @stop
