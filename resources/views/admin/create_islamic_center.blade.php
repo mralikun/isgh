@@ -115,7 +115,13 @@ Create Islamic Center
                </div>
             </div>
 
-
+            <div class="row" ng-show="center.khutbah_start > center.khutbah_end">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    
+                    <div class="text-danger">You can't end khutbah before it starts!</div>
+                    
+                </div>
+            </div>
        </div>
    </div>
 
@@ -134,7 +140,7 @@ Create Islamic Center
        <div class="col-sm-10"><textarea name="other_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please include any additional instructions" ng-model="center.other_information"></textarea></div>
    </div>
 
-   <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center" ng-disabled="!center.name||!center.director_name||!center.khutbah_start||!center.khutbah_end||!center.parking_information">
+   <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center" ng-disabled="!center.name||!center.director_name||!center.khutbah_start||!center.khutbah_end||!center.parking_information||center.khutbah_start > center.khutbah_end">
 
 </form>
 <audio src="/assets/alert.mp3"></audio>

@@ -105,6 +105,10 @@ a:hover {
     margin: 15px;
 }
 
+.text-danger {
+    padding: 0 15px;
+}
+
 .sub-link {
     border: 2px solid white;
     padding: 5px;
@@ -274,6 +278,7 @@ tbody tr:hover {
 */
 
 #login-form {
+    position: relative;
     width: 25%;
     margin: 10% auto;
     padding: 5%;
@@ -327,6 +332,20 @@ tbody tr:hover {
     color: #ccc;
     text-align: right;
     margin: 0 10px;
+}
+
+.errors {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 15px;
+    background-color: red;
+    color: white;
+    font-size: 1.15em;
+    box-shadow: 0 0 15px black;
+    box-sizing: border-box;
 }
 
 /**
@@ -436,6 +455,12 @@ i.star-off-png , i.star-on-png, .raty-cancel {
 
 #allUsers {
     padding: 15px;
+}
+
+.ok-mark {
+    color: green;
+    visibility: hidden;
+    font-size: 1.5em!important;
 }
 
 /**

@@ -265,13 +265,22 @@ var ISGH = {
                     return x;
                 },
                 success: function(resp){
-                    if(resp instanceof Array){
-                        var res = resp.reflectValues(fields);
-                        ISGH.alertBox.init("Field(s) " + res.join(" , ") + " are missing" , false);
-                    }else{
+
+                    if( resp instanceof Object ){
+                        if(resp.missing.length > 0){
+                            var res = resp["missing"].reflectValues(fields);
+                            ISGH.alertBox.init("Field(s) " + res.join(" , ") + " are missing" , false);
+                        }else if(!resp.email){
+                            ISGH.alertBox.init("You can't use this email, it already exists associated with another account." , false);
+                        }
+ 
+                    }else if(resp == false){
+                        ISGH.alertBox.init("Something went wrong, Please refresh and try again!");
+                    }else if(resp == true){
                         ISGH.notify("The information was updated successfully!");
-                        // After the information update...
+                        // After the information update...  
                     }
+                    
                 },
                 error: function(err){
                     ISGH.alertBox.init("Something went wrong ,Please refresh and try again" , false);

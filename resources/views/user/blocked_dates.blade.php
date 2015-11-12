@@ -2,7 +2,7 @@
 
 
 @section("navigation")
-
+<li><a href="/user/profile">View Profile</a></li>
 <li><a href="/user/dates">Available/Blocked Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
@@ -19,6 +19,22 @@ Available/Blocked Dates
 
 
 @section("content")
+<?php 
+
+    function Map($arr , $cb){
+        $mapped = [];
+        foreach($arr as $a){
+            array_push($mapped , $cb($a));
+        }
+        return $mapped;
+    }
+
+    $choosen = Map($fridays_choosen , function($fr){
+        return $fr->friday_id;
+    });
+?>
+
+{{var_dump($choosen)}}
 
 <h3>{{$name}}</h3>
 @if($role == 2)
