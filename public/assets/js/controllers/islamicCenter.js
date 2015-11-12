@@ -1,6 +1,5 @@
 app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope , http){
         
-        scope.center = {};
     //  CREATE A NEW ISLAMIC CENTER
         scope.create = function(){
             ISGH.updateAddressComponents(scope.center);

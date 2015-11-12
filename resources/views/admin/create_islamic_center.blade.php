@@ -10,15 +10,8 @@
 
 @stop
 
-
-@section("pageTitle")
-
-Create Islamic Center
-
-@stop
-
-
 @section("content")
+
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
 <form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
   @if(isset($adminEditing) and $adminEditing != null)
@@ -151,4 +144,13 @@ Create Islamic Center
 <script src="/assets/js/services/google-geocode.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByh3oCcAHKsHhGrd2widWjrkH2a14hVfU&signed_in=true&libraries=places&callback=initAutocomplete"></script>
 <script src="/assets/js/controllers/islamicCenter.js"></script>
+<script>
+    var where = window.location.pathname;
+    var hasNumber = where.substring(where.lastIndexOf("/") + 1 , where.length)
+    if(isNaN(parseInt(hasNumber))){
+        $(".page-title").text("Create Islamic Center");
+    }else {
+        $(".page-title").text("Edit Islamic Center");
+    }
+</script>
 @stop
