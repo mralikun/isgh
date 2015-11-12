@@ -5,6 +5,7 @@ var model = {
 var view = {
     render: function(dataArray){
         if(!dataArray.length){
+            console.log("HI");
             $(".heading > *").remove();
             $(".heading").append("<h4 class='text-center'>There's is no data yet to be viewed, Please come back later and check this section again.</h4>");
         }

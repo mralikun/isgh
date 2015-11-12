@@ -209,6 +209,14 @@ var ISGH = {
     
     Dates: {
         choosen: [],
+        init: function(){
+            var IDS = $(".date.available").map(function(ind , el){
+                return el.id;
+            });
+            for(var i = 0; i < IDS.length; i++){
+                this.select(parseInt(IDS[i]));
+            }
+        },
         select: function(_id){
             if(this.choosen.indexOf(_id) === -1)
                 this.choosen.push(_id);
@@ -278,7 +286,8 @@ var ISGH = {
                         ISGH.alertBox.init("Something went wrong, Please refresh and try again!");
                     }else if(resp == true){
                         ISGH.notify("The information was updated successfully!");
-                        // After the information update...  
+                        // After the information update...
+                        // i need to know who is editing wether its the user or the admin!!!!
                     }
                     
                 },
