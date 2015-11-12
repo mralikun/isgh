@@ -12,7 +12,7 @@ class IslamicCenter extends Model {
 
     public function Ad()
     {
-        return $this->belongsTo('App\AssociateDirector');
+        return $this->belongsTo('App\AssociateDirector',"director_id");
     }
 
     /**

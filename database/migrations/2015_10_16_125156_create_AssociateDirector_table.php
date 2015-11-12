@@ -22,6 +22,7 @@ class CreateAssociateDirectorTable extends Migration {
             $table->string('address');
             $table->string('bio');
             $table->string('post_code');
+            $table->integer('admin');
             $table->timestamps();
         });
 	}
