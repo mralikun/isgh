@@ -11,7 +11,7 @@ class AdBlockedDates extends Model {
     public static function addBlockedDates($fridays , $user_id , $role){
         $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->wheredirector_id($user_id)->first();
 
-        $khateeb_row = AdBlockedDates::wheread_id($user_id)->first();
+        $khateeb_row = AdBlockedDates::whereic_id($user_id)->first();
         /**
          * Now i will get the running cycle
          */
@@ -21,7 +21,7 @@ class AdBlockedDates extends Model {
         /**
          * select all records in the database where cycle = current cycle and khateeb id = current khateeb id
          */
-        $ad_blocked_dates_count = AdBlockedDates::wherecycle_id($cycle_id)->wheread_id($user_id)->count();
+        $ad_blocked_dates_count = AdBlockedDates::wherecycle_id($cycle_id)->whereic_id($user_id)->count();
 
         if($ad_blocked_dates_count == 0){
             foreach($fridays as $friday){
@@ -35,7 +35,7 @@ class AdBlockedDates extends Model {
             return "true";
         }elseif($ad_blocked_dates_count > 0){
             // get all Selected Fridays
-            $ad_blocked_dates = AdBlockedDates::wherecycle_id($cycle_id)->wheread_id($user_id)->select("id")->get();
+            $ad_blocked_dates = AdBlockedDates::wherecycle_id($cycle_id)->whereic_id($user_id)->select("id")->get();
             // Remove all fridays for this khateeb in this cycle
             foreach($ad_blocked_dates as $abd){
                 AdBlockedDates::whereid($abd->id)->delete();
