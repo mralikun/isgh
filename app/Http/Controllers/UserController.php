@@ -50,9 +50,6 @@ class UserController extends Controller {
                 //else this ad is attached to islamic center return that it's already exists
                 $islamic_center_existence = true ;
                 $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
-                // change the date to timestamp
-                $islamic_center->khutbah_start = IslamicCenter::TransformDate($islamic_center->khutbah_start) ;
-                $islamic_center->khutbah_end = IslamicCenter::TransformDate($islamic_center->khutbah_end) ;
 
                 return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence"));
             }
@@ -237,6 +234,4 @@ class UserController extends Controller {
         }
 
     }
-
-
 }

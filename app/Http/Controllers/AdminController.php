@@ -34,6 +34,10 @@ class AdminController extends Controller {
         // create new islamic center
         if($id != null){
             $islamic_center = IslamicCenter::whereid($id)->first();
+            // change the date to timestamp
+            $islamic_center->khutbah_start = IslamicCenter::TransformDate($islamic_center->khutbah_start) ;
+            $islamic_center->khutbah_end = IslamicCenter::TransformDate($islamic_center->khutbah_end) ;
+
             $director_id  = $islamic_center->director_id ;
             $director_data = AssociateDirector::whereid($director_id)->select("id","name","phone")->first();
             return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
