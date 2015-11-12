@@ -35,7 +35,16 @@ class UserController extends Controller {
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->select("friday_id")->get();
-        return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
+
+        if(Auth::user()->role_id == 2){
+            return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
+        }elseif(Auth::user()->role_id == 3){
+            $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
+            return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center"));
+        }else{
+            return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
+        }
+
     }
 
     /**
@@ -193,17 +202,24 @@ class UserController extends Controller {
      * khateeb : choose his available dates
      * ad : choose islamic center blocked dates
      */
-    public function setDates(){
-        $role = Auth::user()->role_id ;
-        $user_id = Auth::user()->user_id ;
+    public function setDates($id = null){
+        if($id == null){
+            $role = Auth::user()->role_id ;
+            $user_id = Auth::user()->user_id ;
 
-        if($role == 2){
-            return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
-        }elseif($role == 3){
-            return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$user_id,$role);
+            if($role == 2){
+                return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
+            }elseif($role == 3){
+                return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$user_id,$role);
+            }else{
+                return false ;
+            }
         }else{
-            return false ;
+            $role = Auth::user()->role_id ;
+            $user_id = Auth::user()->user_id ;
+            return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
         }
+
     }
 
 

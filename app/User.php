@@ -259,9 +259,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function validateAllFields($input , $process = null){
         // if $process = null we are creating new record
         if(isset($input["userID"])){
-            return $result = self::checkEmail($input["email"],$input["userID"],$process);
+            $result = self::checkEmail($input["email"],$input["userID"],$process);
         }else{
-            return $result = self::checkEmail($input["email"],Auth::user()->user_id,$process);
+            $result = self::checkEmail($input["email"],Auth::user()->user_id,$process);
         }
 
         $values = array_values($input);
