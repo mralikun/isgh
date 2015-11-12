@@ -5,7 +5,6 @@ use App\cycle;
 use App\Fridays;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\IslamicCenter;
 use App\Khateeb;
 use App\User;
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
-
 class AdminController extends Controller {
 
     public function __construct()
@@ -23,14 +21,12 @@ class AdminController extends Controller {
         $this->middleware('auth');
         $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
-
     /**
      * here for returning view for creating new islamic center
      * @return \Illuminate\View\create_islamic_center
      */
-	public function Create_Islamic_Center($id = null){
+    public function Create_Islamic_Center($id = null){
         $directors = DB::select("SELECT associate_director.id , associate_director.name FROM `associate_director`  left JOIN islamic_center on associate_director.id = islamic_center.director_id where islamic_center.director_id IS NULL and associate_director.name !='' ");
-
         /**
          * Her i want to return the ad attached to the islamic center and his phone and his id
          * admin trying to edit ad information
@@ -45,8 +41,6 @@ class AdminController extends Controller {
             return view("admin.create_islamic_center",compact("directors"));
         }
     }
-
-
     /**
      * here for returning view for creating new create members
      * @return \Illuminate\View\create_members
@@ -54,8 +48,6 @@ class AdminController extends Controller {
     public function Create_members(){
         return view("admin.create_members");
     }
-
-
     /**
      * @return \Illuminate\View\View
      * return admin to create cycle
@@ -63,7 +55,6 @@ class AdminController extends Controller {
     public function getCyclePage(){
         return view("admin.create_cycle");
     }
-
     /**
      * here for returning view for creating new schedule
      * @return \Illuminate\View\schedule
@@ -71,7 +62,6 @@ class AdminController extends Controller {
     public function Manage_schedule(){
         return view("admin.schedule");
     }
-
     /**
      * here for returning view for editing members
      * @return \Illuminate\View\edit_members
@@ -80,7 +70,6 @@ class AdminController extends Controller {
         $all = User::getUserNames();
         return view("admin.edit_members",compact("all"));
     }
-
     /**
      * here for returning view for edit islamic center
      * @return \Illuminate\View\edit_islamic_center
@@ -89,7 +78,6 @@ class AdminController extends Controller {
         $all = IslamicCenter::select("id","name")->get();
         return view("admin.edit_islamic_center",compact("all"));
     }
-
     /**
      * @return mixed
      * this function responsible for adding new user
@@ -98,7 +86,6 @@ class AdminController extends Controller {
     public function createUser(){
         $username = Input::get("username");
         $user = User::whereusername($username)->first();
-
         if($user == "" ){
             $input = Input::all();
             $user = new User();
@@ -107,8 +94,6 @@ class AdminController extends Controller {
             return "true";
         }
     }
-
-
     /**
      * @return mixed
      * create new islamic center
@@ -127,9 +112,7 @@ class AdminController extends Controller {
         }else{
             return IslamicCenter::EditExistingIslamicCenter($input ,$id);
         }
-
     }
-
     /**
      * Here for deleting Khateebs from the system
      */
@@ -141,9 +124,6 @@ class AdminController extends Controller {
             return "false";
         }
     }
-
-
-
     /**
      * Here for deleting Associative Directories from the system
      */
@@ -155,8 +135,6 @@ class AdminController extends Controller {
             return "false";
         }
     }
-
-
     /**
      * Here for deleting Islamic Centers from the system
      */
@@ -168,7 +146,6 @@ class AdminController extends Controller {
             return "false";
         }
     }
-
     /**
      * @return mixed
      * get cell phone for the director
@@ -178,7 +155,6 @@ class AdminController extends Controller {
         $phone = AssociateDirector::whereid($id)->first();
         return $phone->phone ;
     }
-
     /**
      * @param $startDate
      * @param $months
@@ -187,11 +163,9 @@ class AdminController extends Controller {
     private function getEndDate($startDate , $months){
         $date = new \DateTime($startDate);
         $interval = new \DateInterval("P".$months."M");
-
         $date->add($interval);
         return $date->format('Y-m-d');
     }
-
     /**
      * creating new cycle and fridays
      * take start date and end date
@@ -201,7 +175,6 @@ class AdminController extends Controller {
         $months = Input::get("months");
         $newDate = $this::getEndDate($date , $months);
         $result = cycle::CreateNewCycle($date , $newDate);
-
         if(is_numeric($result)){
             $cycle = cycle::whereid($result)->first();
             $final_result = Fridays::addFridays($cycle,$date ,$this::getEndDate($date , $months));
@@ -219,6 +192,4 @@ class AdminController extends Controller {
             return redirect("/admin/create_cycle",compact("error"));
         }
     }
-
-
 }
