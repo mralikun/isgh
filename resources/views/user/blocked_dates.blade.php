@@ -20,6 +20,8 @@ Available/Blocked Dates
 
 @section("content")
 
+
+
 <?php 
 
     function Map($arr , $cb){

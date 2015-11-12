@@ -133,11 +133,10 @@
    </div>
 
    <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center" ng-disabled="!center.name||!center.director_name||!center.khutbah_start||!center.khutbah_end||!center.parking_information||center.khutbah_start > center.khutbah_end">
-
+    <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
 </form>
 <audio src="/assets/alert.mp3"></audio>
 @stop
-
 
 @section("scripts")
 
@@ -146,11 +145,48 @@
 <script src="/assets/js/controllers/islamicCenter.js"></script>
 <script>
     var where = window.location.pathname;
-    var hasNumber = where.substring(where.lastIndexOf("/") + 1 , where.length)
+    var hasNumber = where.substring(where.lastIndexOf("/") + 1 , where.length);
     if(isNaN(parseInt(hasNumber))){
         $(".page-title").text("Create Islamic Center");
     }else {
-        $(".page-title").text("Edit Islamic Center");
+        function setDefaults() {
+            $(".page-title").text("Edit Islamic Center");
+            
+            $.ajax({
+                type: "GET",
+                url: "/islamicCenterData/" + hasNumber,
+                data: {_token: $("#token").val()},
+                dataType: "json",
+                success: function(resp){
+                    var controllerE = $("form[name='icForm']");
+                    var sco = angular.element(controllerE).scope();
+                    
+                    sco.$apply(function(){
+                        console.log(resp);
+                        sco.center.name = resp.name;
+                        sco.center.website = resp.website;
+                        sco.center.parking_information = resp.parking_information;
+                        sco.center.other_information = resp.other_information;
+                        sco.center.director_cell_phone = resp.ad.phone;
+                        var sd = new Date(resp.khutbah_start);
+                        var ed = new Date(resp.khutbah_end);
+                        sco.center.khutbah_start = sd;
+                        sco.center.khutbah_end = ed;
+                        $("select[name='director_name']").prepend("<option value='"+resp.ad.id+"'> "+ resp.ad.name +" </option>");
+                        $("option[value='"+resp.ad.id+"']").attr("selected" , true);
+                        $("input[name='address']").val(resp.address);
+                        $("input[name='country']").val(resp.address);
+                        $("input[name='locality']").val(resp.city);
+                        $("input[name='administrative_area_level_1']").val(resp.state);
+                        $("input[name='postal_code']").val(resp.postal_code);
+                        $("input[type='submit']").removeAttr("ng-disabled").attr("disabled" , false);
+                    });
+                }
+            });
+
+        }
+
+        setDefaults();
     }
 </script>
 @stop
