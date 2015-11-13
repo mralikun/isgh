@@ -203,22 +203,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected static function checkEmail($email,$user_id ,$process){
             // we are editing user so we must check and we know we will find a row with this email we we will not find return okay
-        if($process == null){
+        if($process != null){
             $emails = User::select("id","user_id","email")->whereemail($email)->get();
             $checker = 0 ;
             $availability = 0 ;
             foreach($emails as $row){
                 // if so the check if this email for this user by checking the id
-                if($email == $row["email"]){
-                    if($user_id == $row["user_id"]){
-                        // here is the user and this is his email this email belongs to this user
-                        $checker ++;
-                    }else{
-                        $availability ++;
-                    }
+                if($process == $row["id"]){
+                    // here is the user and this is his email this email belongs to this user
+                    $checker ++;
+                }else{
+                    $availability ++;
                 }
-            }
 
+            }
             if($checker == 0 && $availability == 0){
             // here we did not found any users with this email
                 return "true";
@@ -238,10 +236,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $availability = 0 ;
             foreach($emails as $row){
                 // if so the check if this email for this user by checking the id
-                if($email == $row["email"]){
+                if($user_id == $row["id"]){
                     $checker ++ ;
                 }
             }
+
             if($checker == 0){
                 return "true" ;
             }else{
@@ -260,9 +259,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function validateAllFields($input , $process = null){
         // if $process = null we are creating new record
         if(isset($input["userID"])){
-            $result = self::checkEmail($input["email"],$input["userID"],$process);
+            return $result = self::checkEmail($input["email"],$input["userID"],$process);
         }else{
-            $result = self::checkEmail($input["email"],Auth::user()->user_id,$process);
+            return $result = self::checkEmail($input["email"],Auth::user()->user_id,$process);
         }
 
         $values = array_values($input);

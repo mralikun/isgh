@@ -17,12 +17,15 @@ class Khateeb extends Model {
      * the result which is true or false .
      */
     public static function addFields($info){
+        // admin editing user
         if(isset($info["userID"])){
             $user_id =  $info["userID"];
             $user = User::whereid($user_id)->first();
             $khateeb_id = $user->user_id ;
+            $khateeb_user_id = $user_id ;
         }else{
             $khateeb_id =  Auth::user()->user_id;
+            $khateeb_user_id = Auth::user()->id ;
         }
 
         $khateeb = Khateeb::whereid($khateeb_id)->first();
@@ -49,7 +52,7 @@ class Khateeb extends Model {
 
                 if($info["profile_picture"]->move($destination, $filename)){
                     $khateeb->picture_url = $filename;
-                    $user = User::whereid(Auth::user()->id)->first() ;
+                    $user = User::whereid($khateeb_user_id)->first() ;
                     $user->email = $khateeb->email ;
                     $user->save();
                     // checking if khateeb has old picture and replace it
@@ -62,7 +65,7 @@ class Khateeb extends Model {
                 }
 
         }else{
-            $user =  User::whereid(Auth::user()->id)->first() ;
+            $user =  User::whereid($khateeb_user_id)->first() ;
             $user->email = $khateeb->email ;
             $user->save();
 
