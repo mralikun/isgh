@@ -9,6 +9,8 @@ class AdBlockedDates extends Model {
     protected $fillable= ["id","friday_id","ad_id"];
 
     public static function addBlockedDates($fridays , $user_id , $role){
+        $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->wheredirector_id($user_id)->first();
+
         $khateeb_row = AdBlockedDates::wheread_id($user_id)->first();
         /**
          * Now i will get the running cycle
@@ -25,7 +27,7 @@ class AdBlockedDates extends Model {
             foreach($fridays as $friday){
                 // ksf abbreviation to khateeb selected fridays
                 $ksf = new AdBlockedDates();
-                $ksf->ad_id = $user_id ;
+                $ksf->ic_id = $islamicCenter_With_DirectorData->id ;
                 $ksf->friday_id = $friday ;
                 $ksf->cycle_id = $cycle_id ;
                 $ksf->save() ;
@@ -41,7 +43,7 @@ class AdBlockedDates extends Model {
             // Add new records to the database
             foreach($fridays as $friday){
                 $abd = new AdBlockedDates();
-                $abd->ad_id = $user_id ;
+                $abd->ic_id =  $islamicCenter_With_DirectorData->id ;
                 $abd->friday_id = $friday ;
                 $abd->cycle_id = $cycle_id ;
                 $abd->save() ;

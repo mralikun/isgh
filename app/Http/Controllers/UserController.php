@@ -39,8 +39,24 @@ class UserController extends Controller {
         if(Auth::user()->role_id == 2){
             return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
         }elseif(Auth::user()->role_id == 3){
-            $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
-            return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center"));
+            // if this ad have islamic center attached to him then git the id and th name
+            $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
+
+            if(empty($islamic_center_data)){
+                // here ad doesnot attached to islamic center
+                $islamic_center_existence = false ;
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence"));
+            }else{
+                //else this ad is attached to islamic center return that it's already exists
+                $islamic_center_existence = true ;
+                $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
+                // change the date to timestamp
+                $islamic_center->khutbah_start = IslamicCenter::TransformDate($islamic_center->khutbah_start) ;
+                $islamic_center->khutbah_end = IslamicCenter::TransformDate($islamic_center->khutbah_end) ;
+
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence"));
+            }
+
         }else{
             return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
         }
@@ -224,3 +240,10 @@ class UserController extends Controller {
 
 
 }
+modified:   .idea/workspace.xml
+        modified:
+        modified:
+        modified:   
+        modified:   app/IslamicCenter.php
+        modified:   database/migrations/2015_10_19_120432_create_ad_blocked_dates_table.php
+        modified:   database/migrations/2015_10_20_114045_create_islamic_center_table.php
