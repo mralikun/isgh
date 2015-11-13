@@ -69,7 +69,6 @@ Route::post("/admin/create_cycle",'AdminController@start_New_Cycle');
 Route::get("/admin/cycle",'AdminController@getCyclePage');
 Route::get("/admin/startNewCycle/{date}/{months}",'AdminController@start_New_Cycle');
 
-
 // routes related to User
 // route for creating getting blocked dates
 Route::get('/user/dates', 'UserController@getIslamicCenterBlockedDates');
@@ -94,3 +93,7 @@ Route::post('/user/rate', 'UserController@addRate');
 
 // choosing
 Route::post('/user/setAvailableDates', 'UserController@setDates');
+
+Route::get("/islamicCenterData/{id}",function($id){
+   return  \App\IslamicCenter::whereid($id)->with("Ad")->first();
+});
