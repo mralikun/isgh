@@ -59,23 +59,25 @@
         <input type="submit" value="Login">
     </div>
 
-</form>
-
-<div class="forgot">
-    <form method="POST" id="recover-password">
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <button type="button" class="close">X</button>
-        <div>
-            <label>Please insert your email address, You will recive an email containing further instructions on how to reset your password.</label>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">E-mail: </label>
-            <div class="col-sm-10"><input type="email" name="email" class="form-control" placeholder="E-mail Address"></div>
-        </div>
+   @if(sizeof($errors))
+   
+    <div class="errors">
         
-        <input type="submit" class="btn btn-isgh" value="Send Reset Password Mail">
-    </form>
-</div>
+        <ul>
+            
+            @foreach($errors->all() as $error)
+            
+            <li>{{$error}}</li>
+            
+            @endforeach
+            
+        </ul>
+        
+    </div>
+
+    @endif
+
+</form>
 
 </body>
 

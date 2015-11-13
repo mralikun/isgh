@@ -4,6 +4,7 @@
 @section("navigation")
 
 @if($firstTime == "false" and !isset($adminEditing))
+<li><a href="/user/profile">View Profile</a></li>
 <li><a href="/user/dates">Available/Blocked Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
@@ -136,5 +137,11 @@ Update Profile
 
 <script src="/assets/js/services/google-geocode.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByh3oCcAHKsHhGrd2widWjrkH2a14hVfU&signed_in=true&libraries=places&callback=initAutocomplete"></script>
+<script>
 
+    function isAdmin(){
+        return {{ isset($adminEditing) }} ;
+    }
+
+</script>
 @stop
