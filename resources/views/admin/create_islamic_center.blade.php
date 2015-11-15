@@ -11,12 +11,8 @@
 @stop
 
 @section("content")
-
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
 <form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
-  @if(isset($adminEditing) and $adminEditing != null)
-  <input type="hidden" value="{{$adminEditing}}" name="userID">
-  @endif
    <div class="form-group">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
        <div class="col-sm-10">
