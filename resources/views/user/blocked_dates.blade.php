@@ -19,9 +19,6 @@ Available/Blocked Dates
 
 
 @section("content")
-
-
-
 <?php 
 
     function Map($arr , $cb){
@@ -52,7 +49,6 @@ Available/Blocked Dates
     
 </div>
 <form id="blocked-dates-form">
-  <!-- Token Mismatch Exception !!!!!! -->
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
 

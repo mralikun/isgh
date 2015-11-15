@@ -170,8 +170,11 @@
                         sco.center.director_cell_phone = resp.ad.phone;
                         var sd = new Date(resp.khutbah_start);
                         var ed = new Date(resp.khutbah_end);
+                        sd.setHours( sd.getHours() + (sd.getTimezoneOffset() * - 1 / 60) );
+                        ed.setHours( ed.getHours() + (ed.getTimezoneOffset() * - 1 / 60) );
                         sco.center.khutbah_start = sd;
                         sco.center.khutbah_end = ed;
+                        sco.center.director_name = resp.ad.id;
                         $("select[name='director_name']").prepend("<option value='"+resp.ad.id+"'> "+ resp.ad.name +" </option>");
                         $("option[value='"+resp.ad.id+"']").attr("selected" , true);
                         $("input[name='address']").val(resp.address);

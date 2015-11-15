@@ -18,7 +18,7 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
                     ISGH.notify("The Islamic center '" + scope.center.name+ "' has been successfully created!");
                     delete scope.center;
                     scope.icForm.$setPristine(true);
-                    window.location.assign(window.location);
+//                    window.location.assign(window.location);
                 }
                 else
                     ISGH.alertBox.init("The Islamic center '" + scope.center.name + "' already exists" , false);
