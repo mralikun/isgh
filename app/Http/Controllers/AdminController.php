@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\AssociateDirector;
-use App\cycle;
+use App\Cycle;
 use App\Fridays;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

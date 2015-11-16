@@ -1,6 +1,6 @@
 <?php namespace App\Http\Middleware;
 
-use App\cycle;
+use App\Cycle;
 use Closure;
 use Illuminate\Auth\Guard;
 use Illuminate\Support\Facades\Redirect;

@@ -1,10 +1,11 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Cycle;
 
 class Khateebselectedfridays extends Model {
 
-	protected $table = "Khateebselectedfridays";
+	protected $table = "khateebselectedfridays";
 
     protected $fillable= ["id","friday_id","khateeb_id","role_id"];
 

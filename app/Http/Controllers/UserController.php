@@ -2,7 +2,7 @@
 
 use App\AdBlockedDates;
 use App\AssociateDirector;
-use App\cycle;
+use App\Cycle;
 use App\Fridays;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -34,7 +34,13 @@ class UserController extends Controller {
         $name = $user_data->name ;
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
-        $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->select("friday_id")->get();
+         if(Auth::user()->role_id == 2) {
+            $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->whererole_id($role)->select("friday_id")->get();
+        }
+
+        if(Auth::user()->role_id == 3) {
+            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id($user_id)->select("friday_id")->get();
+        }
 
         if(Auth::user()->role_id == 2){
             return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));

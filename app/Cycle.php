@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class cycle extends Model {
 
-    protected $table = "Cycle";
+    protected $table = "cycle";
 
     protected $fillable = ["id", "start_date","end_date"];
 

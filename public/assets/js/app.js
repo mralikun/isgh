@@ -249,7 +249,7 @@ var ISGH = {
         $("form#update-profile-form").on("submit" , function(){
             var fd = new FormData(this);
             var $editingUser = $(this).find("input[name='userID']");
-            var url = "/user/updateProfile/" + (($editingUser.length) ? $editingUser.val() : "");
+            var url = "/user/updateProfile" + (($editingUser.length) ? "/"+$editingUser.val() : "");
             var fields =  {
                 name: "Name",
                 address: "Address",
