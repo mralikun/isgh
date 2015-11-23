@@ -11,13 +11,11 @@
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
 <li><a href="/auth/logout">Logout</a></li>
-
 @stop
-
 
 @section("pageTitle")
 
-Blocked Dates
+Available Dates
 
 @stop
 
@@ -38,15 +36,12 @@ Blocked Dates
     });
 ?>
 
-<style>
-    .date.available {
-        background-color: #DD0E1D;
-    }
-</style>
-
 <h3>{{$name}}</h3>
-
-<span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
+@if($role == 2)
+<span class="hint"><strong>Check the box for all dates you're willing to give khutbah in and leave the box blank if you don't want to give any khutbah at that day , <mark>You must check at least 1 box.</mark></strong></span>
+@else
+<span class="hint"><strong>Check the box for all dates you want the system to assign you a khutbah in. </strong></span>
+@endif
 
 <div class="options">
     
@@ -57,9 +52,8 @@ Blocked Dates
 </div>
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-   <!-- The value of this input is the ID of the islamic center! -->
-   <input type="text" style="display:none;" name="ic" value="6">
     <div class="dates-calendar">
+
        @foreach($fridays as $friday)
        @if(in_array($friday->id , $choosen))
         <div class="date available" id="{{$friday->id}}">
@@ -80,6 +74,7 @@ Blocked Dates
        
        @endif
        @endforeach
+       
     </div>
     <input type="submit" value="Submit" class="btn btn-primary pull-right" ng-disabled="dates.available.length == 0">
 </form>

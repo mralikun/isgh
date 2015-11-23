@@ -225,9 +225,11 @@ var ISGH = {
             if(this.choosen.indexOf(id) !== -1)
                 this.choosen.splice( this.choosen.indexOf(id) , 1 );
         },
-        patch: function(){
+        patch: function(_id){
+            
+            var url = (_id != 0) ? "/user/setBlockedDates/" + _id : "/user/setAvailableDates";
             $.ajax({
-                url: "/user/setAvailableDates",
+                url: url,
                 type: "POST",
                 data: {dates: this.choosen , _token: $("input[name='_token']").val()},
                 success: function(){
@@ -250,6 +252,7 @@ var ISGH = {
             var fd = new FormData(this);
             var $editingUser = $(this).find("input[name='userID']");
             var url = "/user/updateProfile" + (($editingUser.length) ? "/"+$editingUser.val() : "");
+            var $for_ic = $(this).find("input[name='islamic_center']").val();
             var fields =  {
                 name: "Name",
                 address: "Address",
@@ -394,7 +397,12 @@ var ISGH = {
                 ISGH.alertBox.init("Please choose at least 1 Friday" , false);
                 return false;
             }
-            self.Dates.patch();
+            var $ic = $(this).find("input[name='ic']");
+            var d = 0;
+            if($ic.length){
+                d = $ic.val();
+            }
+            self.Dates.patch(d);
         });
         
         // WHEN CLICKING ON THE NOTIFICATION...IT HIDES

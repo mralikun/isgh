@@ -8,7 +8,6 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
             var $edit = window.location.pathname;
             var icID = $edit.substr($edit.lastIndexOf("/")+1 , 1);
             if(isNaN( parseInt(icID , 10) )){
-                console.log("CREATING");
                 http.post("/admin/createIslamicCenter" , scope.center)
                     .then(function(resp){
 
