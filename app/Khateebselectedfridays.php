@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cycle;
+use Illuminate\Support\Facades\DB;
 
 class Khateebselectedfridays extends Model {
 
@@ -58,6 +59,14 @@ class Khateebselectedfridays extends Model {
         }else{
             return "false";
         }
+    }
+
+    /**
+     * @param $friday_id
+     * get all khateebs available in this friday
+     */
+    public static function Get_Khateebs_Choosed_that_Friday($friday_id){
+        return (array)DB::table('khateebselectedfridays')->where('friday_id','=', $friday_id)->select("khateeb_id")->get();
     }
 
 }

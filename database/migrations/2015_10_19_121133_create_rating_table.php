@@ -20,6 +20,7 @@ class CreateRatingTable extends Migration {
             $table->integer('ad_rate_khateeb');
             $table->integer('khateeb_rate_ad');
             $table->integer('cycle_id')->unsigned()->index();
+            $table->integer('distance');
             $table->timestamps();
         });
 

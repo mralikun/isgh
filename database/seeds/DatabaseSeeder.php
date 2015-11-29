@@ -35,6 +35,7 @@ class RolesTableSeeder extends Seeder {
         DB::table('users')->delete();
         $password = Hash::make("ahmedali32");
         \App\User::create(['username' => 'ahmedali' , "id"=>1, "user_id"=>1, "role_id"=>1 , "password"=>$password]);
+
     }
 
 }

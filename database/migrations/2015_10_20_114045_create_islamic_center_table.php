@@ -31,6 +31,8 @@ class CreateIslamicCenterTable extends Migration {
             $table->string('address');
             $table->integer('postal_code');
             $table->string('state');
+            $table->integer('speech_num');
+
             $table->timestamps();
         });
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cycle;
+use Illuminate\Support\Facades\DB;
 
 class AdBlockedDates extends Model {
 
@@ -55,6 +56,29 @@ class AdBlockedDates extends Model {
         }else{
             return "false";
         }
+    }
+
+    /**
+     * @param $friday_id
+     * @return array $islamic_centers_available for this friday
+     */
+    public static function islamic_Centers_Available_This_Friday($friday_id){
+        // here return the id's of all islamic centers that have blocked dates this friday and do not want khateeb in that day
+            $islamic_centers_id = AdBlockedDates::wherefriday_id($friday_id)->select("ic_id")->get();
+
+        // create array to hold the islamic centers that block this friday
+            $islamic_centers_id_array = [];
+
+        // push islamic centers to the array mainly to generate array
+            if(!empty($islamic_centers_id)){
+                foreach($islamic_centers_id as $id){
+                    array_push($islamic_centers_id_array,$id->ic_id);
+                }
+            }
+
+        // here i want to get all islamic centers not in the array $islamic_centers_id_array
+            return $islamic_centers_available = $users = (array)DB::table('islamic_center')->whereNotIn('id',$islamic_centers_id_array )->select("id","speech_num")->get();
+
     }
 
 }
