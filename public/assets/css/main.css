@@ -32,6 +32,11 @@ header h2 {
     padding: 0 35px;
 }
 
+.navbar {
+    background-color: #007bb3;
+    border: none;
+}
+
 nav {
     display: block;
     margin-top: 20px;
@@ -40,10 +45,12 @@ nav {
 nav ul {
     list-style: none;
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 nav ul li {
-    display: inline-block;
+    display: inline;
     padding: 2px 15px;
 }
 
@@ -53,7 +60,7 @@ nav ul li:not(:last-child){
 
 nav ul li a {
     color: white;
-    padding: 20px;
+    padding: 10px;
 }
 
 label , h4.first-time{

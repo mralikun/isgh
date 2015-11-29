@@ -9,6 +9,7 @@
         <title>Welcome to ISGH</title>
         <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="/assets/css/main.css">
+        <link rel="stylesheet" href="/assets/css/fa/css/font-awesome.min.css">
         
     </head>
     
@@ -18,8 +19,7 @@
         <header class="container-fluid">
 
             <div class="col-sm-4 col-md-2 col-lg-2"><h2>ISGH</h2></div>
-            <div class="col-sm-8 col-md-8 col-lg-8">
-
+            <div class="col-sm-8 col-md-10 col-lg-10">
                 <nav>
                     <ul>
                     

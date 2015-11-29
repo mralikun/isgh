@@ -127,7 +127,7 @@
        <label class="col-sm-2 control-label">Other Information</label>
        <div class="col-sm-10"><textarea name="other_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please include any additional instructions" ng-model="center.other_information"></textarea></div>
    </div>
-
+   
    <input type="submit" class="btn btn-primary pull-right" value="Add Islamic Center" ng-disabled="!center.name||!center.director_name||!center.khutbah_start||!center.khutbah_end||!center.parking_information||center.khutbah_start > center.khutbah_end">
     <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
 </form>
