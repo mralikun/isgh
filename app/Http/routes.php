@@ -94,6 +94,19 @@ Route::post('/user/rate', 'UserController@addRate');
 // choosing
 Route::post('/user/setAvailableDates', 'UserController@setDates');
 
-Route::get("/islamicCenterData/{id}",function($id){
-   return  \App\IslamicCenter::whereid($id)->with("Ad")->first();
+Route::get("/when",function(){
+    $schedule = new \App\Schedule;
+    return $schedule->startSchedule(2);
 });
+
+
+        modified:   
+        modified:   app/IslamicCenter.php
+        modified:   app/Khateeb.php
+        modified:   app/Khateebselectedfridays.php
+        modified:   app/Rating.php
+        modified:   database/migrations/2015_10_19_121133_create_rating_table.ph
+p
+        modified:   database/migrations/2015_10_20_114045_create_islamic_center_
+table.php
+        modified:   database/seeds/DatabaseSeeder.php

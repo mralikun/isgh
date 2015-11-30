@@ -29,7 +29,6 @@ class IslamicCenter extends Model {
      * this function takes the islamic center data from the admin and create new islamic center
      */
     public static function addNewIslamicCenter($input){
-
         $input["director_id"] = $input["director_name"];
        if(IslamicCenter::create($input)){
             return "true";
