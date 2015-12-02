@@ -44,7 +44,7 @@ Blocked Dates
     }
 </style>
 
-<h3>{{$name}}</h3>
+<h3>{{$name}} @ {{$islamic_center->name}}</h3>
 
 <span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
 
@@ -88,7 +88,7 @@ Blocked Dates
 @section("scripts")
 
 <script>
-    ISGH.Dates.init("/user/setBlockedDates/");
+    ISGH.Dates.init("/user/setBlockedDates/{{$islamic_center->id}}");
 </script>
 
 @stop
