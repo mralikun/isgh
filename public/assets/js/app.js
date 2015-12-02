@@ -209,7 +209,9 @@ var ISGH = {
     
     Dates: {
         choosen: [],
-        init: function(){
+        path: "",
+        init: function(url){
+            this.path = url;
             var IDS = $(".date.available").map(function(ind , el){
                 return el.id;
             });
@@ -225,11 +227,11 @@ var ISGH = {
             if(this.choosen.indexOf(id) !== -1)
                 this.choosen.splice( this.choosen.indexOf(id) , 1 );
         },
-        patch: function(_id){
+        patch: function(){
             
-            var url = (_id != 0) ? "/user/setBlockedDates/" + _id : "/user/setAvailableDates";
+            var u = this.path;
             $.ajax({
-                url: url,
+                url: u,
                 type: "POST",
                 data: {dates: this.choosen , _token: $("input[name='_token']").val()},
                 success: function(){
@@ -239,6 +241,10 @@ var ISGH = {
                     ISGH.alertBox.init("Couldn't set your selection, Please refresh and try again!" , false);
                 }
             });
+        },
+        reset: function(){
+            for(var i = 0; i < this.choosen.length; i++)
+                this.deselect(this.choosen[i]);
         }
     },
     
@@ -310,7 +316,6 @@ var ISGH = {
                 processData: false
             });
         });
-        
         //  HANDLING CLICK EVENT FOR DATES.
         
         $(".dates-calendar").on("click" , ".date" , function(e){
@@ -397,12 +402,7 @@ var ISGH = {
                 ISGH.alertBox.init("Please choose at least 1 Friday" , false);
                 return false;
             }
-            var $ic = $(this).find("input[name='ic']");
-            var d = 0;
-            if($ic.length){
-                d = $ic.val();
-            }
-            self.Dates.patch(d);
+            self.Dates.patch();
         });
         
         // WHEN CLICKING ON THE NOTIFICATION...IT HIDES

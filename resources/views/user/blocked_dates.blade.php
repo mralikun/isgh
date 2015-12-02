@@ -57,8 +57,6 @@ Blocked Dates
 </div>
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-   <!-- The value of this input is the ID of the islamic center! -->
-   <input type="text" style="display:none;" name="ic" value="{{$islamic_center->id}}">
     <div class="dates-calendar">
        @foreach($fridays as $friday)
        @if(in_array($friday->id , $choosen))
@@ -90,7 +88,7 @@ Blocked Dates
 @section("scripts")
 
 <script>
-    ISGH.Dates.init();
+    ISGH.Dates.init("/user/setBlockedDates/");
 </script>
 
 @stop

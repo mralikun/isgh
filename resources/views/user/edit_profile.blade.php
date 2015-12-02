@@ -12,7 +12,6 @@
 <li><a href="/auth/logout">Logout</a></li>
 
 @stop
-
 @section("pageTitle")
 
 Update Profile

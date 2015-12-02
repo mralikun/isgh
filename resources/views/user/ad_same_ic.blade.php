@@ -35,8 +35,7 @@ Available Dates
 ?>
 
 <h3>{{$name}}</h3>
-@if($role == 2)
-<span class="hint"><strong>Check the box for all dates you're willing to give khutbah in and leave the box blank if you don't want to give any khutbah at that day , <mark>You must check at least 1 box.</mark></strong></span>
+<span class="hint"><strong>Choose the dates which you want the system to assign you to give khutbahs <mark>in your own Islamic Center.</mark></strong></span>
 <div class="options">
     
     <button class="btn btn-isgh select-all">Select All</button>
@@ -44,9 +43,7 @@ Available Dates
     <button class="btn btn-isgh reverse-select">Reverse Selection</button>
     
 </div>
-@endif
 
-@if($role == 2)
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
@@ -75,22 +72,13 @@ Available Dates
     </div>
     <input type="submit" value="Submit" class="btn btn-primary pull-right" ng-disabled="dates.available.length == 0">
 </form>
-
-@else
-<div class="text-center">
-   <h4 class="hint"><strong>Where would you like to give khutbah ?</strong></h4>
-    <a href="/user/ad/same_islamic_center" class="btn btn-isgh">My Own Islamic Center</a><a href="/user/ad/other_islamic_centers" class="btn btn-isgh">Other Islamic Centers</a>
-</div>
-
-@endif
 <audio src="/assets/alert.mp3"></audio>
 @stop
-
 
 @section("scripts")
 
 <script>
-    ISGH.Dates.init("/user/setAvailableDates");
+    ISGH.Dates.init("/user/adSameIslamicCenter");
 </script>
 
 @stop
