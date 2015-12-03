@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CreateAdBlockedDatesTable' => $baseDir . '/database/migrations/2015_10_19_120432_create_ad_blocked_dates_table.php',
+    'CreateAdChooseTheirIcTable' => $baseDir . '/database/migrations/2015_12_02_065730_create_AdChooseTheirIc_table.php',
+    'CreateAdKhateebsPhotoTable' => $baseDir . '/database/migrations/2015_12_02_070806_create_AdKhateebsPhoto_table.php',
     'CreateAdminTable' => $baseDir . '/database/migrations/2015_10_16_125203_create_Admin_table.php',
     'CreateAssociateDirectorTable' => $baseDir . '/database/migrations/2015_10_16_125156_create_AssociateDirector_table.php',
     'CreateCycleTable' => $baseDir . '/database/migrations/2015_10_19_111634_create_cycle_table.php',
@@ -396,6 +398,7 @@ return array(
     'PHP_Token_WHITESPACE' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_XOR_EQUAL' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_YIELD' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
+    'RolesTableSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
     'SebastianBergmann\\Comparator\\Comparator' => $vendorDir . '/sebastian/comparator/src/Comparator.php',
     'SebastianBergmann\\Comparator\\ComparisonFailure' => $vendorDir . '/sebastian/comparator/src/ComparisonFailure.php',

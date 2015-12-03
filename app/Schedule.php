@@ -21,7 +21,7 @@ class Schedule extends Model {
             // now i returned all islamic centers I'am going to make a call to a function loop through islamic centers
             // loop through  islamic centers  and start assigning
             $this->Islamic_Center_Looping();
-            return self::$khateebs ;
+            return self::$schedule ;
         }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

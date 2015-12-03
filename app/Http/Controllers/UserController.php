@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\AdBlockedDates;
+use App\AdChooseTheirIc;
 use App\AssociateDirector;
 use App\Cycle;
 use App\Fridays;
@@ -27,7 +28,7 @@ class UserController extends Controller {
     /**
      * @return \Illuminate\View\View user blocked_dates
      */
-	public function getIslamicCenterBlockedDates(){
+	public function AvailableDates(){
         $user_id = Auth::user()->user_id ;
         $role = Auth::user()->role_id ;
         $user_data = User::getUserData($user_id , $role);
@@ -38,14 +39,54 @@ class UserController extends Controller {
             $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->whererole_id($role)->select("friday_id")->get();
         }
 
-        if(Auth::user()->role_id == 3) {
-            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id($user_id)->select("friday_id")->get();
+        if(Auth::user()->role_id == 2){
+            return view("user.available_dates",compact("name","role","fridays","fridays_choosen"));
+        }elseif(Auth::user()->role_id == 3){
+            // return selected fridays to give khutbah in any other islamic center
+                $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->whererole_id($role)->select("friday_id")->get();
+
+            // Return choosen fridays that Ad will to give khutbah in
+                $fridays_Ad_want_to_give_Khutbah_in = AdChooseTheirIc::getChoosenFridays($user_id , $cycle->id);
+
+            // Return Fridays that didn't choosen either give khutbah in ( his islamic center , other islamic centers )
+                $fridays_Ad_didnot_choose = AdChooseTheirIc::UnChoosenFridays($user_id , $cycle->id ,$fridays_choosen , $fridays_Ad_want_to_give_Khutbah_in);
+
+            // if this ad have islamic center attached to him then git the id and th name
+                $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
+
+            if(empty($islamic_center_data)){
+                // here ad does not attached to islamic center
+                $islamic_center_existence = false ;
+                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence" , "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose"));
+            }else{
+                //else this ad is attached to islamic center return that it's already exists
+                $islamic_center_existence = true ;
+                $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
+
+                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence", "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose"));
+            }
+
+        }else{
+            return view("user.available_dates",compact("name","role","fridays","fridays_choosen"));
         }
 
-        if(Auth::user()->role_id == 2){
-            return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
-        }elseif(Auth::user()->role_id == 3){
-            // if this ad have islamic center attached to him then git the id and th name
+    }
+
+
+    /**
+     * return islamic center blocked dates
+     */
+    public function getIslamicCenterBlockedDates(){
+        $user_id = Auth::user()->user_id ;
+        $role = Auth::user()->role_id ;
+        $user_data = User::getUserData($user_id , $role);
+        $name = $user_data->name ;
+        $cycle = cycle::latest()->first();
+        $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
+        if(Auth::user()->role_id == 3) {
+            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id($user_id)->select("friday_id")->get();
+
+            // if this ad have islamic center attached to him then get the id and the name
             $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
 
             if(empty($islamic_center_data)){
@@ -59,11 +100,14 @@ class UserController extends Controller {
 
                 return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence"));
             }
-
-        }else{
-            return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen"));
         }
+    }
 
+    /**
+     * post request to save islamic center blocked dates
+     */
+    public function setIslamicCenterBlockedDates($ic_id){
+        return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$ic_id);
     }
 
     /**
@@ -229,7 +273,7 @@ class UserController extends Controller {
             if($role == 2){
                 return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
             }elseif($role == 3){
-                return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$user_id,$role);
+                return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
             }else{
                 return false ;
             }

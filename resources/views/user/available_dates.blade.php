@@ -6,7 +6,7 @@
 <li><a href="/user/dates">Available Dates</a></li>
 @if($role == 3)
 <!-- We will change this link href for a new route -->
-<li><a href="#">Blocked Dates</a></li>
+<li><a href="/user/BlockedDates">Blocked Dates</a></li>
 @endif
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>

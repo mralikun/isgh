@@ -10,8 +10,8 @@ class AdBlockedDates extends Model {
 
     protected $fillable= ["id","friday_id","ad_id"];
 
-    public static function addBlockedDates($fridays , $user_id , $role){
-         $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->wheredirector_id($user_id)->first();
+    public static function addBlockedDates($fridays , $user_id){
+         $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->whereid($user_id)->first();
 
         $khateeb_row = AdBlockedDates::whereic_id($user_id)->first();
         /**
@@ -30,7 +30,7 @@ class AdBlockedDates extends Model {
             foreach($fridays as $friday){
                 // ksf abbreviation to khateeb selected fridays
                 $ksf = new AdBlockedDates();
-                $ksf->ic_id = $islamicCenter_With_DirectorData->id ;
+                $ksf->ic_id = $user_id ;
                 $ksf->friday_id = $friday ;
                 $ksf->cycle_id = $cycle_id ;
                 $ksf->save() ;
@@ -47,7 +47,7 @@ class AdBlockedDates extends Model {
             // Add new records to the database
             foreach($fridays as $friday){
                 $abd = new AdBlockedDates();
-                $abd->ic_id =  $islamicCenter_With_DirectorData->id ;
+                $abd->ic_id = $user_id ;
                 $abd->friday_id = $friday ;
                 $abd->cycle_id = $cycle_id ;
                 $abd->save() ;

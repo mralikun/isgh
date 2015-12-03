@@ -71,7 +71,15 @@ Route::get("/admin/startNewCycle/{date}/{months}",'AdminController@start_New_Cyc
 
 // routes related to User
 // route for creating getting blocked dates
-Route::get('/user/dates', 'UserController@getIslamicCenterBlockedDates');
+Route::get('/user/dates', 'UserController@AvailableDates');
+
+// routes related to User
+// route for creating getting blocked dates
+Route::get('/user/BlockedDates', 'UserController@getIslamicCenterBlockedDates');
+
+// routes related to User
+// route for creating getting blocked dates
+Route::post('/user/setBlockedDates/{id}', 'UserController@setIslamicCenterBlockedDates');
 
 // route for creating getting rating page
 Route::get('/user/rating', 'UserController@getRatingPage');
@@ -91,7 +99,10 @@ Route::post('/user/startRate', 'UserController@startRate');
 //route for submitting a rate
 Route::post('/user/rate', 'UserController@addRate');
 
-// choosing
+// choosing available dates for both ad / khateeb
+Route::post('/user/setAvailableDates', 'UserController@setDates');
+
+// choosing the date ad wants to say khutbah
 Route::post('/user/setAvailableDates', 'UserController@setDates');
 
 Route::get("/when",function(){
@@ -99,14 +110,3 @@ Route::get("/when",function(){
     return $schedule->startSchedule(2);
 });
 
-
-        modified:   
-        modified:   app/IslamicCenter.php
-        modified:   app/Khateeb.php
-        modified:   app/Khateebselectedfridays.php
-        modified:   app/Rating.php
-        modified:   database/migrations/2015_10_19_121133_create_rating_table.ph
-p
-        modified:   database/migrations/2015_10_20_114045_create_islamic_center_
-table.php
-        modified:   database/seeds/DatabaseSeeder.php

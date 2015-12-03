@@ -6,7 +6,7 @@
 <li><a href="/user/dates">Available Dates</a></li>
 @if($role == 3)
 <!-- We will change this link href for a new route -->
-<li><a href="#">Blocked Dates</a></li>
+<li><a href="/user/BlockedDates">Blocked Dates</a></li>
 @endif
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
@@ -58,7 +58,7 @@ Blocked Dates
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
    <!-- The value of this input is the ID of the islamic center! -->
-   <input type="text" style="display:none;" name="ic" value="6">
+   <input type="text" style="display:none;" name="ic" value="{{$islamic_center->id}}">
     <div class="dates-calendar">
        @foreach($fridays as $friday)
        @if(in_array($friday->id , $choosen))
