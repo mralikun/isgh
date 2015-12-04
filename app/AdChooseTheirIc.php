@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class AdChooseTheirIc extends Model {
 
@@ -31,6 +32,46 @@ class AdChooseTheirIc extends Model {
             return $fridays_available= Fridays::wherecycle_id($cycle_id)->whereNotIn('id', $fridays_his_islamic_center)->select("id")->get();
         }
 
+    }
+
+
+    public static function AddFridays($fridays){
+        $cycle = cycle::latest()->first();
+        $cycle_id = $cycle->id;
+        $user_id = Auth::user()->user_id ;
+        $ad_choose_fridays = AdChooseTheirIc::wherecycle_id($cycle_id)->wheread_id($user_id)->count();
+
+        if($ad_choose_fridays == 0){
+
+            foreach($fridays as $friday){
+                // ksf abbreviation to khateeb selected fridays
+                $ksf = new AdChooseTheirIc();
+                $ksf->$ad_id = $user_id ;
+                $ksf->friday_id = $friday ;
+                $ksf->cycle_id = $cycle_id ;
+                $ksf->save() ;
+            }
+            return "true";
+        }elseif($ad_choose_fridays > 0){
+
+            // get all Selected Fridays
+                $ad_choosen_dates = AdChooseTheirIc::wherecycle_id($cycle_id)->whereic_id($user_id)->select("id")->get();
+            // Remove all fridays for this khateeb in this cycle
+                foreach($ad_choosen_dates as $abd){
+                    AdChooseTheirIc::whereid($abd->id)->delete();
+                }
+            // Add new records to the database
+                foreach($fridays as $friday){
+                    $abd = new AdChooseTheirIc();
+                    $abd->$ad_id = $user_id ;
+                    $abd->friday_id = $friday ;
+                    $abd->cycle_id = $cycle_id ;
+                    $abd->save() ;
+                }
+            return "true";
+        }else{
+            return "false";
+        }
 
     }
 

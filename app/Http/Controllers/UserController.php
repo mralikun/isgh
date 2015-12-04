@@ -138,7 +138,7 @@ class UserController extends Controller {
 	public function GiveKhutbahInOtherIC(){
         $user_data = User::getUserData(Auth::user()->user_id , 3);
         $name = $user_data->name ;
-        
+
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
@@ -311,5 +311,10 @@ class UserController extends Controller {
             return $result = Khateebselectedfridays::addAvailableDates(Input::get("dates"),$user_id,$role);
         }
 
+    }
+
+
+    public function same_islamic_center(){
+        return AdChooseTheirIc::AddFridays(Input::get("Fridays"));
     }
 }
