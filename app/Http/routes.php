@@ -102,8 +102,12 @@ Route::post('/user/rate', 'UserController@addRate');
 // choosing available dates for both ad / khateeb
 Route::post('/user/setAvailableDates', 'UserController@setDates');
 
-// choosing the date ad wants to say khutbah
-Route::post('/user/setAvailableDates', 'UserController@setDates');
+// return ad want to give khutbah in his own islamic center
+Route::get("/user/ad/same_islamic_center",'UserController@GiveKhutbahInMyIC');
+
+// return ad want to give khutbah in his other islamic centers
+Route::get("/user/ad/other_islamic_centers",'UserController@GiveKhutbahInOtherIC');
+
 
 Route::get("/when",function(){
     $schedule = new \App\Schedule;

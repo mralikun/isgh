@@ -119,6 +119,28 @@ class UserController extends Controller {
     }
 
     /**
+     * @return \Illuminate\View\View user Give Khutbah In My IC
+     */
+	public function GiveKhutbahInMyIC(){
+        $cycle = cycle::latest()->first();
+        $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
+        $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
+        $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
+        return view("user.ad_same_ic");
+    }
+
+    /**
+     * @return \Illuminate\View\View user Give Khutbah In My IC
+     */
+	public function GiveKhutbahInOtherIC(){
+        $cycle = cycle::latest()->first();
+        $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
+        $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
+        $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
+        return view("user.ad_other_ics");
+    }
+
+    /**
      * @param null $id
      * @return \Illuminate\View\View
      * if user trying to edit his profile it's okay get the user_id and role_id and return his data
