@@ -122,22 +122,28 @@ class UserController extends Controller {
      * @return \Illuminate\View\View user Give Khutbah In My IC
      */
 	public function GiveKhutbahInMyIC(){
+        $user_data = User::getUserData(Auth::user()->user_id , 3);
+        $name = $user_data->name ;
+
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
-        $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
+        $fridays_choosen = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
         $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
-        return view("user.ad_same_ic");
+        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic"));
     }
 
     /**
      * @return \Illuminate\View\View user Give Khutbah In My IC
      */
 	public function GiveKhutbahInOtherIC(){
+        $user_data = User::getUserData(Auth::user()->user_id , 3);
+        $name = $user_data->name ;
+        
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
-        $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
-        return view("user.ad_other_ics");
+        $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
+        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic"));
     }
 
     /**
