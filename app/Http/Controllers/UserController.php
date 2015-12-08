@@ -127,7 +127,9 @@ class UserController extends Controller {
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         $fridays_choosen = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
         $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
-        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic"));
+        $blocked_dates = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Auth::user()->user_id)->select("friday_id")->get();
+
+        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic","blocked_dates"));
     }
 
     /**
@@ -139,9 +141,11 @@ class UserController extends Controller {
 
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
-        $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
-        $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->user_id)->whererole_id(3)->select("friday_id")->get();
-        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic"));
+        $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->select("friday_id")->get();
+        $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
+        $blocked_dates = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Auth::user()->user_id)->select("friday_id")->get();
+
+        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic","blocked_dates"));
     }
 
     /**
