@@ -318,7 +318,7 @@ var ISGH = {
         });
         //  HANDLING CLICK EVENT FOR DATES.
         
-        $(".dates-calendar").on("click" , ".date" , function(e){
+        $(".dates-calendar").on("click" , ".date:not(.reserved)" , function(e){
             
             // handling the view part
             
@@ -348,8 +348,8 @@ var ISGH = {
         //  SELECTS ALL DATES.
         
         $(".select-all").on("click" , function(){
-            $(".dates-calendar input[type='checkbox']").prop("checked" , true);
-            $(".dates-calendar .date").addClass("available").each(function(index , element){
+            $(".dates-calendar .date:not(.reserved) input[type='checkbox']").prop("checked" , true);
+            $(".dates-calendar .date:not(.reserved)").addClass("available").each(function(index , element){
                 var ID = undefined;
                 if($(element).hasClass("date"))
                     ID = parseInt( $(element).attr("id") );
@@ -363,8 +363,8 @@ var ISGH = {
         //  DESELECT ALL DATES
         
         $(".unselect-all").on("click" , function(){
-            $(".dates-calendar input[type='checkbox']").prop("checked" , false);
-            $(".dates-calendar .date").removeClass("available").each(function(index , element){
+            $(".dates-calendar .date:not(.reserved) input[type='checkbox']").prop("checked" , false);
+            $(".dates-calendar .date:not(.reserved)").removeClass("available").each(function(index , element){
                 var ID = undefined;
                 if($(element).hasClass("date"))
                     ID = parseInt( $(element).attr("id") );
@@ -378,10 +378,10 @@ var ISGH = {
         //  SELECTS ALL UNSELECTED DATES AND DESELECT ALL SELECTED DATES
         
         $(".reverse-select").on("click" , function(){
-            $(".dates-calendar input[type='checkbox']").each(function(index , element){
+            $(".dates-calendar .date:not(.reserved) input[type='checkbox']").each(function(index , element){
                 $(element).prop("checked" , !$(element).prop("checked"));
             });
-            $(".dates-calendar .date").toggleClass("available").each(function(index , element){
+            $(".dates-calendar .date:not(.reserved)").toggleClass("available").each(function(index , element){
                 
                 var ID = undefined;
                 if($(element).hasClass("date"))

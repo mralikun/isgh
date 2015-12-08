@@ -30,6 +30,10 @@ Available Dates
     $choosen = Map($fridays_choosen , function($fr){
         return $fr->friday_id;
     });
+
+    $other_choice = Map($fridays_choosen_my_ic , function($fr){
+        return $fr->friday_id;
+    });
 ?>
 
 <h3>{{$name}}</h3>
@@ -41,7 +45,6 @@ Available Dates
     <button class="btn btn-isgh reverse-select">Reverse Selection</button>
     
 </div>
-
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
@@ -55,7 +58,15 @@ Available Dates
                <input type="checkbox" disabled checked>
             </div>
         </div>
-       @else
+       @elseif(in_array($friday->id , $other_choice))
+        <div class="date reserved" id="{{$friday->id}}">
+            <div class="date-content">
+               <h4>Friday</h4>
+               <h5>{{$friday->date}}</h5>
+               <input type="checkbox" disabled>
+            </div>
+        </div>
+        @else
         <div class="date" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
@@ -63,7 +74,6 @@ Available Dates
                <input type="checkbox" disabled>
             </div>
         </div>
-       
        @endif
        @endforeach
        
