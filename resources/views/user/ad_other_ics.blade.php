@@ -34,10 +34,14 @@ Available Dates
     $other_choice = Map($fridays_choosen_my_ic , function($fr){
         return $fr->friday_id;
     });
+
+    $blocked = Map($blocked_dates , function($fr){
+        return $fr->friday_id;
+    });
 ?>
 
 <h3>{{$name}}</h3>
-
+{{$blocked_dates}}
 <span class="hint"><strong>Choose the dates which you want the system to assign you to give khutbahs <mark>in other Islamic Centers.</mark></strong></span>
 <div class="options">
     
@@ -59,7 +63,7 @@ Available Dates
                <input type="checkbox" disabled checked>
             </div>
         </div>
-       @elseif(in_array($friday->id , $other_choice))
+       @elseif(in_array($friday->id , $other_choice) || in_array($friday->id , $blocked))
         <div class="date reserved" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>

@@ -28,8 +28,27 @@ Rating
     @endif
 </div>
 
-<div id="allUsers">
+<div id="allUsers" ng-controller="RatingController as RC">
    <input type="hidden" name="_token" value="{{csrf_token()}}">
+   <div class="row rating-row" ng-repeat="u in current_page_data">
+       
+       <div class="col-sm-7 col-md-7 col-lg-7">
+           <div class="row">
+               <div class="col-sm-4 col-md-4 col-lg-4">
+                   <img src="/images/khateeb_pictures/[[u.picture_url]]" class="img-responsive rating-img">
+               </div>
+               <div class="col-sm-8 col-md-8 col-lg-8">
+                   <h3 class="rating-name">[[u.name]]</h3>
+               </div>
+           </div>
+       </div>
+       
+       <div class="col-sm-4 col-md-4 col-lg-4 stars" id="[[u.id]]" data-rating="[[u.khateeb_rate_ad || u.ad_rate_khateeb]]"></div>
+<!--       <span class="col-sm-1 col-md-1 col-lg-1"></span>-->
+   </div>
+   <div class="text-center">
+       <button class="btn btn-isgh" ng-click="prev()" ng-disabled="page == 1"><< Prev</button><button class="btn btn-isgh" ng-click="next()" ng-disabled="page == pages_num">Next >></button>
+   </div>
 </div>
 
 @stop

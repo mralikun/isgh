@@ -69,6 +69,7 @@
         <script src="/assets/js/core/angular-messages.min.js"></script>
         <script src="/assets/js/controllers/user.js"></script>
         <script src="/assets/js/controllers/islamicCenter.js"></script>
+        <script src="/assets/js/controllers/RatingController.js"></script>
         <script>
         
             ISGH.init();
