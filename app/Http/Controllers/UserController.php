@@ -84,19 +84,23 @@ class UserController extends Controller {
         if(Auth::user()->role_id == 3) {
             $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id($user_id)->select("friday_id")->get();
 
+
+            $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->select("friday_id")->get();
+            $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
+
             // if this ad have islamic center attached to him then get the id and the name
             $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
 
             if(empty($islamic_center_data)){
                 // here ad doesnot attached to islamic center
                 $islamic_center_existence = false ;
-                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence"));
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic"));
             }else{
                 //else this ad is attached to islamic center return that it's already exists
                 $islamic_center_existence = true ;
                 $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
 
-                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence"));
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic"));
             }
         }
     }
