@@ -33,6 +33,7 @@ Available Dates
 ?>
 
 <h3>{{$name}}</h3>
+{{$choosen}}
 <span class="hint"><strong>Choose the dates which you want the system to assign you to give khutbahs <mark>in other Islamic Centers.</mark></strong></span>
 <div class="options">
     
