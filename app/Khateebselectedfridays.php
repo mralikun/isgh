@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cycle;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Khateebselectedfridays extends Model {
@@ -16,6 +17,9 @@ class Khateebselectedfridays extends Model {
      * add available dates to khateeb
      */
     public static function addAvailableDates($fridays , $user_id , $role){
+
+        $user = User::whereuser_id($user_id)->whererole_id($role)->first();
+        $user_id =$user->id ;
         $khateeb_row = Khateebselectedfridays::wherekhateeb_id($user_id)->first();
         /**
          * Now i will get the running cycle
@@ -32,7 +36,7 @@ class Khateebselectedfridays extends Model {
             foreach($fridays as $friday){
                 // ksf abbreviation to khateeb selected fridays
                 $ksf = new Khateebselectedfridays();
-                $ksf->khateeb_id = $user_id ;
+                $ksf->khateeb_id = Auth::user()->id ;
                 $ksf->role_id = $role ;
                 $ksf->friday_id = $friday ;
                 $ksf->cycle_id = $cycle_id ;
@@ -49,7 +53,7 @@ class Khateebselectedfridays extends Model {
             // Add new records to the database
             foreach($fridays as $friday){
                 $ksf = new Khateebselectedfridays();
-                $ksf->khateeb_id = $user_id ;
+                $ksf->khateeb_id = Auth::user()->id ;
                 $ksf->role_id = $role ;
                 $ksf->friday_id = $friday ;
                 $ksf->cycle_id = $cycle_id ;

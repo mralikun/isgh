@@ -42,11 +42,10 @@ class AdChooseTheirIc extends Model {
         $ad_choose_fridays = AdChooseTheirIc::wherecycle_id($cycle_id)->wheread_id($user_id)->count();
 
         if($ad_choose_fridays == 0){
-
             foreach($fridays as $friday){
                 // ksf abbreviation to khateeb selected fridays
                 $ksf = new AdChooseTheirIc();
-                $ksf->$ad_id = $user_id ;
+                $ksf->ad_id = $user_id ;
                 $ksf->friday_id = $friday ;
                 $ksf->cycle_id = $cycle_id ;
                 $ksf->save() ;
@@ -55,7 +54,7 @@ class AdChooseTheirIc extends Model {
         }elseif($ad_choose_fridays > 0){
 
             // get all Selected Fridays
-                $ad_choosen_dates = AdChooseTheirIc::wherecycle_id($cycle_id)->whereic_id($user_id)->select("id")->get();
+                $ad_choosen_dates = AdChooseTheirIc::wherecycle_id($cycle_id)->wheread_id($user_id)->select("id")->get();
             // Remove all fridays for this khateeb in this cycle
                 foreach($ad_choosen_dates as $abd){
                     AdChooseTheirIc::whereid($abd->id)->delete();
@@ -63,7 +62,7 @@ class AdChooseTheirIc extends Model {
             // Add new records to the database
                 foreach($fridays as $friday){
                     $abd = new AdChooseTheirIc();
-                    $abd->$ad_id = $user_id ;
+                    $abd->ad_id = $user_id ;
                     $abd->friday_id = $friday ;
                     $abd->cycle_id = $cycle_id ;
                     $abd->save() ;

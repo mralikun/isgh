@@ -35,15 +35,13 @@ class UserController extends Controller {
         $name = $user_data->name ;
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
-         if(Auth::user()->role_id == 2) {
-            $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->whererole_id($role)->select("friday_id")->get();
-        }
 
         if(Auth::user()->role_id == 2){
+            $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id($role)->select("friday_id")->get();
             return view("user.available_dates",compact("name","role","fridays","fridays_choosen"));
         }elseif(Auth::user()->role_id == 3){
             // return selected fridays to give khutbah in any other islamic center
-                $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id($user_id)->whererole_id($role)->select("friday_id")->get();
+                $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id($role)->select("friday_id")->get();
 
             // Return choosen fridays that Ad will to give khutbah in
                 $fridays_Ad_want_to_give_Khutbah_in = AdChooseTheirIc::getChoosenFridays($user_id , $cycle->id);
@@ -266,11 +264,11 @@ class UserController extends Controller {
     public function startRate(){
         switch(Auth::user()->role_id){
             case 2 :
-                $khateeb_id = Auth::user()->user_id ;
+                $khateeb_id = Auth::user()->id ;
                 return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null and name !=''");
                 break;
             case 3 :
-                $ad_id = Auth::user()->user_id ;
+                $ad_id = Auth::user()->id ;
                 return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null and name !='' ");
                 break ;
             default:
@@ -315,6 +313,6 @@ class UserController extends Controller {
 
 
     public function same_islamic_center(){
-        return AdChooseTheirIc::AddFridays(Input::get("Fridays"));
+        return AdChooseTheirIc::AddFridays(Input::get("dates"));
     }
 }

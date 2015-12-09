@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cycle;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Rating extends Model {
@@ -28,7 +29,7 @@ class Rating extends Model {
                 * check if khateeb_id and ad_id is already added
                 */
                 // until getting cycle id
-                $check_exsitence = Rating::where("ad_id","=",$rated_user)->where("khateeb_id","=",$user_who_rate_id)->latest()->first();
+                $check_exsitence = Rating::where("ad_id","=",$rated_user)->where("khateeb_id","=",User::getWhateveruser_id_from_user_table($user_who_rate_id,2))->latest()->first();
 
                 if(!empty($check_exsitence)){
                     $rate = Rating::whereid($check_exsitence->id)->first();
@@ -41,7 +42,7 @@ class Rating extends Model {
                 $cycle_id= $cycle->id ;
 
                 $rate->ad_id = $rated_user ;
-                $rate->khateeb_id = $user_who_rate_id ;
+                $rate->khateeb_id =  User::getWhateveruser_id_from_user_table($user_who_rate_id,2) ;
                 $rate->khateeb_rate_ad = $rate_id ;
                 $rate->cycle_id = $cycle_id ;
                 $rate->distance = $distance ;
@@ -53,6 +54,7 @@ class Rating extends Model {
 
                 break;
             case 3 :
+                // now i'm ad going to rate khateeb
 
                 $khateeb = Khateeb::whereid($rated_user)->first();
                 $khateeb_address = $khateeb->post_code ;
@@ -64,18 +66,17 @@ class Rating extends Model {
                 $distance = json_decode($data)->rows[0]->elements[0]->distance->value;
 
                 // until getting cycle id
-                    $check_exsitence = Rating::where("ad_id","=",$user_who_rate_id)->where("khateeb_id","=",$rated_user)->latest()->first();
+                    $check_exsitence = Rating::where("ad_id","=",$user_who_rate_id)->where("khateeb_id","=",User::getWhateveruser_id_from_user_table($rated_user,2))->latest()->first();
                 // here we determined that ad is trying to rate khateeb
-                if(!empty($check_exsitence)){
-                    $rate = Rating::whereid($check_exsitence->id)->first();
-                }else{
-                    $rate = new Rating();
-                }
+                    if(!empty($check_exsitence)){
+                        $rate = Rating::whereid($check_exsitence->id)->first();
+                    }else{
+                        $rate = new Rating();
+                    }
                 $cycle = cycle::latest()->first();
                 $cycle_id= $cycle->id ;
-
                 $rate->ad_id =  $user_who_rate_id;
-                $rate->khateeb_id =  $rated_user;
+                $rate->khateeb_id =  User::getWhateveruser_id_from_user_table($rated_user,2);
                 $rate->ad_rate_khateeb = $rate_id ;
                 $rate->cycle_id = $cycle_id ;
                 $rate->distance = $distance ;
@@ -97,9 +98,30 @@ class Rating extends Model {
      *  return khateebs gived this islamic center 7 and islamic center gived them 7
      */
     public static function Get_all_khateebs_givied_Islamic_Center_7($islamic_center_id , $khateebs_available){
-        // return The ad of the islamic center to get the rating
+
+         // return The ad of the islamic center to get the rating
         $ad_id = IslamicCenter::whereid($islamic_center_id)->select("director_id")->first();
         $ad_id = $ad_id->director_id ;
+        $user = User::whereuser_id($ad_id)->whererole_id(3)->first();
+        $user_id = $user->id ;
+
+        // get the current cycle
+        $cycle = cycle::latest()->first();
+        $cycle_id = $cycle->id;
+
+        // check if this islamic center ad choosed this friday to give khutbah in it
+        $ad_choose_fridays = AdChooseTheirIc::wherecycle_id($cycle_id)->wheread_id($ad_id)->wherefriday_id(Schedule::$current_friday)->get();
+        $count = count($ad_choose_fridays);
+
+        $schedule = new Schedule() ;
+        // if we found that he choosed this friday in this cycle to give khutbah in his islamic center
+        if($count!=0){
+            $assign = ["friday_id"=>Schedule::$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$user_id,"role_id"=>3 ];
+            array_push(Schedule::$schedule,$assign) ;
+           // $schedule->remove_khateeb_from_current_khateebs($ad_id);
+            Schedule::update_Islamic_Center_Available_Places($islamic_center_id,1);
+            $schedule->remove_khateeb_from_current_khateebs($user_id);
+        }
 
         $khateebs_available = Schedule::return_array($khateebs_available , "khateeb_id");
 
@@ -123,6 +145,7 @@ class Rating extends Model {
              * another khateeb from the available khateebs gave this islamic center 7-7 and lower distance
              * check how many available places in this islamic center
              */
+
            Khateeb::Check_Khateeb_Gave_7_To_IslamicCenter($ad_id , $khateebs_available);
 
         }else{

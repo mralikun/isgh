@@ -109,10 +109,12 @@ Route::get("/user/ad/same_islamic_center",'UserController@GiveKhutbahInMyIC');
 Route::get("/user/ad/other_islamic_centers",'UserController@GiveKhutbahInOtherIC');
 
 // here ad choose some fridays to give khutbah in his own islamic center
-Route::post('/user/ad/same_islamic_center', 'UserController@same_islamic_center');
+Route::post('/user/adSameIslamicCenter', 'UserController@same_islamic_center');
+
+// here ad choose some fridays to give khutbah in his own islamic center
+Route::post('/user/adOtherIslamicCenters', 'UserController@setDates');
 
 Route::get("/when",function(){
     $schedule = new \App\Schedule;
-    return $schedule->startSchedule(2);
+    return $schedule->start();
 });
-

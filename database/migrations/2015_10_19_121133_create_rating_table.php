@@ -31,7 +31,7 @@ class CreateRatingTable extends Migration {
 
         Schema::table('rating', function(Blueprint $table)
         {
-            $table->foreign("khateeb_id")->references("id")->on("khateeb")->onDelete("cascade");
+            $table->foreign("khateeb_id")->references("id")->on("users")->onDelete("cascade");
         });
 
         Schema::table('rating', function(Blueprint $table)

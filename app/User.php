@@ -196,6 +196,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 break ;
         }
     }
+    /**
+     * @param $user_id
+     * @param $role_id
+     * @return mixed
+     * return user data used in all controllers
+     */
+    public static function getWhateveruser_id_from_user_table($id , $role_id){
+        $user = User::whereuser_id($id)->whererole_id($role_id)->first();
+        return $user->id ;
+    }
 
     /**
      * @param $email

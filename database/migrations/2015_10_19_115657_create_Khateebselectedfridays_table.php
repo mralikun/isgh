@@ -24,7 +24,7 @@ class CreateKhateebselectedfridaysTable extends Migration {
 
         Schema::table('Khateebselectedfridays', function(Blueprint $table)
         {
-            $table->foreign("khateeb_id")->references("id")->on("khateeb")->onDelete("cascade");
+            $table->foreign("khateeb_id")->references("id")->on("users")->onDelete("cascade");
         });
 
         Schema::table('Khateebselectedfridays', function(Blueprint $table)

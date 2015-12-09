@@ -114,6 +114,7 @@ class Khateeb extends Model {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static function Check_Khateeb_Gave_7_To_IslamicCenter($ad_id , $khateebs_available){
+
         $Available_Khateebs_For_This_IC = [];
 
         foreach($khateebs_available as $khateeb){
@@ -121,35 +122,44 @@ class Khateeb extends Model {
             $rules = ["ad_rate_khateeb"=>7 ,"khateeb_rate_ad"=>7 ];
 
             // here get me the distance between current khateeb and current islamic center
-                $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->first();
+
+            if($distance_between_khateeb_islamicCenter != null){
                 $current_distance = $distance_between_khateeb_islamicCenter->distance ;
 
-            // now get me the islamic center this khateeb give and take 7-7 ordered by distance
+                // now get me the islamic center this khateeb give and take 7-7 ordered by distance
                 $data = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"!=", $ad_id)->where($rules)->orderBy("distance","asc")->first();
 
-            // now i will check if associated islamic center not blocked this friday
-            if(!empty($data)){
-                $distance_other_ic = $data->distance ;
-                // check the distance with current ic with distance with the lowest distance
-                // if current distance less than or equal $distance_other_ic then apply matching
+                // now i will check if associated islamic center not blocked this friday
+                if(!empty($data)){
+                    $distance_other_ic = $data->distance ;
+                    // check the distance with current ic with distance with the lowest distance
+                    // if current distance less than or equal $distance_other_ic then apply matching
                     if($current_distance <= $distance_other_ic){
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($Available_Khateebs_For_This_IC, $khateeb);
+                        }
+                    }
+                    // else if current distance larger than $distance_other_ic then do not apply the matching process
+                }else{
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true){
                         array_push($Available_Khateebs_For_This_IC,$khateeb);
                     }
-                // else if current distance larger than $distance_other_ic then do not apply the matching process
-            }else{
-                array_push($Available_Khateebs_For_This_IC,$khateeb);
+                }
             }
+
         }
 
         // no khateebs available could be added because they have another islamic centers with the same rating 7-7 but lower distance
         if(!empty($Available_Khateebs_For_This_IC)){
 
             /**
-             * know we have our array of available khateebs and we can add them to the array of assignment but we still need to check current places available in this0
+             * now we have our array of available khateebs and we can add them to the array of assignment but we still need to check current places available in this0
              * current islamic center
              */
-            $islamic_center_available_places = IslamicCenter::wheredirector_id($ad_id)->select("id","speech_num")->first();
-            $ic_id_available_places = $islamic_center_available_places->speech_num ;
+            $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
+            $ic_id_available_places = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
+
 
             // now i'm going to check how many khateebs i have and start assignment proccess
             $count = count($Available_Khateebs_For_This_IC);
@@ -161,11 +171,12 @@ class Khateeb extends Model {
                 $current_friday = Schedule::$current_friday ;
                 // loop and assign , count may be 5 and available places only 3
                 $schedule = new Schedule();
+
                for($i = 0 ; $i < $ic_id_available_places ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$Available_Khateebs_For_This_IC[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$Available_Khateebs_For_This_IC[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($Available_Khateebs_For_This_IC[$i]);
-                    Schedule::update_Islamic_Center_Available_Places($islamic_center_available_places->id,1);
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                 }
 
             }elseif($count == $ic_id_available_places){
@@ -174,10 +185,10 @@ class Khateeb extends Model {
                 // loop and assign
                     $schedule = new Schedule();
                     foreach($Available_Khateebs_For_This_IC as $khateeb){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                         array_push(Schedule::$schedule,$assign) ;
                         $schedule->remove_khateeb_from_current_khateebs($khateeb);
-                        Schedule::update_Islamic_Center_Available_Places($islamic_center_available_places->id,1);
+                        Schedule::update_Islamic_Center_Available_Places($islamic_center_available_places,1);
                     }
             }else{
                 // here we are lower than what we want now i have to add what i have in the
@@ -187,22 +198,22 @@ class Khateeb extends Model {
                     $current_friday = Schedule::$current_friday ;
                     $schedule = new Schedule();
                     for($i = 0 ; $i < $count ; $i++){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$Available_Khateebs_For_This_IC[$i] ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$Available_Khateebs_For_This_IC[$i] ];
                         array_push(Schedule::$schedule,$assign) ;
                         $schedule->remove_khateeb_from_current_khateebs($Available_Khateebs_For_This_IC[$i]);
                     }
 
                 // second reduce available places in islamic center by the count
-                    Schedule::update_Islamic_Center_Available_Places($islamic_center_available_places->id,$count);
+                    Schedule::update_Islamic_Center_Available_Places($islamic_center_available_places,$count);
 
                 // how much khateebs we need in the next step
                     $remainder = $ic_id_available_places-$count ;
 
                 // here i will search in the other khateebs within my static variable khateebs after removing added
-                    return self::Get_Khateebs_Gave_this_Islamic_Center_4_7($ad_id , $remainder );
+                    self::Get_Khateebs_Gave_this_Islamic_Center_4_7($ad_id , $remainder );
             }
         }else{
-            return self::Get_Khateebs_Gave_this_Islamic_Center_4_7($ad_id );
+            self::Get_Khateebs_Gave_this_Islamic_Center_4_7($ad_id );
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,8 +229,8 @@ class Khateeb extends Model {
     public static function Get_Khateebs_Gave_this_Islamic_Center_4_7($ad_id ,$remainder = null ){
 
         if(is_null($remainder)){
-            $islamic_center_available_places = IslamicCenter::wheredirector_id($ad_id)->select("id","speech_num")->first();
-            $remainder = $islamic_center_available_places->speech_num ;
+            $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
+            $remainder = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
         }
 
         $shortest_khateebs_to_islamic_center = [];
@@ -228,45 +239,56 @@ class Khateeb extends Model {
         $khateebs = Schedule::return_array(Schedule::$khateebs , "khateeb_id");
 
         foreach($khateebs as $khateeb){
+
             $rules = ["ad_rate_khateeb"=>[4-7] ,"khateeb_rate_ad"=>[4,7] ];
 
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
+
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
-            $distance = $distance_between_khateeb_islamicCenter->distance ;
+            if($distance_between_khateeb_islamicCenter != null) {
+                $distance = $distance_between_khateeb_islamicCenter->distance;
 
-            // now get me all khateebs gave any other islamic center 4-6 and islamic center gave him 4-6 but not 7 - 7
-            $data = DB::table('rating')
-                                        ->where('khateeb_id',"=", $khateeb)
-                                        ->where("ad_id" ,"!=", $ad_id)
-                                        ->whereBetween('khateeb_rate_ad', array(4,7))
-                                        ->whereBetween('ad_rate_khateeb', array(4,7))->
-                                            where(function($query)
-                                            {
-                                                $query->where('khateeb_rate_ad', '!=', 7)
-                                                        ->orWhere('ad_rate_khateeb', '!=', 7);
-                                            })->orderBy("distance","asc")->first();
 
-            // now check if minimum path to islamic center and not to his islamic center
-            if(!empty($data)){
-                $distance_new_islamic_center = $data->distance ;
-                /**
-                | if $distance < $distance_new_islamic_center then this islamic center best for him
-                | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
-                 */
-                if($distance <= $distance_new_islamic_center){
-                    array_push($shortest_khateebs_to_islamic_center,$khateeb);
-                }else{
-                    array_push($shortest_khateebs_to_islamic_center_alternative,$khateeb);
+                // now get me all khateebs gave any other islamic center 4-6 and islamic center gave him 4-6 but not 7 - 7
+                $data = DB::table('rating')
+                    ->where('khateeb_id', "=", $khateeb)
+                    ->where("ad_id", "!=", $ad_id)
+                    ->whereBetween('khateeb_rate_ad', array(4, 7))
+                    ->whereBetween('ad_rate_khateeb', array(4, 7))->
+                    where(function ($query) {
+                        $query->where('khateeb_rate_ad', '!=', 7)
+                            ->orWhere('ad_rate_khateeb', '!=', 7);
+                    })->orderBy("distance", "asc")->first();
+
+                // now check if minimum path to islamic center and not to his islamic center
+                if (!empty($data)) {
+                    $distance_new_islamic_center = $data->distance;
+                    /**
+                     * | if $distance < $distance_new_islamic_center then this islamic center best for him
+                     * | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
+                     */
+                    if ($distance <= $distance_new_islamic_center) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center, $khateeb);
+                        }
+                    } else {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center_alternative, $khateeb);
+                        }
+
+                    }
                 }
             }
         }
 
         if(!empty($shortest_khateebs_to_islamic_center)){
+
             // count available khateebs
                 $count = count($shortest_khateebs_to_islamic_center);
             // if the array have alot of records i only want some of them
                 if($count < $remainder){
+
                     // here we are lower than what we want now i have to add what i have in the
                     // know i will go to 4-7 and make same process
                     // get data and assiging khateebs rated this islamic center from 1-3 and he rated the from 1-3
@@ -275,10 +297,10 @@ class Khateeb extends Model {
                     $schedule = new Schedule();
 
                     for($i = 0 ; $i < $count ; $i++){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                         array_push(Schedule::$schedule,$assign) ;
                         // second reduce available places in islamic center by the count
-                        Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                        Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                         $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
                     }
 
@@ -290,32 +312,36 @@ class Khateeb extends Model {
                     self::Get_Khateebs_Gave_Islamic_Center_7_1_and_ic_7_4($ad_id ,$remainder );
 
                 }elseif($count == $remainder){
+
                     // get current friday
                     $current_friday = Schedule::$current_friday ;
                     // loop and assign
                     $schedule = new Schedule();
 
                     foreach($shortest_khateebs_to_islamic_center as $khateeb){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                         array_push(Schedule::$schedule,$assign) ;
                         $schedule->remove_khateeb_from_current_khateebs($khateeb);
                     }
                 // here mean $count > $remainder
                 }else{
+
                     // $count > $remainder array of khateebs more than what i need
                     $current_friday = Schedule::$current_friday ;
                     // loop and assign , count may be 5 and available places only 3
                     $schedule = new Schedule();
 
                     for($i = 0 ; $i < $remainder ; $i++){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id , "khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id) , "khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                         array_push(Schedule::$schedule,$assign) ;
                         $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
-                        Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                        Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                     }
+
                 }
 
         }elseif(!empty($shortest_khateebs_to_islamic_center_alternative)){
+
             // count available khateebs
                 $count = count($shortest_khateebs_to_islamic_center_alternative);
                 // if the array have alot of records i only want some of them
@@ -327,7 +353,7 @@ class Khateeb extends Model {
                     $current_friday = Schedule::$current_friday ;
 
                     for($i = 0 ; $i < $count ; $i++){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$shortest_khateebs_to_islamic_center_alternative[$i] ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$shortest_khateebs_to_islamic_center_alternative[$i] ];
                         array_push(Schedule::$schedule,$assign) ;
                         // second reduce available places in islamic center by the count
                         Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center_alternative[$i],1);
@@ -348,7 +374,7 @@ class Khateeb extends Model {
                     $schedule = new Schedule();
 
                     foreach($shortest_khateebs_to_islamic_center as $khateeb){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                         array_push(Schedule::$schedule,$assign) ;
                         $schedule->remove_khateeb_from_current_khateebs($khateeb);
                     }
@@ -360,10 +386,10 @@ class Khateeb extends Model {
                     $schedule = new Schedule();
 
                     for($i = 0 ; $i < $remainder ; $i++){
-                        $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id , "khateeb id"=>$shortest_khateebs_to_islamic_center_alternative[$i] ];
+                        $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id) , "khateeb_id"=>$shortest_khateebs_to_islamic_center_alternative[$i] ];
                         array_push(Schedule::$schedule,$assign) ;
                         $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center_alternative[$i]);
-                        Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center_alternative[$i],1);
+                        Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                     }
                 }
 
@@ -377,8 +403,8 @@ class Khateeb extends Model {
     private static function Get_Khateebs_Gave_Islamic_Center_7_1_and_ic_7_4($ad_id ,$remainder = null ){
 
         if(is_null($remainder)){
-            $islamic_center_available_places = IslamicCenter::wheredirector_id($ad_id)->select("id","speech_num")->first();
-            $remainder = $islamic_center_available_places->speech_num ;
+            $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
+            $remainder = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
         }
 
         $shortest_khateebs_to_islamic_center = [];
@@ -390,33 +416,40 @@ class Khateeb extends Model {
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
-            $distance = $distance_between_khateeb_islamicCenter->distance ;
+            if($distance_between_khateeb_islamicCenter != null){
+                $distance = $distance_between_khateeb_islamicCenter->distance ;
 
-            // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
-            $data = DB::table('rating')
-                ->where('khateeb_id',"=", $khateeb)
-                ->where("ad_id" ,"!=", $ad_id)
-                ->whereBetween('khateeb_rate_ad', array(1,7))
-                ->whereBetween('ad_rate_khateeb', array(4,7))->
-                where(function($query)
-                {
-                    $query->where('khateeb_rate_ad', '!=', 7)
-                        ->orWhere('ad_rate_khateeb', '!=', 7);
-                })->orderBy("distance","asc")->first();
+                // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
+                $data = DB::table('rating')
+                    ->where('khateeb_id',"=", $khateeb)
+                    ->where("ad_id" ,"!=", $ad_id)
+                    ->whereBetween('khateeb_rate_ad', array(1,7))
+                    ->whereBetween('ad_rate_khateeb', array(4,7))->
+                    where(function($query)
+                    {
+                        $query->where('khateeb_rate_ad', '!=', 7)
+                            ->orWhere('ad_rate_khateeb', '!=', 7);
+                    })->orderBy("distance","asc")->first();
 
-            // now check if minimum path to islamic center and not to his islamic center
-            if(!empty($data)){
-                $distance_new_islamic_center = $data->distance ;
-                /**
-                | if $distance < $distance_new_islamic_center then this islamic center best for him
-                | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
-                 */
-                if($distance <= $distance_new_islamic_center){
-                    array_push($shortest_khateebs_to_islamic_center,$khateeb);
-                }else{
-                    array_push($shortest_khateebs_to_islamic_center_alternative,$data);
+                // now check if minimum path to islamic center and not to his islamic center
+                if(!empty($data)){
+                    $distance_new_islamic_center = $data->distance ;
+                    /**
+                    | if $distance < $distance_new_islamic_center then this islamic center best for him
+                    | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
+                     */
+                    if($distance <= $distance_new_islamic_center){
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center, $khateeb);
+                        }
+                    }else{
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center_alternative, $data);
+                        }
+                    }
                 }
             }
+
         }
 
         if(!empty($shortest_khateebs_to_islamic_center)){
@@ -430,7 +463,7 @@ class Khateeb extends Model {
                 // First here i must assign the khateebs to the islamic center
                 $current_friday = Schedule::$current_friday ;
                 for($i = 0 ; $i < $count ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     // second reduce available places in islamic center by the count
                     Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
@@ -450,7 +483,7 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 foreach($shortest_khateebs_to_islamic_center as $khateeb){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($khateeb);
                 }
@@ -462,13 +495,12 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 for($i = 0 ; $i < $remainder ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id , "khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id) , "khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
-                    Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                 }
             }
-            return Schedule::$islamic_centers ;
         }else{
 
             self::Get_Khateebs_Gave_Islamic_Center_7_1_and_ic_7_1($ad_id,$remainder );
@@ -481,8 +513,8 @@ class Khateeb extends Model {
     private static function Get_Khateebs_Gave_Islamic_Center_7_1_and_ic_7_1($ad_id ,$remainder = null ){
 
         if(is_null($remainder)){
-            $islamic_center_available_places = IslamicCenter::wheredirector_id($ad_id)->select("id","speech_num")->first();
-            $remainder = $islamic_center_available_places->speech_num ;
+            $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
+            $remainder = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
         }
 
         $shortest_khateebs_to_islamic_center = [];
@@ -494,31 +526,37 @@ class Khateeb extends Model {
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
-            $distance = $distance_between_khateeb_islamicCenter->distance ;
+            if($distance_between_khateeb_islamicCenter != null){
+                $distance = $distance_between_khateeb_islamicCenter->distance ;
 
-            // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
-            $data = DB::table('rating')
-                ->where('khateeb_id',"=", $khateeb)
-                ->where("ad_id" ,"!=", $ad_id)
-                ->whereBetween('khateeb_rate_ad', array(1,7))
-                ->whereBetween('ad_rate_khateeb', array(1,7))->
-                where(function($query)
-                {
-                    $query->where('khateeb_rate_ad', '!=', 7)
-                        ->orWhere('ad_rate_khateeb', '!=', 7);
-                })->orderBy("distance","asc")->first();
+                // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
+                $data = DB::table('rating')
+                    ->where('khateeb_id',"=", $khateeb)
+                    ->where("ad_id" ,"!=", $ad_id)
+                    ->whereBetween('khateeb_rate_ad', array(1,7))
+                    ->whereBetween('ad_rate_khateeb', array(1,7))->
+                    where(function($query)
+                    {
+                        $query->where('khateeb_rate_ad', '!=', 7)
+                            ->orWhere('ad_rate_khateeb', '!=', 7);
+                    })->orderBy("distance","asc")->first();
 
-            // now check if minimum path to islamic center and not to his islamic center
-            if(!empty($data)){
-                $distance_new_islamic_center = $data->distance ;
-                /**
-                | if $distance < $distance_new_islamic_center then this islamic center best for him
-                | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
-                 */
-                if($distance <= $distance_new_islamic_center){
-                    array_push($shortest_khateebs_to_islamic_center,$khateeb);
-                }else{
-                    array_push($shortest_khateebs_to_islamic_center_alternative,$data);
+                // now check if minimum path to islamic center and not to his islamic center
+                if(!empty($data)){
+                    $distance_new_islamic_center = $data->distance ;
+                    /**
+                    | if $distance < $distance_new_islamic_center then this islamic center best for him
+                    | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
+                     */
+                    if($distance <= $distance_new_islamic_center){
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center, $khateeb);
+                        }
+                    }else{
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center_alternative, $data);
+                        }
+                    }
                 }
             }
         }
@@ -534,7 +572,7 @@ class Khateeb extends Model {
                 // First here i must assign the khateebs to the islamic center
                 $current_friday = Schedule::$current_friday ;
                 for($i = 0 ; $i < $count ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     // second reduce available places in islamic center by the count
                     Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
@@ -553,7 +591,7 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 foreach($shortest_khateebs_to_islamic_center as $khateeb){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($khateeb);
                 }
@@ -565,13 +603,13 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 for($i = 0 ; $i < $remainder ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id , "khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id) , "khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
-                    Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                 }
+
             }
-            return Schedule::$islamic_centers ;
         }else{
 
             self::Get_Khateebs_Gave_Islamic_Center_0_7($ad_id,$remainder);
@@ -580,9 +618,10 @@ class Khateeb extends Model {
 
 
     private static function Get_Khateebs_Gave_Islamic_Center_0_7($ad_id , $remainder = null){
+
         if(is_null($remainder)){
-            $islamic_center_available_places = IslamicCenter::wheredirector_id($ad_id)->select("id","speech_num")->first();
-            $remainder = $islamic_center_available_places->speech_num ;
+            $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
+            $remainder = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
         }
 
         $shortest_khateebs_to_islamic_center = [];
@@ -594,33 +633,40 @@ class Khateeb extends Model {
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
-            $distance = $distance_between_khateeb_islamicCenter->distance ;
+            if($distance_between_khateeb_islamicCenter != null){
+                $distance = $distance_between_khateeb_islamicCenter->distance ;
 
-            // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
-            $data = DB::table('rating')
-                ->where('khateeb_id',"=", $khateeb)
-                ->where("ad_id" ,"!=", $ad_id)
-                ->whereBetween('khateeb_rate_ad', array(0,7))
-                ->where('ad_rate_khateeb',"=", 0)->
-                where(function($query)
-                {
-                    $query->where('khateeb_rate_ad', '!=', 7)
-                        ->orWhere('ad_rate_khateeb', '!=', 7);
-                })->orderBy("distance","asc")->first();
+                // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
+                $data = DB::table('rating')
+                    ->where('khateeb_id',"=", $khateeb)
+                    ->where("ad_id" ,"!=", $ad_id)
+                    ->whereBetween('khateeb_rate_ad', array(0,7))
+                    ->where('ad_rate_khateeb',"=", 0)->
+                    where(function($query)
+                    {
+                        $query->where('khateeb_rate_ad', '!=', 7)
+                            ->orWhere('ad_rate_khateeb', '!=', 7);
+                    })->orderBy("distance","asc")->first();
 
-            // now check if minimum path to islamic center and not to his islamic center
-            if(!empty($data)){
-                $distance_new_islamic_center = $data->distance ;
-                /**
-                | if $distance < $distance_new_islamic_center then this islamic center best for him
-                | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
-                 */
-                if($distance <= $distance_new_islamic_center){
-                    array_push($shortest_khateebs_to_islamic_center,$khateeb);
-                }else{
-                    array_push($shortest_khateebs_to_islamic_center_alternative,$data);
+                // now check if minimum path to islamic center and not to his islamic center
+                if(!empty($data)){
+                    $distance_new_islamic_center = $data->distance ;
+                    /**
+                    | if $distance < $distance_new_islamic_center then this islamic center best for him
+                    | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
+                     */
+                    if($distance <= $distance_new_islamic_center){
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center, $khateeb);
+                        }
+                    }else{
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center_alternative, $data);
+                        }
+                    }
                 }
             }
+
         }
 
         if(!empty($shortest_khateebs_to_islamic_center)){
@@ -634,7 +680,7 @@ class Khateeb extends Model {
                 // First here i must assign the khateebs to the islamic center
                 $current_friday = Schedule::$current_friday ;
                 for($i = 0 ; $i < $count ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     // second reduce available places in islamic center by the count
                     Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
@@ -653,7 +699,7 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 foreach($shortest_khateebs_to_islamic_center as $khateeb){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($khateeb);
                 }
@@ -665,10 +711,10 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 for($i = 0 ; $i < $remainder ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id , "khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id) , "khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
-                    Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                 }
             }
 
@@ -679,8 +725,8 @@ class Khateeb extends Model {
 
     private static function Get_Khateebs_Gave_Islamic_Center_7_0($ad_id , $remainder = null){
         if(is_null($remainder)){
-            $islamic_center_available_places = IslamicCenter::wheredirector_id($ad_id)->select("id","speech_num")->first();
-            $remainder = $islamic_center_available_places->speech_num ;
+            $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
+            $remainder = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
         }
         $shortest_khateebs_to_islamic_center = [];
         $shortest_khateebs_to_islamic_center_alternative = [];
@@ -691,36 +737,44 @@ class Khateeb extends Model {
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
-            $distance = $distance_between_khateeb_islamicCenter->distance ;
+            if($distance_between_khateeb_islamicCenter != null){
+                $distance = $distance_between_khateeb_islamicCenter->distance ;
 
-            // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
-            $data = DB::table('rating')
-                ->where('khateeb_id',"=", $khateeb)
-                ->where("ad_id" ,"!=", $ad_id)
-                ->whereBetween('ad_rate_khateeb', array(0,7))
-                ->where('khateeb_rate_ad',"=", 0)->
-                where(function($query)
-                {
-                    $query->where('khateeb_rate_ad', '!=', 7)
-                        ->orWhere('ad_rate_khateeb', '!=', 7);
-                })->orderBy("distance","asc")->first();
+                // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
+                $data = DB::table('rating')
+                    ->where('khateeb_id',"=", $khateeb)
+                    ->where("ad_id" ,"!=", $ad_id)
+                    ->whereBetween('ad_rate_khateeb', array(0,7))
+                    ->where('khateeb_rate_ad',"=", 0)->
+                    where(function($query)
+                    {
+                        $query->where('khateeb_rate_ad', '!=', 7)
+                            ->orWhere('ad_rate_khateeb', '!=', 7);
+                    })->orderBy("distance","asc")->first();
 
-            // now check if minimum path to islamic center and not to his islamic center
-            if(!empty($data)){
-                $distance_new_islamic_center = $data->distance ;
-                /**
-                | if $distance < $distance_new_islamic_center then this islamic center best for him
-                | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
-                 */
-                if($distance <= $distance_new_islamic_center){
-                    array_push($shortest_khateebs_to_islamic_center,$khateeb);
-                }else{
-                    array_push($shortest_khateebs_to_islamic_center_alternative,$data);
+                // now check if minimum path to islamic center and not to his islamic center
+                if(!empty($data)){
+                    $distance_new_islamic_center = $data->distance ;
+                    /**
+                    | if $distance < $distance_new_islamic_center then this islamic center best for him
+                    | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
+                     */
+                    if($distance <= $distance_new_islamic_center){
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center, $khateeb);
+                        }
+                    }else{
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                            array_push($shortest_khateebs_to_islamic_center_alternative, $data);
+                        }
+                    }
                 }
             }
+
         }
 
         if(!empty($shortest_khateebs_to_islamic_center)){
+
             // count available khateebs
             $count = count($shortest_khateebs_to_islamic_center);
             // if the array have alot of records i only want some of them
@@ -730,17 +784,17 @@ class Khateeb extends Model {
                 // get data and assiging khateebs rated this islamic center from 1-3 and he rated the from 1-3
                 // First here i must assign the khateebs to the islamic center
                 $current_friday = Schedule::$current_friday ;
+                $schedule = new Schedule();
                 for($i = 0 ; $i < $count ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     // second reduce available places in islamic center by the count
-                    Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
+                    $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
                 }
 
                 // how much khateebs we need in the next step
                 $remainder = $remainder-$count ;
-                $schedule = new Schedule();
-                $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center);
                 // here i will search in the other khateebs within my static variable khateebs after removing added
 
 
@@ -751,8 +805,9 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 foreach($shortest_khateebs_to_islamic_center as $khateeb){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id,"khateeb id"=>$khateeb ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id),"khateeb_id"=>$khateeb ];
                     array_push(Schedule::$schedule,$assign) ;
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                     $schedule->remove_khateeb_from_current_khateebs($khateeb);
                 }
                 // here mean $count > $remainder
@@ -763,13 +818,13 @@ class Khateeb extends Model {
                 $schedule = new Schedule();
 
                 for($i = 0 ; $i < $remainder ; $i++){
-                    $assign = ["friday id"=>$current_friday, "ad id"=>$ad_id , "khateeb id"=>$shortest_khateebs_to_islamic_center[$i] ];
+                    $assign = ["friday_id"=>$current_friday, "ic_id"=>Schedule::Return_Associated_Islamic_Center($ad_id) , "khateeb_id"=>$shortest_khateebs_to_islamic_center[$i] ];
                     array_push(Schedule::$schedule,$assign) ;
                     $schedule->remove_khateeb_from_current_khateebs($shortest_khateebs_to_islamic_center[$i]);
-                    Schedule::update_Islamic_Center_Available_Places($shortest_khateebs_to_islamic_center[$i],1);
+                    Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),1);
                 }
             }
-            return Schedule::$islamic_centers ;
+
         }else{
 
         }
