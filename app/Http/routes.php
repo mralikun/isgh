@@ -27,7 +27,7 @@ Route::controllers([
 ]);
 
 // save ad picture that want to be a khateeb
-Route::post('/adUploadProfilePicture', 'UserController@adUploadProfilePicture');
+Route::post('/user/rating', 'UserController@adUploadProfilePicture');
 
 // routes related to admin
 // route for creating new islamic center

@@ -16,6 +16,8 @@ use App\Rating;
 use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -119,6 +121,15 @@ class UserController extends Controller {
      */
 	public function getRatingPage(){
         $role = Auth::user()->role_id ;
+        if($role == 3){
+            $pic = AdKhateebsPhoto::wheread_id(Auth::user()->user_id)->first();
+            if(empty($pic)){
+                $photo = "false" ;
+            }else{
+                $photo = "true" ;
+            }
+            return view("user.rating",compact("role","photo"));
+        }
         return view("user.rating",compact("role"));
     }
 
@@ -344,26 +355,20 @@ class UserController extends Controller {
 
             $slider = Input::file("prof_pic")->getRealPath();
 
-            if(Request::file('prof_pic')->move($destination, $filename)){
+            if(Input::file('prof_pic')->move($destination, $filename)){
                 $pic = new AdKhateebsPhoto();
                 $pic->photo_url = $filename ;
                 $pic->ad_id = Auth::user()->user_id ;
 
                 $pic->save();
 
-                return Response::json([
-                    "success"=>true
-                ]);
+                return $this->getRatingPage();
 
             }else{
-                return Response::json([
-                    "success"=>false
-                ]);
+                return $this->getRatingPage();
             }
         }else{
-            return Response::json([
-                "success"=>true
-            ]);
+            return $this->getRatingPage();
         }
 
     }
