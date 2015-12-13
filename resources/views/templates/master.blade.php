@@ -49,7 +49,7 @@
 
             <div class="container-fluid">
 
-                <div class="col-sm-6 col-md-6 col-lg-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">
+                <div class="col-sm-6 col-md-6 col-lg-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 content-holder">
 
                     @yield("content")
 

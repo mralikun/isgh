@@ -62,6 +62,7 @@ Rating
             <h3 class="text-center">Choose a profile picture</h3>
             <form method="POST" action="/adUploadProfilePicture" class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+
                 <div class="form-group">
                     <div class="edit-img thumbnail" style="background-image: url(/assets/images/user.jpg);"></div>
                     <input type="file" class="form-control" name="prof_pic">

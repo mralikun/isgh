@@ -36,6 +36,15 @@ Blocked Dates
     $choosen = Map($fridays_choosen , function($fr){
         return $fr->friday_id;
     });
+
+    $other_ics = Map($fridays_choosen_other_ic , function($fr){
+        return $fr->friday_id;
+    });
+
+    $my_ic = Map($fridays_choosen_my_ic , function($fr){
+        return $fr->friday_id;
+    });
+
 ?>
 
 <style>
@@ -67,8 +76,8 @@ Blocked Dates
                <input type="checkbox" disabled checked>
             </div>
         </div>
-       @else
-        <div class="date" id="{{$friday->id}}">
+       @elseif(in_array($friday->id , $other_ics) || in_array($friday->id , $my_ic))
+        <div class="date reserved" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
                <h5>{{$friday->date}}</h5>
@@ -76,6 +85,14 @@ Blocked Dates
             </div>
         </div>
        
+       @else
+       <div class="date" id="{{$friday->id}}">
+            <div class="date-content">
+               <h4>Friday</h4>
+               <h5>{{$friday->date}}</h5>
+               <input type="checkbox" disabled>
+            </div>
+        </div>
        @endif
        @endforeach
     </div>
