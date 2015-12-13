@@ -8,6 +8,10 @@
     
     app.controller("UserController" , ["$scope" , "$http" , function( scope , http ){
         
+        http.post("/schedule").then(function(resp){
+            console.log(resp.data);
+        } , function(){})
+        
         //  DELETES AN EXISTING USER
         
         scope.delete = function ( obj ){
