@@ -41,6 +41,19 @@ var view = {
     }
 }
 
+function upload_picture(d){
+    $.ajax({
+        type: "post",
+        url: "/ad/uploadProfilePicture",
+        data: d,
+        dataType: "json",
+        processData: false,
+        cache: false,
+        success: function(resp){},
+        error: function(err){}
+    })
+}
+
 $(document).ready(function(){
     
 //    var url = "";
@@ -53,6 +66,11 @@ $(document).ready(function(){
 //            url = "///////////// another route for all ics";
         }
         getMoreUsers();
+    });
+    
+    $("form#upload_prof").on("submit" , function(){
+        var data = new FormData(this);
+        upload_picture(data);
     });
     
     $(".back").click(function(){
