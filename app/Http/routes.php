@@ -26,6 +26,8 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+// save ad picture that want to be a khateeb
+Route::post('/adUploadProfilePicture', 'UserController@adUploadProfilePicture');
 
 // routes related to admin
 // route for creating new islamic center
@@ -118,3 +120,15 @@ Route::get("/when",function(){
     $schedule = new \App\Schedule;
     return $schedule->start();
 });
+
+// Get all Islamic centers to ad to rate them
+Route::post('/user/getIcRating', 'UserController@getIcRating');
+
+// Get all Islamic centers to ad to rate them
+Route::post('/user/adUploadPicture', 'UserController@adUploadPicture');
+
+//  ad add his rate to islamic center
+Route::post('/user/adAddRate', 'UserController@adAddRate');
+
+// return schedule for the current cycle
+Route::post('/schedule', 'AdminController@getSchedule');

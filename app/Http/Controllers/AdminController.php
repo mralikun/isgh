@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\IslamicCenter;
 use App\Khateeb;
+use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -196,4 +197,24 @@ class AdminController extends Controller {
             return redirect("/admin/create_cycle",compact("error"));
         }
     }
+
+
+    public function getSchedule(){
+        $schedule = Schedule::wherecycle_id(Cycle::currentCycle())->get();
+
+        foreach($schedule as $sch){
+            $user_id = $sch->khateeb_id ;
+
+            // getting user data either khateeb or associative director
+            $sch->khateeb = User::GetUserDataForSchedule($user_id) ;
+
+            // now getting friday associated to this row
+            $sch->friday = Fridays::find($sch->friday_id) ;
+
+            // now getting friday associated to this row
+            $sch->islamic_center = IslamicCenter::find($sch->ic_id) ;
+        }
+        return $schedule ;
+    }
+
 }

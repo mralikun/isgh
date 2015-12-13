@@ -52,4 +52,11 @@ class cycle extends Model {
         }
     }
 
+
+    // return current cycle
+    public static function currentCycle(){
+        $cycle = Cycle::latest()->first();
+        return $cycle->id ;
+    }
+
 }

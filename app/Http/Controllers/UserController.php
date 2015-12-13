@@ -2,6 +2,7 @@
 
 use App\AdBlockedDates;
 use App\AdChooseTheirIc;
+use App\AdKhateebsPhoto;
 use App\AssociateDirector;
 use App\Cycle;
 use App\Fridays;
@@ -12,6 +13,7 @@ use App\IslamicCenter;
 use App\Khateeb;
 use App\Khateebselectedfridays;
 use App\Rating;
+use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -322,5 +324,53 @@ class UserController extends Controller {
 
     public function same_islamic_center(){
         return AdChooseTheirIc::AddFridays(Input::get("dates"));
+    }
+
+
+    // get all islamic centers to rate them for the ad
+    public function getIcRating(){
+        // return all islamic centers do not have this director id associated to them
+        return IslamicCenter::where("director_id" ,"!=",Auth::user()->user_id)->select("id","name")->get();
+    }
+
+    // ad upload his picture
+    public function adUploadProfilePicture(){
+        if (Input::hasFile('prof_pic')) {
+            $file = Input::file('prof_pic');
+            $file_original_name = $file->getClientOriginalName();
+            $filename = str_random(32) . $file->getClientOriginalName();
+
+            $destination = public_path() . '/images/khateeb_pictures/';
+
+            $slider = Input::file("prof_pic")->getRealPath();
+
+            if(Request::file('prof_pic')->move($destination, $filename)){
+                $pic = new AdKhateebsPhoto();
+                $pic->photo_url = $filename ;
+                $pic->ad_id = Auth::user()->user_id ;
+
+                $pic->save();
+
+                return Response::json([
+                    "success"=>true
+                ]);
+
+            }else{
+                return Response::json([
+                    "success"=>false
+                ]);
+            }
+        }else{
+            return Response::json([
+                "success"=>true
+            ]);
+        }
+
+    }
+
+
+    // ad add rate for other islamic center
+    public function adAddRate(){
+
     }
 }

@@ -177,6 +177,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    | @param id
+    | @return khateeb data
+    | this section resbonsible for returning khateebs
+     */
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function GetUserDataForSchedule($id){
+        $user = User::find($id);
+        return self::getUserData($user->user_id , $user->role_id );
+    }
+
+
     /**
      * @param $user_id
      * @param $role_id

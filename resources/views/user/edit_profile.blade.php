@@ -27,7 +27,7 @@ Update Profile
   @if(isset($adminEditing) and $adminEditing != null)
   <input type="hidden" value="{{$adminEditing}}" name="userID">
   @endif
-   
+
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="form-group">
         <label class="control-label col-sm-3">Name</label>
