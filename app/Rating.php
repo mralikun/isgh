@@ -177,7 +177,7 @@ class Rating extends Model {
     }
 
     // return rate row for islamic center
-    public static function returnRateRowIslamicCenter($ad_id ,$khateeb_user_id){
+    public static function returnRateRowIslamicCenter( $ad_id , $khateeb_user_id ){
         $cycle = cycle::currentCycle();
 
         $row = Rating::wheread_id($ad_id)->wherekhateeb_id($khateeb_user_id)->wherecycle_id($cycle)->first();

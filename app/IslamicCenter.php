@@ -85,7 +85,7 @@ class IslamicCenter extends Model {
             return [
                 "id" => $element["director_id"],// here return the id from the users table
                 "name"=>$element["name"] ,
-                "khateeb_rate_ad"=>Rating::returnRateRowIslamicCenter(User::getWhateveruser_id_from_user_table($element["director_id"] , 3 ),Auth::user()->id )
+                "khateeb_rate_ad"=>Rating::returnRateRowIslamicCenter($element["director_id"],Auth::user()->id )
             ];
         },$islamic_centers);
     }
