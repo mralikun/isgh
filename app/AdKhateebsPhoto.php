@@ -31,11 +31,11 @@ class AdKhateebsPhoto extends Model {
 
     // get me all ad's that are khateebs
     private static function adKhateebs(){
-//        if(Auth::user()->role_id == 3){
-//            $all_ad_pictures = AdKhateebsPhoto::where("ad_id","!=",Auth::user()->user_id)->get()->toArray();
-//        }else{
+        if(Auth::user()->role_id == 3){
+            $all_ad_pictures = AdKhateebsPhoto::where("ad_id","!=",Auth::user()->user_id)->get()->toArray();
+        }else{
             $all_ad_pictures = AdKhateebsPhoto::all()->toArray();
-       // }
+        }
         // khaateebs selected this cycle
         $khateebsSelectedThisCycle = Khateebselectedfridays::wherecycle_id(cycle::currentCycle())->select("khateeb_id")->get();
         //converting them to array
