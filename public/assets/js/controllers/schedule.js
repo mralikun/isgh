@@ -2,6 +2,8 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
     
     scope.schedule_generated = false;
     scope.schedule_approved = false;
+    scope.processing = true;
+    scope.msg = "Checking schedule status , Please wait...";
     var DataManager = {
         mapped_data: [],
         init: function(d){
@@ -41,6 +43,7 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
             }
         }
     };
+    
     function formatTime(d){
         var hours = d.getHours();
         var mints = d.getMinutes();
@@ -48,11 +51,15 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
     }
     
     scope.get_schedule = function(){
-        scope.schedule_generated = "Hello!";
+        scope.msg = "Retriving data...";
+        scope.processing = true;
         request.post("/schedule").then(function(resp){
+            scope.schedule_generated = true;
+            scope.processing = false;
             DataManager.init(resp.data);
             scope.dates = DataManager.dates;
             scope.schedule = DataManager.mapped_data;
+            scope.processing = false;
         } , function(){});
     }
     
@@ -68,16 +75,21 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
         return grouped_data;
     }
     
+    scope.generate = function(){
+        scope.msg = "Generating , Please wait...";
+        scope.processing = true;
+        request.get("/when").then(function(res){
+            scope.get_schedule();
+        } , function(){});
+    }
     
     request.post("/checkScheduleExistence").then(function(resp){
-        var has_schedule = Boolean(resp.data);
-        if(has_schedule){
+        scope.processing = false;
+        if(resp.data == 'true'){
             scope.get_schedule();
+        }else {
+            scope.msg = "No Schedule has been generated!, Please click on the 'Generate Schedule' button on the top right.";
         }
     } , function(){});
-    
-    scope.generate = function(){
-        
-    }
     
 }]);

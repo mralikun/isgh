@@ -36,21 +36,20 @@ Schedule Management
 </style>
 
 @section("content")
-<div ng-controller="ScheduleController as SC" ng-show="schedule_generated">
+<div ng-controller="ScheduleController as SC">
     
     <div class="text-right schedule-opts">
 
-        <button class="btn btn-isgh approve" ng-show="schedule_generated && !schedule_approved">Approve To Schedule</button>
-        <button class="btn btn-isgh generate" ng-hide="schedule_generated">Generate Schedule</button>
-        <button class="btn btn-isgh excel" ng-show="schedule_approved">Export Excel</button>
+        <button class="btn btn-isgh approve" ng-show="schedule_generated && !schedule_approved" ng-disabled="processing">Approve To Schedule</button>
+        <button class="btn btn-isgh generate" ng-hide="schedule_generated" ng-click="generate()" ng-disabled="processing">Generate Schedule</button>
+        <button class="btn btn-isgh excel" ng-show="schedule_approved" ng-disabled="processing">Export Excel</button>
 
     </div>
 
-    <div class="text-center" ng-hide="schedule_generated">
-        No Schedule has been generated!, Please click on the "Generate Schedule" button on the top right.
+    <div class="text-center help-block" ng-show="!schedule_generated">
+        <h4>[[msg]]</h4>
     </div>
-
-    <table class="table table-bordered" >
+    <table class="table table-bordered" ng-show="schedule_generated">
 
         <thead>
 
