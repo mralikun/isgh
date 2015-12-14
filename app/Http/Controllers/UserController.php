@@ -283,13 +283,12 @@ class UserController extends Controller {
 
     // returning first ten records to the rating page
     public function startRate(){
-        switch(3){
+        switch(Auth::user()->role_id){
             case 2 :
                 $khateeb_id = Auth::user()->id ;
                 return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null and name !=''");
                 break;
             case 3 :
-                $ad_id = 1 ;
                  //return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null and name !='' ");
                 return AdKhateebsPhoto::khateebsForRating();
                 break ;
@@ -383,5 +382,9 @@ class UserController extends Controller {
 
     public function khateebsForRating(){
         return AdKhateebsPhoto::khateebsForRating();
+    }
+
+    public function return_islamic_centers_for_Rating(){
+        return IslamicCenter::return_islamic_centers_for_Rating();
     }
 }
