@@ -42,7 +42,7 @@ Schedule Management
 
         <button class="btn btn-isgh approve" ng-show="schedule_generated && !schedule_approved">Approve To Schedule</button>
         <button class="btn btn-isgh generate" ng-hide="schedule_generated">Generate Schedule</button>
-        <button class="btn btn-isgh excel">Export Excel</button>
+        <button class="btn btn-isgh excel" ng-show="schedule_approved">Export Excel</button>
 
     </div>
 

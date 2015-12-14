@@ -1,6 +1,3 @@
-var model = {
-    users: []
-}
 
 var view = {
     render: function(dataArray){
@@ -41,55 +38,11 @@ var view = {
     }
 }
 
-function upload_picture(d){
-    $.ajax({
-        type: "post",
-        url: "/ad/uploadProfilePicture",
-        data:d ,
-        dataType: "json",
-        processData: false,
-        cache: false,
-        success: function(resp){},
-        error: function(err){}
-    })
-}
-
 $(document).ready(function(){
     
-//    var url = "";
-    
-    $(".rating-options").on("click" , "button" , function(){
-        view.hide_options();
-        if(this.getAttribute("data-kh") == 1){
-//            url = "/user/startRate";
-        }else {
-//            url = "///////////// another route for all ics";
-        }
-        getMoreUsers();
-    });
-    
-    $("form#upload_prof").on("submit" , function(){
-        $form = $(this);
-        var formdata = new FormData($form[0]);
-        var request = new XMLHttpRequest();
-        request.open('post', '/ad/uploadProfilePicture',true);
-        request.send(formdata);
-    });
-    
-    $(".back").click(function(){
-        view.show_options();
-    });
-    
-    $("input[name='prof_pic']").on("change" , function(){
-        var reader = new FileReader();
-        reader.onload = function(res){
-            $(".edit-img").css("background-image" , "url("+res.target.result+")");
-        };
-        reader.readAsDataURL(this.files[0]);
-    });
-    
+    var url = "";
     var getMoreUsers = function(){
-        $.ajax({
+    $.ajax({
             type: "POST",
             url: url,
             data: {_token: $("input[name='_token']").val()},
@@ -110,7 +63,7 @@ $(document).ready(function(){
                             type: "POST",
                             url: "/user/rate",
                             dataType: "json",
-                            data: {id: _ID , rate: (!!score) ? score : 0 , _token: $("input[name='_token']").val()},
+                            data: {islamic_center: flag , id: _ID , rate: (!!score) ? score : 0 , _token: $("input[name='_token']").val()},
                             success: function(resp){
                                 if(resp){
                                     $thisOK.removeClass("fa-times").addClass("fa-check");
@@ -132,4 +85,52 @@ $(document).ready(function(){
             }
         });
     }
+    if(role == 3){
+        $(".rating-options").on("click" , "button" , function(){
+            view.hide_options();
+            if(this.getAttribute("data-kh") == 1){
+                url = "/user/startRate";
+                flag = false;
+            }else {
+                url = "/islamicCentersForRating";
+                flag = true;
+            }
+            getMoreUsers();
+        });
+
+        $("form#upload_prof").on("submit" , function(){
+            $form = $(this);
+            var formdata = new FormData($form[0]);
+            console.log(formdata);
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function(){
+
+                if(request.readyState == 4 && request.status == 200){
+                    var result = Boolean(request.responseText);
+                    if(result){
+                        $(".upload-pic").hide();
+                    }
+                }
+            }
+            request.open('post', '/ad/uploadProfilePicture',true);
+            request.send(formdata);
+        });
+
+        $(".back").click(function(){
+            view.show_options();
+            view.clear();
+        });
+
+        $("input[name='prof_pic']").on("change" , function(){
+            var reader = new FileReader();
+            reader.onload = function(res){
+                $(".edit-img").css("background-image" , "url("+res.target.result+")");
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
+    }else if(role == 2){
+        url = "/user/startRate";
+        getMoreUsers();
+    }
+
 });

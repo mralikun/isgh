@@ -67,6 +67,8 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
         }
         return grouped_data;
     }
+    
+    
     request.post("/checkScheduleExistence").then(function(resp){
         var has_schedule = Boolean(resp.data);
         if(has_schedule){

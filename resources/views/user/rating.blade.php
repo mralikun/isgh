@@ -39,6 +39,10 @@
         display: table-cell;
         vertical-align: middle;
     }
+    
+    .loading {
+        display: none;
+    }
 </style>
 
 @section("pageTitle")
@@ -49,10 +53,12 @@ Rating
 
 
 @section("content")
+@if($role == 3)
 <div class="rating-options text-center">
     <button class="btn btn-isgh" data-kh="1">Rate khateebs</button><button class="btn btn-isgh" data-kh="0">Rate Other Islamic Centers</button>
 </div>
-@if($photo == 'false')
+@endif
+@if(isset($photo) && $photo == 'false')
 <div class="upload-pic">
   <div class="the-table">
       <div class="the-row">
@@ -78,27 +84,21 @@ Rating
       <button class="btn btn-isgh back" style="display: none;">Back</button>
   </div>
 <div class="heading">
-    @if($role == 2)
-    <h4 class="text-center">Please rate the following Islamic centers from 0 <mark><u>(The X button)</u></mark> to 7 where 0 is the least preferrable place you want to go to give khutbah and 7 is the most preferrable.</h4>
-    @else
-    <h4 class="text-center">Please rate the following Khateebs from 0 <mark><u>(The X button)</u></mark> to 7 where 0 is the least preferrable khateeb you want to give khutbah and 7 is the most preferrable.</h4>
-    @endif
+    <h4 class="text-center">The Rate goes from 0 ~ 7 where 0 <mark>(The X button)</mark> is not preferrable at all ,1 is least preferrable and 7 is most preferrable.</h4>
 </div>
    <input type="hidden" name="_token" value="{{csrf_token()}}">
 </div>
-
 @stop
-
-
 @section("scripts")
 
 <link rel="stylesheet" href="/assets/js/services/raty/lib/jquery.raty.css">
 <link rel="stylesheet" href="/assets/css/fa/css/font-awesome.min.css">
 <script src="/assets/js/services/raty/lib/jquery.raty.js"></script>
 <script>
+    flag = false;
+    var role = {{$role}};
     function disableImgs(){
-        var role = {{$role}} ;
-        if(role === 2){
+        if(role === 2 || flag){
             $(".rating-img").remove();
             $(".rating-name").parent().removeClass("col-sm-8 col-md-8 col-lg-8").addClass("col-sm-12 col-md-12 col-lg-12");
         }
