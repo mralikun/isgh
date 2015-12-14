@@ -55,40 +55,113 @@ class Rating extends Model {
                 break;
             case 3 :
                 // now i'm ad going to rate khateeb
+                $user = User::whereid($rated_user)->first();
+                $rated_user = $user->user_id;
 
-                $khateeb = Khateeb::whereid($rated_user)->first();
-                $khateeb_address = $khateeb->post_code ;
+                    // now I'am going to rate khateeb
+                if($user->role_id == 2){
+                    $khateeb = Khateeb::whereid($rated_user)->first();
+                    $khateeb_address = $khateeb->post_code ;
 
-                $ad = IslamicCenter::wheredirector_id($user_who_rate_id)->first();
-                $ad_address = $ad->postal_code ;
-                $url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=$khateeb_address&destinations=$ad_address&mode=driving&language=en-EN&sensor=false";
-                $data   = @file_get_contents($url);
-                $distance = json_decode($data)->rows[0]->elements[0]->distance->value;
+                    $ad = IslamicCenter::wheredirector_id($user_who_rate_id)->first();
+                    $ad_address = $ad->postal_code ;
+                    $url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=$khateeb_address&destinations=$ad_address&mode=driving&language=en-EN&sensor=false";
+                    $data   = @file_get_contents($url);
+                    $distance = json_decode($data)->rows[0]->elements[0]->distance->value;
 
-                // until getting cycle id
+                    // until getting cycle id
                     $check_exsitence = Rating::where("ad_id","=",$user_who_rate_id)->where("khateeb_id","=",User::getWhateveruser_id_from_user_table($rated_user,2))->latest()->first();
-                // here we determined that ad is trying to rate khateeb
+                    // here we determined that ad is trying to rate khateeb
                     if(!empty($check_exsitence)){
                         $rate = Rating::whereid($check_exsitence->id)->first();
                     }else{
                         $rate = new Rating();
                     }
-                $cycle = cycle::latest()->first();
-                $cycle_id= $cycle->id ;
-                $rate->ad_id =  $user_who_rate_id;
-                $rate->khateeb_id =  User::getWhateveruser_id_from_user_table($rated_user,2);
-                $rate->ad_rate_khateeb = $rate_id ;
-                $rate->cycle_id = $cycle_id ;
-                $rate->distance = $distance ;
-                if($rate->save()){
-                    return "true";
+                    $cycle = cycle::latest()->first();
+                    $cycle_id= $cycle->id ;
+                    $rate->ad_id =  $user_who_rate_id;
+                    $rate->khateeb_id =  $user->id;
+                    $rate->ad_rate_khateeb = $rate_id ;
+                    $rate->cycle_id = $cycle_id ;
+                    $rate->distance = $distance ;
+                    if($rate->save()){
+                        return "true";
+                    }else{
+                        return "false" ;
+                    }
                 }else{
-                    return "false" ;
+                    // now I'am going to rate ad but he is khateeb
+                    $khateeb = AssociateDirector::whereid($rated_user)->first();
+                    $khateeb_address = $khateeb->post_code ;
+
+                    $ad = IslamicCenter::wheredirector_id($user_who_rate_id)->first();
+                    $ad_address = $ad->postal_code ;
+                    $url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=$khateeb_address&destinations=$ad_address&mode=driving&language=en-EN&sensor=false";
+                    $data   = @file_get_contents($url);
+                    $distance = json_decode($data)->rows[0]->elements[0]->distance->value;
+
+                    // until getting cycle id
+                    $check_exsitence = Rating::where("ad_id","=",$user_who_rate_id)->where("khateeb_id","=",$user->id)->latest()->first();
+                    // here we determined that ad is trying to rate khateeb
+                    if(!empty($check_exsitence)){
+                        $rate = Rating::whereid($check_exsitence->id)->first();
+                    }else{
+                        $rate = new Rating();
+                    }
+                    $cycle = cycle::latest()->first();
+                    $cycle_id= $cycle->id ;
+                    $rate->ad_id =  $user_who_rate_id;
+                    $rate->khateeb_id =  $user->id;
+                    $rate->ad_rate_khateeb = $rate_id ;
+                    $rate->cycle_id = $cycle_id ;
+                    $rate->distance = $distance ;
+                    if($rate->save()){
+                        return "true";
+                    }else{
+                        return "false" ;
+                    }
                 }
                 break ;
             default :
                 return "false" ;
         }
+    }
+
+    public static function addRateToIslamic_center($user_who_rate_id , $user_who_rate_role , $rated_user , $rate_id){
+        // now this is the user who made rate from users table
+            $user = AssociateDirector::whereid($user_who_rate_id)->first();
+            $khateeb_address = $user->post_code ;
+
+            $rated_ad = AssociateDirector::whereid($rated_user)->first();
+
+            $ad = IslamicCenter::wheredirector_id($rated_user)->first();
+            $ad_address = $ad->postal_code ;
+
+            $url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=$khateeb_address&destinations=$ad_address&mode=driving&language=en-EN&sensor=false";
+            $data   = @file_get_contents($url);
+            $distance = json_decode($data)->rows[0]->elements[0]->distance->value;
+
+            // until getting cycle id
+            $check_exsitence = Rating::where("ad_id","=",$rated_ad->id)->where("khateeb_id","=",Auth::user()->id)->latest()->first();
+
+            // here we determined that ad is trying to rate khateeb
+            if(!empty($check_exsitence)){
+                $rate = Rating::whereid($check_exsitence->id)->first();
+            }else{
+                $rate = new Rating();
+            }
+            $cycle = cycle::latest()->first();
+            $cycle_id= $cycle->id ;
+            $rate->ad_id =  $rated_ad->id;
+            $rate->khateeb_id =  Auth::user()->id;
+            $rate->khateeb_rate_ad = $rate_id ;
+            $rate->cycle_id = $cycle_id ;
+            $rate->distance = $distance ;
+            if($rate->save()){
+                return "true";
+            }else{
+                return "false" ;
+            }
     }
 
     // return rate row for ad khateebs

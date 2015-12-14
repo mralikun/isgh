@@ -13,7 +13,7 @@ class AdKhateebsPhoto extends Model {
     public static function khateebsForRating(){
         $ad_khateebs = self::adKhateebs();
         // get all khateebs in array structure
-        $khateebs = Khateeb::all()->toArray();
+        $khateebs = Khateeb::where("name","!=","")->get()->toArray();
         // check if empty
 
         if(!empty($ad_khateebs)){
@@ -31,7 +31,11 @@ class AdKhateebsPhoto extends Model {
 
     // get me all ad's that are khateebs
     private static function adKhateebs(){
-        $all_ad_pictures = AdKhateebsPhoto::all()->toArray();
+//        if(Auth::user()->role_id == 3){
+//            $all_ad_pictures = AdKhateebsPhoto::where("ad_id","!=",Auth::user()->user_id)->get()->toArray();
+//        }else{
+            $all_ad_pictures = AdKhateebsPhoto::all()->toArray();
+       // }
         // khaateebs selected this cycle
         $khateebsSelectedThisCycle = Khateebselectedfridays::wherecycle_id(cycle::currentCycle())->select("khateeb_id")->get();
         //converting them to array

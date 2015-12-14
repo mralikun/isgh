@@ -83,8 +83,8 @@ class IslamicCenter extends Model {
 
         return array_map(function($element){
             return [
-                "id" => User::getWhateveruser_id_from_user_table($element["id"] , 3 ),// here return the id from the users table
-                "director_id"=>$element["name"] ,
+                "id" => $element["director_id"],// here return the id from the users table
+                "name"=>$element["name"] ,
                 "khateeb_rate_ad"=>Rating::returnRateRowIslamicCenter(User::getWhateveruser_id_from_user_table($element["director_id"] , 3 ),Auth::user()->id )
             ];
         },$islamic_centers);

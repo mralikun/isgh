@@ -304,7 +304,23 @@ class UserController extends Controller {
         $rated_user = Input::get("id");
         $rate = Input::get("rate");
         // khateeb ad rating to ad add rating khateeb
-        return Rating::addRate($user_who_rate_id , $user_who_rate_role , $rated_user , $rate);
+        if(Auth::user()->role_id == 2 ){
+            return Rating::addRate($user_who_rate_id , $user_who_rate_role , $rated_user , $rate);
+        }else{
+            // true if he rating ic false rate khateeb
+            if(Input::get("islamic_center") == "true"){
+                return Rating::addRateToIslamic_center($user_who_rate_id , $user_who_rate_role , $rated_user , $rate);
+//                $user = User::whereid(Input::get("id"))->first();
+//                $user = AssociateDirector::whereid($user->user_id)->first();
+//
+//                $new_rate = new IslamicCenter() ;
+
+            }else{
+                // ad is rating khateeb ( ad or khateeb )
+                return Rating::addRate($user_who_rate_id , $user_who_rate_role , $rated_user , $rate);
+            }
+        }
+
     }
 
     /**
@@ -374,21 +390,21 @@ class UserController extends Controller {
 
     }
 
-
-    // ad add rate for other islamic center
-    public function adAddRate(){
-
-    }
-
+    // return all khateebs +ad_khateebs to be rated from the ad that he is a khateeb
     public function khateebsForRating(){
         return AdKhateebsPhoto::khateebsForRating();
     }
 
+    // return all islamic centers to be rated from the ad that he is a khateeb
     public function return_islamic_centers_for_Rating(){
         return IslamicCenter::return_islamic_centers_for_Rating();
     }
 
-
+    /**
+     * check if schedule exists by returning the cycle_id and then return the latest cycle
+     * check if it has a schedule
+     * @return string
+     */
     public function CheckScheduleExistence(){
         $cycle = cycle::currentCycle();
         $schedule = Schedule::latest()->first();
