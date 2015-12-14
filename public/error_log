@@ -1,0 +1,12 @@
+[15-Nov-2015 12:55:23 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Middleware/CycleExistence.php on line 45
+[15-Nov-2015 12:55:30 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Middleware/CycleExistence.php on line 45
+[15-Nov-2015 12:55:32 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Middleware/CycleExistence.php on line 45
+[15-Nov-2015 12:55:34 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Middleware/CycleExistence.php on line 45
+[15-Nov-2015 12:55:36 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Middleware/CycleExistence.php on line 45
+[15-Nov-2015 12:55:42 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Middleware/CycleExistence.php on line 45
+[15-Nov-2015 13:07:33 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Controllers/UserController.php on line 35
+[15-Nov-2015 13:08:02 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Controllers/UserController.php on line 35
+[15-Nov-2015 13:09:50 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Http/Controllers/AdminController.php on line 181
+[15-Nov-2015 13:37:05 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Rating.php on line 28
+[15-Nov-2015 13:40:02 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/Khateebselectedfridays.php on line 21
+[15-Nov-2015 13:42:34 UTC] PHP Fatal error:  Class 'App\cycle' not found in /home2/tooonmec/public_html/isgh/app/AdBlockedDates.php on line 18

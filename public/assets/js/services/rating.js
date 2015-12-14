@@ -45,7 +45,7 @@ function upload_picture(d){
     $.ajax({
         type: "post",
         url: "/ad/uploadProfilePicture",
-        data: d,
+        data:d ,
         dataType: "json",
         processData: false,
         cache: false,
@@ -69,8 +69,11 @@ $(document).ready(function(){
     });
     
     $("form#upload_prof").on("submit" , function(){
-        var data = new FormData(this);
-        upload_picture(data);
+        $form = $(this);
+        var formdata = new FormData($form[0]);
+        var request = new XMLHttpRequest();
+        request.open('post', '/ad/uploadProfilePicture',true);
+        request.send(formdata);
     });
     
     $(".back").click(function(){

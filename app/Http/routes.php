@@ -96,7 +96,7 @@ Route::get('/user/profile', 'UserController@getProfile');
 Route::post('/user/updateProfile/{id?}', 'UserController@updateProfile');
 
 // route for returning first ten records to the rating page
-Route::post('/user/startRate', 'UserController@startRate');
+Route::get('/user/startRate', 'UserController@startRate');
 
 //route for submitting a rate
 Route::post('/user/rate', 'UserController@addRate');
@@ -125,10 +125,13 @@ Route::get("/when",function(){
 Route::post('/user/getIcRating', 'UserController@getIcRating');
 
 // Get all Islamic centers to ad to rate them
-Route::post('/user/adUploadPicture', 'UserController@adUploadPicture');
+Route::post('/ad/uploadProfilePicture', 'UserController@adUploadPicture');
 
 //  ad add his rate to islamic center
 Route::post('/user/adAddRate', 'UserController@adAddRate');
 
 // return schedule for the current cycle
 Route::post('/schedule', 'AdminController@getSchedule');
+
+// return khateebs + ads
+Route::post("/khateebsForRating","UserController@khateebsForRating");

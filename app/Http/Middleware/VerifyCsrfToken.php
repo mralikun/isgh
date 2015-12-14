@@ -12,9 +12,17 @@ class VerifyCsrfToken extends BaseVerifier {
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
+    private $openRoutes = ['ad/uploadProfilePicture'];
+
 	public function handle($request, Closure $next)
 	{
-		return parent::handle($request, $next);
+        foreach($this->openRoutes as $route) {
+            if ($request->is($route)) {
+                return $next($request);
+            }
+        }
+
+        return parent::handle($request, $next);
 	}
 
 }

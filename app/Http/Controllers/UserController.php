@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Input;
 class UserController extends Controller {
 
     public function __construct(){
-        $this->middleware('auth');
-        $this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
+        //$this->middleware('auth');
+        //$this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
     }
 
     /**
@@ -283,14 +283,15 @@ class UserController extends Controller {
 
     // returning first ten records to the rating page
     public function startRate(){
-        switch(Auth::user()->role_id){
+        switch(3){
             case 2 :
                 $khateeb_id = Auth::user()->id ;
                 return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null and name !=''");
                 break;
             case 3 :
-                $ad_id = Auth::user()->id ;
-                return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null and name !='' ");
+                $ad_id = 1 ;
+                 //return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null and name !='' ");
+                return AdKhateebsPhoto::khateebsForRating();
                 break ;
             default:
                 return "false";
@@ -345,7 +346,8 @@ class UserController extends Controller {
     }
 
     // ad upload his picture
-    public function adUploadProfilePicture(){
+    public function adUploadPicture(){
+
         if (Input::hasFile('prof_pic')) {
             $file = Input::file('prof_pic');
             $file_original_name = $file->getClientOriginalName();
@@ -362,13 +364,13 @@ class UserController extends Controller {
 
                 $pic->save();
 
-                return $this->getRatingPage();
+                return "true";
 
             }else{
-                return $this->getRatingPage();
+                return "false";
             }
         }else{
-            return $this->getRatingPage();
+            return "false";
         }
 
     }
@@ -377,5 +379,9 @@ class UserController extends Controller {
     // ad add rate for other islamic center
     public function adAddRate(){
 
+    }
+
+    public function khateebsForRating(){
+        return AdKhateebsPhoto::khateebsForRating();
     }
 }

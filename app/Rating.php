@@ -91,6 +91,17 @@ class Rating extends Model {
         }
     }
 
+    public static function returnRateRow($ad_id ,$khateeb_user_id){
+        $cycle = cycle::currentCycle();
+
+        $row = Rating::wheread_id($ad_id)->wherekhateeb_id($khateeb_user_id)->wherecycle_id($cycle)->first();
+        if(empty($row)){
+            return null ;
+        }else{
+            return $row->ad_rate_khateeb ;
+        }
+    }
+
 
     /**
      * @param $islamic_center_id
