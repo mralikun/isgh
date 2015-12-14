@@ -136,3 +136,6 @@ Route::post('/schedule', 'AdminController@getSchedule');
 
 // return islamic centers to be rated from the ad as a khateeb
 Route::get("/islamicCentersForRating","UserController@return_islamic_centers_for_Rating");
+
+// return check schedule Exicstence
+Route::post("/CheckScheduleExistence","UserController@CheckScheduleExistence");
