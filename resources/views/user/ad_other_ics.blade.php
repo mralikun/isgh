@@ -60,7 +60,6 @@ Available Dates
             <div class="date-content">
                <h4>Friday</h4>
                <h5>{{$friday->date}}</h5>
-               <input type="checkbox" disabled checked>
             </div>
         </div>
        @elseif(in_array($friday->id , $other_choice) || in_array($friday->id , $blocked))
@@ -68,7 +67,6 @@ Available Dates
             <div class="date-content">
                <h4>Friday</h4>
                <h5>{{$friday->date}}</h5>
-               <input type="checkbox" disabled>
             </div>
         </div>
         @else
@@ -76,7 +74,6 @@ Available Dates
             <div class="date-content">
                <h4>Friday</h4>
                <h5>{{$friday->date}}</h5>
-               <input type="checkbox" disabled>
             </div>
         </div>
        @endif

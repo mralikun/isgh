@@ -7,30 +7,35 @@
 <li><a href="/admin/schedule">Manage Schedule</a></li>
 <li><a href="/auth/logout">Logout</a></li>
 <li><a href="/admin/islamic_center/edit" class="sub-link">Edit/Delete Islamic Centers</a></li>
-
 @stop
 
 @section("content")
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
 <form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
-   <div class="form-group">
+   <div class="form-group" ng-class="{'has-success': center.name}">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
        <div class="col-sm-10">
            <input type="text" name="name" class="form-control" required placeholder="Enter Islamic Center's name" ng-model="center.name">
-           <div ng-messages="icForm.name.$error">
-               <div ng-message="required">Name is required</div>
+           <div class="text-danger" ng-show="center.length > 0 && !center.name">
+               
+               <ul>
+                   <li>The Islamic Center name is required!</li>
+               </ul>
+               
            </div>
        </div>
    </div>
 
-   <div class="form-group">
+   <div class="form-group" ng-class="{'has-success': center.auto}">
        <label class="col-sm-2 control-label">Address <sup>*</sup></label>
        <div class="col-sm-10">
            <input type="text" name="address" class="form-control" required ng-model="center.auto">
-             <div ng-messages="icForm.address.$error">
-               <div ng-message="required">Address is required</div>
+           <div class="text-danger" ng-show="center.length > 0 && !center.auto">
+               <ul>
+                   <li>Please specify the Islamic Center's address.</li>
+               </ul>
            </div>
-       </div>
+        </div>
        <div class="col-sm-10 col-sm-offset-2">
 
            <div class="row form-group">
@@ -57,7 +62,7 @@
        </div>
    </div>
 
-   <div class="form-group">
+   <div class="form-group" ng-class="{'has-success': center.director_name}">
        <label class="col-sm-2 control-label">Director Name <sup>*</sup></label>
        <div class="col-sm-10">
           <select name="director_name" class="form-control" required ng-model="center.director_name" ng-change="updateDirectorCellPhone()">
@@ -65,65 +70,76 @@
                <option value="{{$director->id}}">{{$director->name}}</option>
                @endforeach
            </select>
-           <div ng-messages="icForm.director_name.$error">
-               <div ng-message="required">Please choose a director</div>
+           <div class="text-danger" ng-show="center.length > 0 && !center.director_name">
+               <ul>
+                   <li>Please choose a director for the Islamic Center.</li>
+               </ul>
            </div>
        </div>
    </div>
 
-   <div class="form-group">
+   <div class="form-group" ng-class="{'has-success': center.director_name && center.director_cell_phone != 0 , 'has-warning': center.director_name && center.director_cell_phone == 0}">
        <label class="col-sm-2 control-label">Director Cell Phone</label>
        <div class="col-sm-10">
            <input type="tel" name="director_cell" class="form-control" disabled placeholder="Director cell phone" ng-model="center.director_cell_phone">
+           <div class="text-warning" ng-show="center.director_name && center.director_cell_phone == 0">
+               <ul>
+                   <li>This director didn't insert his cell phone yet!</li>
+               </ul>
+           </div>
        </div>
    </div>
 
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-success': center.website}">
        <label class="col-sm-2 control-label">Website</label>
        <div class="col-sm-10"><input type="url" name="website" class="form-control" placeholder="e.g: http://www.google.com/" ng-model="center.website"></div>
    </div>
 
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-success': center.khutbah_start && center.khutbah_end && center.khutbah_start < center.khutbah_end}">
        <label class="col-sm-2 control-label">Khutbah Time <sup>*</sup></label>
        <div class="col-sm-10">
 
            <label for="start_time" class="col-sm-2">Start <sup>*</sup></label>
            <div class="col-sm-3">
                <input type="time" name="khutbah_start_time" class="form-control" required ng-model="center.khutbah_start">
-               <div ng-messages="icForm.khutbah_start_time.$error">
-                   <div ng-message="required">Please insert the starting time</div>
+               <div class="text-danger" ng-show="center.length > 0 && !center.khutbah_start">
+                   <ul>
+                       <li>Khutbah's Starting time is required!</li>
+                   </ul>
                </div>
            </div>
 
           <label for="end_time" class="col-sm-2">End <sup>*</sup></label>
            <div class="col-sm-3">
                 <input type="time" name="khutbah_end_time" class="form-control" required ng-model="center.khutbah_end">
-                <div ng-messages="icForm.khutbah_end_time.$error">
-                   <div ng-message="required">Please insert the ending time</div>
-               </div>
+                <div class="text-danger" ng-show="center.length > 0 && !center.khutbah_end">
+                    <ul>
+                        <li>Khutbah's Ending time is required!</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="row" ng-show="center.khutbah_start > center.khutbah_end">
                 <div class="col-sm-12 col-md-12 col-lg-12">
-                    
                     <div class="text-danger">You can't end khutbah before it starts!</div>
-                    
                 </div>
             </div>
        </div>
    </div>
 
- <div class="form-group">
+ <div class="form-group" ng-class="{'has-success': center.parking_information}">
        <label class="col-sm-2 control-label">Parking Information <sup>*</sup></label>
        <div class="col-sm-10">
            <textarea name="parking_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please fill any parking related details" required ng-model="center.parking_information"></textarea>
-           <div ng-messages="icForm.parking_info.$error">
-               <div ng-message="required">Please provide parking information</div>
+           <div class="text-danger" ng-show="center.length > 0 && !center.parking_information">
+               <ul>
+                   <li>Please provide the parking information!</li>
+               </ul>
            </div>
         </div>
    </div>
 
-<div class="form-group">
+<div class="form-group" ng-class="{'has-success': center.other_information}">
        <label class="col-sm-2 control-label">Other Information</label>
        <div class="col-sm-10"><textarea name="other_info" cols="30" rows="5" class="form-control" resize="none" placeholder="Please include any additional instructions" ng-model="center.other_information"></textarea></div>
    </div>
@@ -149,7 +165,7 @@
             $(".page-title").text("Edit Islamic Center");
             
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/islamicCenterData/" + hasNumber,
                 data: {_token: $("#token").val()},
                 dataType: "json",

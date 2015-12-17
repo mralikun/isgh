@@ -323,8 +323,6 @@ var ISGH = {
             // handling the view part
             
             $(this).toggleClass("available"); // scales the date
-            var $checkbox = $(this).find("[type='checkbox']");
-            $checkbox.prop("checked" , !$checkbox.prop("checked")); // toggles the checkbox
             
             // handling the data part.
             
@@ -348,7 +346,6 @@ var ISGH = {
         //  SELECTS ALL DATES.
         
         $(".select-all").on("click" , function(){
-            $(".dates-calendar .date:not(.reserved) input[type='checkbox']").prop("checked" , true);
             $(".dates-calendar .date:not(.reserved)").addClass("available").each(function(index , element){
                 var ID = undefined;
                 if($(element).hasClass("date"))
@@ -363,7 +360,6 @@ var ISGH = {
         //  DESELECT ALL DATES
         
         $(".unselect-all").on("click" , function(){
-            $(".dates-calendar .date:not(.reserved) input[type='checkbox']").prop("checked" , false);
             $(".dates-calendar .date:not(.reserved)").removeClass("available").each(function(index , element){
                 var ID = undefined;
                 if($(element).hasClass("date"))
@@ -378,9 +374,6 @@ var ISGH = {
         //  SELECTS ALL UNSELECTED DATES AND DESELECT ALL SELECTED DATES
         
         $(".reverse-select").on("click" , function(){
-            $(".dates-calendar .date:not(.reserved) input[type='checkbox']").each(function(index , element){
-                $(element).prop("checked" , !$(element).prop("checked"));
-            });
             $(".dates-calendar .date:not(.reserved)").toggleClass("available").each(function(index , element){
                 
                 var ID = undefined;

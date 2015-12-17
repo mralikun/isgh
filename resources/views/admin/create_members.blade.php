@@ -8,8 +8,6 @@
 <li><a href="/admin/schedule">Manage Schedule</a></li>
 <li><a href="/auth/logout">Logout</a></li>
 <li><a href="/admin/members/edit" class="sub-link">Edit/Delete Members</a></li>
-
-
 @stop
 
 
@@ -26,36 +24,41 @@ Create new member
 
 <form method="POST" class="form-horizontal" id="members-form" ng-controller="UserController as uc" ng-submit="create(tempUser)" name="registerForm">
 
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-success': tempUser.username && tempUser.username.length >= 6 && tempUser.username.length <= 32}">
         <label for="" class="col-sm-2 control-label">Username </label>
-        <div class="col-sm-10" ng-class="{'has-success': tempUser.username}">
-            <input type="text" class="form-control" name="Name" placeholder="Username: 6 ~ 32 Characters" ng-model="tempUser.username" ng-minlength="6" ng-maxlength="32" required>
-            <div ng-messages="registerForm.Name.$error" role="alert">
-                <div ng-message="required">Username is required</div>
-                <div ng-message="minlength">Username is too short</div>
-                <div ng-message="maxlength">Username is too long</div>
+        <div class="col-sm-10">
+            <input type="text" data-toggle="popover" title="Error!" data-placement="auto" data-content="Please make sure you have a username with length between 6 ~ 32 character" class="form-control" name="Name" placeholder="Username: 6 ~ 32 Characters" ng-model="tempUser.username" required>
+            <div class="text-danger" ng-show="tempUser.username">
+                <ul>
+                    <li ng-show="!tempUser.username">The Username is required!</li>
+                    <li ng-show="!(tempUser.username.length >= 6 && tempUser.username.length <= 32)">The Username must be between 6 ~ 32 characters long.</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-success': tempUser.password && tempUser.password.length >= 8 && tempUser.password.length <= 32}">
         <label for="" class="col-sm-2 control-label">Password </label>
-        <div class="col-sm-10" ng-class="{'has-success': tempUser.password}">
-            <input type="password" class="form-control" name="password" placeholder="Password: at least 8 Characters" ng-model="tempUser.password"  ng-minlength="8" required>
-            <div ng-messages="registerForm.password.$error" role="alert">
-                <div ng-message="required">Password is required</div>
-                <div ng-message="minlength">Password is too short</div>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" name="password" placeholder="Password: at least 8 Characters" ng-model="tempUser.password" required>
+            <div class="text-danger" ng-show="tempUser.password">
+                <ul>
+                    <li ng-show="!tempUser.password">The password is required!</li>
+                    <li ng-show="!(tempUser.password.length >= 8 && tempUser.password.length <= 32)">The password must be between 8 ~ 32 characters long.</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-success': tempUser.confirm_password && tempUser.password === tempUser.confirm_password}">
         <label for="" class="col-sm-2 control-label">Confirm Password</label>
-        <div class="col-sm-10" ng-class="{'has-success': tempUser.confirm_password}">
-            <input type="password" name="confirm_password" required class="form-control" ng-model="tempUser.confirm_password" placeholder="Re-enter the password" ng-minlength="8">
-            <div ng-messages="registerForm.confirm_password.$error" role="alert">
-                <div ng-message="required">Please Confirm the password</div>
-                <div ng-message="minlength">Confirmed Password is too short</div>
+        <div class="col-sm-10">
+            <input type="password" name="confirm_password" required class="form-control" ng-model="tempUser.confirm_password" placeholder="Re-enter the password">
+            <div class="text-danger" ng-show="tempUser.confirm_password">
+                <ul>
+                    <li ng-show="!tempUser.confirm_password">Please confirm your password</li>
+                    <li ng-show="tempUser.confirm_password !== tempUser.password">The Passwords don't match!</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -101,7 +104,7 @@ Create new member
     </div>
     
     <div class="form-group">
-        <input type="submit" class="btn btn-primary pull-right" value="Add Member" ng-disabled="!tempUser.username||!tempUser.password||!tempUser.confirm_password||!tempUser.role||tempUser.password!==tempUser.confirm_password">
+        <input type="submit" class="btn btn-primary pull-right" value="Add Member">
     </div>
 
 </form>

@@ -74,14 +74,14 @@ $(document).ready(function(){
                                 }
                             },
                             error: function(err){
-                                ISGH.alertBox.init("Something went wrong trying to sumbit your rates, Please refresh and try again" , false);
+                                ISGH.alertBox.init("Something went wrong trying to submit your rates, Please refresh and try again" , false);
                             }
                         });
                     }
                 });
             },
             error: function(err){
-                ISGH.alertBox.init("Couldn't retrieve user data, Please refresh and try again!" , false);
+                ISGH.alertBox.init("Couldn't retrieve users data, Please refresh and try again!" , false);
             }
         });
     }
@@ -101,7 +101,7 @@ $(document).ready(function(){
         $("form#upload_prof").on("submit" , function(){
             $form = $(this);
             var formdata = new FormData($form[0]);
-
+            console.log(formdata);
             var request = new XMLHttpRequest();
             request.onreadystatechange = function(){
 

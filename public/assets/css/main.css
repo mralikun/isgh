@@ -216,7 +216,7 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
 }
 
 .tabs-links button {
-    width: 45%;
+    width: 30%;
     padding: 10px 0;
     margin: 0;
     font-size: 1.5em;
@@ -224,6 +224,10 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
     border: 1px solid rgba(128,128,128,.75);
     background-color: white;
     color: #007bb3;
+}
+
+.tabs-links button:focus {
+    outline: none;
 }
 
 .content-tabs{

@@ -7,11 +7,6 @@
 */
     
     app.controller("UserController" , ["$scope" , "$http" , function( scope , http ){
-        
-        http.post("/schedule").then(function(resp){
-            console.log(resp.data);
-        } , function(){})
-        
         //  DELETES AN EXISTING USER
         
         scope.delete = function ( obj ){
@@ -25,6 +20,8 @@
                 url = "/admin/DeleteKhateeb/" + ID;
             else if(obj.role == 3)
                 url = "/admin/DeleteAd/" + ID;
+            else if(obj.role == 1)
+                url = "/admin/deleteAdmin/" + ID;
             
             http.delete(url)
                 .then(function(){
@@ -38,8 +35,16 @@
         }
         
         //  CREATES A NEW USER
-
+        function valid(obj){
+            return obj.username && obj.username.length >= 6 && obj.username.length <= 32
+                    && obj.password && obj.password.length >= 8 && obj.password.length <= 32
+                    && obj.confirm_password && obj.password === obj.confirm_password
+                    && obj.role;
+        }
         scope.create = function ( _temp ){
+            
+            if(!valid(_temp))
+                return false;
             
             if( !ISGH.Validator.required( ["username" , "password" , "confirm_password" , "role"] , _temp ) ){
                 ISGH.alertBox.init("Some required fields are missing ,Please review all form fields and make sure nothing is missing" , false);
