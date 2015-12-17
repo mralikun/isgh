@@ -84,6 +84,15 @@ class AdminController extends Controller {
         $all = IslamicCenter::select("id","name")->get();
         return view("admin.edit_islamic_center",compact("all"));
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function islamicCenterData($id){
+        return IslamicCenter::with("Ad")->whereid($id)->first();
+    }
+
     /**
      * @return mixed
      * this function responsible for adding new user
@@ -104,7 +113,7 @@ class AdminController extends Controller {
     /**
      * @param $id
      * @return string
-     * delete admin from admins where id = his id 
+     * delete admin from admins where id = his id
      */
     public function DeleteAdmin($id){
         $user = User::whereid($id)->first();

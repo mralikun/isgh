@@ -144,3 +144,6 @@ Route::post("/islamicCentersForRating","UserController@return_islamic_centers_fo
 
 // return check schedule Exicstence
 Route::post("/checkScheduleExistence","UserController@CheckScheduleExistence");
+
+// return this islamic center
+Route::post("/islamicCenterData/{id}","AdminController@islamicCenterData");
