@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Admin;
 use App\AssociateDirector;
 use App\Cycle;
 use App\Fridays;
@@ -99,6 +100,22 @@ class AdminController extends Controller {
             return "true";
         }
     }
+
+    /**
+     * @param $id
+     * @return string
+     * delete admin from admins where id = his id 
+     */
+    public function DeleteAdmin($id){
+        $user = User::whereid($id)->first();
+        if(!empty($user)){
+            User::whereid($id)->delete();
+            Admin::whereid($user->user_id)->delete();
+        }else{
+            return "could not find this user";
+        }
+    }
+
     /**
      * @return mixed
      * create new islamic center

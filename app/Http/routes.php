@@ -35,6 +35,10 @@ Route::get('/admin/islamic_center/create/{id?}', 'AdminController@Create_Islamic
 
 // route for creating new members
 Route::get('/admin/members/create', 'AdminController@Create_members');
+
+// Delete Admin
+Route::delete('/admin/deleteAdmin/{id}', 'AdminController@DeleteAdmin');
+
 Route::get('/schedule', 'AdminController@Create_members');
 
 // route for managing schedule
