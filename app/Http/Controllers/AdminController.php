@@ -72,7 +72,7 @@ class AdminController extends Controller {
      * @return \Illuminate\View\edit_members
      */
     public function Edit_Members_Information(){
-        return $all = User::getUserNames();
+        $all = User::getUserNames();
         return view("admin.edit_members",compact("all"));
     }
     /**
