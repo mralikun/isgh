@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Input;
 class UserController extends Controller {
 
     public function __construct(){
-        //$this->middleware('auth');
-        //$this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
+        $this->middleware('auth');
+        $this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
     }
 
     /**
@@ -86,14 +86,14 @@ class UserController extends Controller {
         $cycle = cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         if(Auth::user()->role_id == 3) {
-            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id($user_id)->select("friday_id")->get();
+            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Schedule::Return_Associated_Islamic_Center($user_id))->select("friday_id")->get();
 
 
             $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->select("friday_id")->get();
             $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
 
             // if this ad have islamic center attached to him then get the id and the name
-            $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
+            $islamic_center_data = IslamicCenter::wheredirector_id(Auth::user()->user_id)->with("Ad")->first();
 
             if(empty($islamic_center_data)){
                 // here ad doesnot attached to islamic center

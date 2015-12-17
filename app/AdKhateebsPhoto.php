@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Cycle ;
 
 class AdKhateebsPhoto extends Model {
 
@@ -37,7 +38,7 @@ class AdKhateebsPhoto extends Model {
             $all_ad_pictures = AdKhateebsPhoto::all()->toArray();
         }
         // khaateebs selected this cycle
-        $khateebsSelectedThisCycle = Khateebselectedfridays::wherecycle_id(cycle::currentCycle())->select("khateeb_id")->get();
+        $khateebsSelectedThisCycle = Khateebselectedfridays::wherecycle_id(Cycle::currentCycle())->select("khateeb_id")->get();
         //converting them to array
         $khateebsSelectedThisCycle = Schedule::return_array($khateebsSelectedThisCycle , "khateeb_id");
         // array to hold them

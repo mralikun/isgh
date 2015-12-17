@@ -43,7 +43,7 @@ class AdminController extends Controller {
             $director_data = AssociateDirector::whereid($director_id)->select("id","name","phone")->first();
             return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
         }else{
-            return view("admin.create_islamic_center",compact("directors"));
+            return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
         }
     }
     /**
@@ -72,7 +72,7 @@ class AdminController extends Controller {
      * @return \Illuminate\View\edit_members
      */
     public function Edit_Members_Information(){
-        $all = User::getUserNames();
+        return $all = User::getUserNames();
         return view("admin.edit_members",compact("all"));
     }
     /**

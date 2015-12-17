@@ -35,6 +35,7 @@ Route::get('/admin/islamic_center/create/{id?}', 'AdminController@Create_Islamic
 
 // route for creating new members
 Route::get('/admin/members/create', 'AdminController@Create_members');
+Route::get('/schedule', 'AdminController@Create_members');
 
 // route for managing schedule
 Route::get('/admin/schedule', 'AdminController@Manage_schedule');
@@ -138,4 +139,4 @@ Route::post('/schedule', 'AdminController@getSchedule');
 Route::post("/islamicCentersForRating","UserController@return_islamic_centers_for_Rating");
 
 // return check schedule Exicstence
-Route::post("/CheckScheduleExistence","UserController@CheckScheduleExistence");
+Route::post("/checkScheduleExistence","UserController@CheckScheduleExistence");

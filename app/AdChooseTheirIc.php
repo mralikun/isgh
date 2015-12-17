@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Cycle ;
 
 class AdChooseTheirIc extends Model {
 
@@ -36,7 +37,7 @@ class AdChooseTheirIc extends Model {
 
 
     public static function AddFridays($fridays){
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $cycle_id = $cycle->id;
         $user_id = Auth::user()->user_id ;
         $ad_choose_fridays = AdChooseTheirIc::wherecycle_id($cycle_id)->wheread_id($user_id)->count();

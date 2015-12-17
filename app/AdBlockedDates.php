@@ -11,7 +11,7 @@ class AdBlockedDates extends Model {
     protected $fillable= ["id","friday_id","ad_id"];
 
     public static function addBlockedDates($fridays , $user_id){
-         $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->whereid($user_id)->first();
+        $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->whereid($user_id)->first();
 
         $khateeb_row = AdBlockedDates::whereic_id($user_id)->first();
         /**
@@ -26,18 +26,21 @@ class AdBlockedDates extends Model {
         $ad_blocked_dates_count = AdBlockedDates::wherecycle_id($cycle_id)->whereic_id($user_id)->count();
 
         if($ad_blocked_dates_count == 0){
-        
-            foreach($fridays as $friday){
-                // ksf abbreviation to khateeb selected fridays
-                $ksf = new AdBlockedDates();
-                $ksf->ic_id = $user_id ;
-                $ksf->friday_id = $friday ;
-                $ksf->cycle_id = $cycle_id ;
-                $ksf->save() ;
+
+            if(!empty($fridays )){
+
+                foreach($fridays as $friday){
+                    // ksf abbreviation to khateeb selected fridays
+                    $ksf = new AdBlockedDates();
+                    $ksf->ic_id = $user_id ;
+                    $ksf->friday_id = $friday ;
+                    $ksf->cycle_id = $cycle_id ;
+                    $ksf->save() ;
+                }
             }
             return "true";
         }elseif($ad_blocked_dates_count > 0){
-       
+
             // get all Selected Fridays
             $ad_blocked_dates = AdBlockedDates::wherecycle_id($cycle_id)->whereic_id($user_id)->select("id")->get();
             // Remove all fridays for this khateeb in this cycle
@@ -45,13 +48,16 @@ class AdBlockedDates extends Model {
                 AdBlockedDates::whereid($abd->id)->delete();
             }
             // Add new records to the database
-            foreach($fridays as $friday){
-                $abd = new AdBlockedDates();
-                $abd->ic_id = $user_id ;
-                $abd->friday_id = $friday ;
-                $abd->cycle_id = $cycle_id ;
-                $abd->save() ;
+            if(!empty($fridays)){
+                foreach($fridays as $friday){
+                    $abd = new AdBlockedDates();
+                    $abd->ic_id = $user_id ;
+                    $abd->friday_id = $friday ;
+                    $abd->cycle_id = $cycle_id ;
+                    $abd->save() ;
+                }
             }
+
             return "true";
         }else{
             return "false";
@@ -64,20 +70,20 @@ class AdBlockedDates extends Model {
      */
     public static function islamic_Centers_Available_This_Friday($friday_id){
         // here return the id's of all islamic centers that have blocked dates this friday and do not want khateeb in that day
-            $islamic_centers_id = AdBlockedDates::wherefriday_id($friday_id)->select("ic_id")->get();
+        $islamic_centers_id = AdBlockedDates::wherefriday_id($friday_id)->select("ic_id")->get();
 
         // create array to hold the islamic centers that block this friday
-            $islamic_centers_id_array = [];
+        $islamic_centers_id_array = [];
 
         // push islamic centers to the array mainly to generate array
-            if(!empty($islamic_centers_id)){
-                foreach($islamic_centers_id as $id){
-                    array_push($islamic_centers_id_array,$id->ic_id);
-                }
+        if(!empty($islamic_centers_id)){
+            foreach($islamic_centers_id as $id){
+                array_push($islamic_centers_id_array,$id->ic_id);
             }
+        }
 
         // here i want to get all islamic centers not in the array $islamic_centers_id_array
-            return $islamic_centers_available = $users = (array)DB::table('islamic_center')->whereNotIn('id',$islamic_centers_id_array )->select("id","speech_num")->get();
+        return $islamic_centers_available = $users = (array)DB::table('islamic_center')->whereNotIn('id',$islamic_centers_id_array )->select("id","speech_num")->get();
 
     }
 

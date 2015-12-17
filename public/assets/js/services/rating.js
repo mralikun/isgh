@@ -101,7 +101,7 @@ $(document).ready(function(){
         $("form#upload_prof").on("submit" , function(){
             $form = $(this);
             var formdata = new FormData($form[0]);
-            console.log(formdata);
+
             var request = new XMLHttpRequest();
             request.onreadystatechange = function(){
 
