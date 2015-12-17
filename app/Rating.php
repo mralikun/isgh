@@ -135,6 +135,9 @@ class Rating extends Model {
             $rated_ad = AssociateDirector::whereid($rated_user)->first();
 
             $ad = IslamicCenter::wheredirector_id($rated_user)->first();
+            if(empty($ad)){
+                return "You did not assign islamic center to this assiciate Director";
+            }
             $ad_address = $ad->postal_code ;
 
             $url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=$khateeb_address&destinations=$ad_address&mode=driving&language=en-EN&sensor=false";

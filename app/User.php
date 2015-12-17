@@ -355,12 +355,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function getUserNames(){
         $khateebs_users = User::whererole_id(2)->get();
         $ads = User::whererole_id(3)->get();
-        $admins = User::whererole_id(1)->where("id","!=",Auth::user()->id)->get();
+        $admins = User::whererole_id(1)->where("id","!=",Auth::user()->id)->select("id","username")->get();
         $all=["khateebs"=>[] , "ads"=>[] , "admins"=>[]];
 
         if(!empty($admins)){
             foreach($admins as $admin){
-                array_push($all["admins"],$admin);
+                array_push($all["admins"],[$admin->id, $admin->username]);
             }
         }
         // if no khateebs and no associative directors
