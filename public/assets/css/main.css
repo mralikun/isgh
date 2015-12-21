@@ -557,7 +557,7 @@ i.star-off-png , i.star-on-png, .raty-cancel {
 
 */
 
-table:not(.schedule) {
+table:not(.schedule):not(.edit-table) {
     width: 75%!important;
     margin: auto;
 }

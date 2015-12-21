@@ -431,6 +431,7 @@ var ISGH = {
             reader.readAsDataURL(this.files[0]);
             
         });
+        
     },
     
     //  STARTS THE MAGIC

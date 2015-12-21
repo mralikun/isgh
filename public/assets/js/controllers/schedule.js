@@ -4,6 +4,8 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
     scope.schedule_approved = false;
     scope.processing = true;
     scope.msg = "Checking schedule status , Please wait...";
+    var select_el = null;
+    var khateebs_edited = [];
     var DataManager = {
         mapped_data: [],
         init: function(d){
@@ -25,24 +27,38 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
             }
         },
         map: function(){
-            var ds = this.dates;
-            var ic_data = $(this.data).map(function(ind , e){
-                return {
-                    islamic_center: e.islamic_center.name,
-                    date: e.friday.date,
-                    khateeb: e.khateeb.name
-                }
-            });
-            for(var i = 0; i < this.islamic_centers.length; i++){
+            
+            for(var i = 0 ; i < this.islamic_centers.length; i++){
                 var ic = this.islamic_centers[i];
-                var obj = {
-                    islamic_center: ic,
-                    khutbahs: groupByDate(ic_data , ic , ds )
-                }
-                this.mapped_data.push(obj);
+                var dat = $(this.data).filter(function(ind , e){
+                    return e.islamic_center.name == ic;
+                })[0];
+                this.mapped_data.push(
+                    {
+                        
+                        islamic_center: {id: dat.islamic_center.id , name: dat.islamic_center.name , speach_num: dat.islamic_center.speech_num},
+                        khutbahs: groupByDate(this.data , this.islamic_centers[i] , this.dates , dat.islamic_center.speech_num)
+                        
+                    }
+                );
             }
+            console.log(this.mapped_data);
+        },
+        
+        get_islamic_center_schedule: function(islamic_center){
+            var temp = $(this.mapped_data).filter(function(index , element){
+                return element.islamic_center.name == islamic_center;
+            });
+            return temp[0];
         }
     };
+    scope.record = undefined ;
+    
+    scope.prep_edit = function(event){
+        var ic = event.target.getAttribute("data-ic");
+        scope.record = DataManager.get_islamic_center_schedule(ic);
+        console.log(scope.record);
+    }
     
     function formatTime(d){
         var hours = d.getHours();
@@ -54,6 +70,7 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
         scope.msg = "Retriving data...";
         scope.processing = true;
         request.post("/schedule").then(function(resp){
+            console.log(resp.data[0])
             scope.schedule_generated = true;
             scope.processing = false;
             DataManager.init(resp.data);
@@ -63,16 +80,63 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
         } , function(){});
     }
     
-    function groupByDate(arr  , ic , dates){
+    scope.handle_change = function(){
+        var previous_value = select_el.getAttribute("data-prev-value");
+        var date_id = parseInt(select_el.getAttribute("data-date") , 10);
+        console.log(previous_value);
+    }
+    
+    scope.set_element = function(ev){
+        select_el = ev.target;
+    }
+    
+    function groupByDate(arr  , ic , dates , limit){
         var grouped_data = [];
-        for(var i = 0; i< dates.length; i++){
+        for(var i = 0; i < dates.length; i++){
+            var data_to_push = $(arr).filter(function(index ,element){
+                                    return element.friday.date == dates[i] && element.islamic_center.name == ic;
+                                });
+            var missing = [];
+//            console.log(data_to_push instanceof Array);
+            if(data_to_push.length < limit)
+                for(var j = 0 ; j < limit - data_to_push.length; j++){
+                    var d = $(arr).filter(function(ind ,el){
+                        return el.friday.date == dates[i];
+                    })[0].friday_id;
+                    missing.push({
+                        date_id: d
+                    });
+                }
+            else
+                missing = [];
+            
             grouped_data.push(
-                $(arr).filter(function(index ,element){
-                    return element.date == dates[i] && element.islamic_center == ic;
-                })
+                {
+                    date: dates[i],
+                    data: data_to_push,
+                    missing: (missing.length) ? missing : undefined
+                }
             );
         }
         return grouped_data;
+    }
+    scope.handle_khutbah_edit = function(e){
+        console.log(e);
+//        var el = event.target;
+
+//        
+//        var obj = $(kahteebs_edited).filter(function(ind , el){
+//            return el.friday == date_id && el.islamic_center == scope.record.islamic_center.id;
+//        })[0];
+//        console.log(obj);
+//        
+//        if(!!previous_value){
+//            previous_value = parseInt(previous_value , 10);
+//            khateebs_edited[kahteebs_edited.indexOf(previous_value)] = el.value;
+//        }else {
+//            khateebs_edited.push(parseInt(el.value , 10));
+//        }
+//        el.setAttribute("data-prev-value" , el.value);
     }
     
     scope.generate = function(){

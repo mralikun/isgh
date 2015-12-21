@@ -28,7 +28,6 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
                 icID = parseInt(icID , 10);
                 scope.update(icID);
             }
-            window.location.assign(window.location);
         }
         
         //  REQUEST THE DIRECTOR'S CELL PHONE ONCE IT'S SELECTED
