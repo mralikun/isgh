@@ -420,4 +420,86 @@ class UserController extends Controller {
             }
         }
     }
+
+
+    /**
+     * @param $friday_id
+     * @param $islamic_center
+     * @return array
+     * return khateebs selected this friday to give khutbah and did not choosen
+     * check if khateebs give this islamic center more than zero
+     */
+    public function availableThisFriday($friday_id,$islamic_center){
+        // here i want get all khateebs will give khutbah this friday = (khateebs_will_give_khutbah)
+            $schedule_khateebs = Schedule::wherefriday_id($friday_id)->select("khateeb_id")->get();
+            $schedule_khateebs = Schedule::return_array($schedule_khateebs,"khateeb_id");
+
+        // here i want to return available khateebs this friday  = (all_khateebs)
+            if(!empty($schedule_khateebs)){
+                $all_khateebs_choosed_this_friday = Khateebselectedfridays::Get_Khateebs_Choosed_that_Friday($friday_id,$schedule_khateebs);
+            }else{
+                $all_khateebs_choosed_this_friday = Khateebselectedfridays::Get_Khateebs_Choosed_that_Friday($friday_id);
+            }
+
+        // then filter the result and return khateebs that gave this islamic center higher from 0
+        $ad_id = User::whereid(Schedule::Return_Associated_ad($islamic_center))->first();
+            if(!empty($all_khateebs_choosed_this_friday)){
+                $khateebs_allowed = Rating::wheread_id($ad_id->user_id)->whereIn("khateeb_id",Schedule::return_array($all_khateebs_choosed_this_friday,"khateeb_id"))->wherecycle_id(cycle::currentCycle())->where("ad_rate_khateeb","!=",0)->where("khateeb_rate_ad","!=",0)->get();
+                $khateebs_allowed = $khateebs_allowed->toArray();
+            }else{
+                $khateebs_allowed = [];
+            }
+
+        if(!empty($khateebs_allowed)){
+            // mapping data before sending it to the front
+            return array_map(function($item){
+                $user = User::whereid($item["khateeb_id"])->first();
+                if($user->role_id == 2){
+                    return[
+                        "id"=>$item["khateeb_id"],
+                        "name"=>User::GetUserDataForSchedule($item["khateeb_id"])->name
+                    ];
+                }else{
+                    return[
+                        "id"=>$item["khateeb_id"],
+                        "name"=>User::GetUserDataForSchedule($item["khateeb_id"])->name
+                    ];
+                }
+            },$khateebs_allowed);
+        }else{
+            return $khateebs_allowed ;
+        }
+
+    }
+
+    /**
+     * here editing schedule if there is a previous khateeb remove him and add new
+     * if  there is no khateebs add new khateeb for this islamic center
+     */
+    public function EditSchedule(){
+        $arrays = Input::get("data");
+        if(!empty($arrays)){
+            foreach($arrays as $array){
+                $friday_id = $array[0];
+                $islamic_center = $array[1];
+                $previous_id = $array[2];
+                $new_id = $array[3];
+
+                if($previous_id == 0){
+                    $schedule = new Schedule();
+                    $schedule->friday_id =$friday_id ;
+                    $schedule->ic_id = $islamic_center ;
+                    $schedule->khateeb_id =$new_id ;
+                    $schedule->cycle_id =cycle::currentCycle() ;
+                    $schedule->save();
+                }else{
+                    $schedule = Schedule::wherefriday_id($friday_id)->whereic_id($islamic_center)->wherekhateeb_id($previous_id)->first();
+                    $schedule->khateeb_id = $new_id ;
+                    $schedule->update() ;
+                }
+            }
+        }
+
+    }
+
 }

@@ -147,3 +147,9 @@ Route::post("/checkScheduleExistence","UserController@CheckScheduleExistence");
 
 // return this islamic center
 Route::post("/islamicCenterData/{id}","AdminController@islamicCenterData");
+
+// return all available khateebs in that friday
+Route::post("/availableThisFriday/{id}/{ic}","UserController@availableThisFriday");
+
+// here route for editing schedule
+Route::post("/editSchedule","UserController@EditSchedule");

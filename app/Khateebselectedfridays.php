@@ -69,8 +69,12 @@ class Khateebselectedfridays extends Model {
      * @param $friday_id
      * get all khateebs available in this friday
      */
-    public static function Get_Khateebs_Choosed_that_Friday($friday_id){
-        return (array)DB::table('khateebselectedfridays')->where('friday_id','=', $friday_id)->select("khateeb_id","role_id")->get();
+    public static function Get_Khateebs_Choosed_that_Friday($friday_id , $condition = null){
+        if($condition == null){
+            return (array)DB::table('khateebselectedfridays')->where('friday_id','=', $friday_id)->select("khateeb_id","role_id")->get();
+        }else{
+            return (array)DB::table('khateebselectedfridays')->where('friday_id','=', $friday_id)->whereNotIn('khateeb_id',$condition)->select("khateeb_id","role_id")->get();
+        }
     }
 
 }
