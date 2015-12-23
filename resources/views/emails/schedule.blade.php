@@ -397,29 +397,36 @@
 <body bgcolor="#FFFFFF">
 
 <!-- HEADER -->
-<td><h3><i>Isgh</i></h3></td>
-<td><h4>Mr. <span class="name" >{{$data["khateeb_data"][0]["name"]}}</span>,<br/>We would like to inform you that the schedule have been approved and you can see your days below: </h4></td>
+<h3><i>Isgh</i></h3>
+<h4>Mr. <span class="name" >{{$data["khateeb_data"][0]["name"]}}</span>,<br/>We would like to inform you that the schedule have been approved and you can see your days below: </h4>
 
-<table class="table table-responsive table-bordered">
+<table class="table table-responsive table-bordered"  style="width: 100%;font-size:10px;font-weight: bold;border:1px solid gray;background-color: gray">
+    <col width="10%">
+    <col width="20%">
+    <col width="20%">
+    <col width="7.5%">
+    <col width="7.5%">
+    <col width="10%">
+    <col width="20%">
     <thead>
-        <td class="green">Date</td>
-        <td class="green">Islamic Center Name</td>
-        <td class="green">Address</td>
-        <td class="green">Start</td>
-        <td class="green">End</td>
-        <td class="green">Ad Phone</td>
-        <td class="green">Ad Email</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Date</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Islamic Center Name</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Address</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Start</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">End</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Ad Phone</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Ad Email</td>
     </thead>
     <tbody>
         @foreach($data["islamic_centers"] as $ic)
             <tr>
-                <td class="center">{{ $ic["date"] }}</td>
-                <td class="center">{{ $ic["ic_name"] }}</td>
-                <td class="center">{{ $ic["address"] }}</td>
-                <td class="center">{{ $ic["khutbah_start"] }}</td>
-                <td class="center">{{ $ic["khutbah_end"] }}</td>
-                <td class="center">{{ $ic["ad_phone"] }}</td>
-                <td class="center">{{ $ic["ad_email"] }}</td>
+                <td  style="background-color: #ffffff;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["date"] }}</td>
+                <td style="background-color: #ffffff;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["ic_name"] }}</td>
+                <td style="background-color: #ffffff ;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["address"] }}</td>
+                <td style="background-color: #ffffff ;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["khutbah_start"] }}</td>
+                <td style="background-color: #ffffff ;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["khutbah_end"] }}</td>
+                <td style="background-color: #ffffff ;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["ad_phone"] }}</td>
+                <td style="background-color: #ffffff ;font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray" class="center" class="center">{{ $ic["ad_email"] }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -448,18 +455,22 @@
 
 ?>
 <br>
-<table class="table table-bordered table-responsive">
+<table class="table table-bordered table-responsive"  style="width: 100%;font-size:10px;font-weight: bold;border:1px solid gray;background-color: gray">
+    <col width="20%">
+    <col width="40%">
+    <col width="40%">
+
     <thead>
-        <td class="green">Islamic Center Name</td>
-        <td class="green">Parking Information</td>
-        <td class="green">Other Information</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Islamic Center Name</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Parking Information</td>
+        <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;" class="green">Other Information</td>
     </thead>
     <tbody>
     @foreach($islamic_center as $ic)
         <tr>
-            <td class="center">{{ $ic["ic_name"] }}</td>
-            <td class="center">{{ $ic["parking_information"] }}</td>
-            <td class="center">{{ $ic["other_information"] }}</td>
+            <td style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff" class="center">{{ $ic["ic_name"] }}</td>
+            <td style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff" class="center">{{ $ic["parking_information"] }}</td>
+            <td style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff" class="center">{{ $ic["other_information"] }}</td>
         </tr>
     @endforeach
     </tbody>

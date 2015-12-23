@@ -377,44 +377,33 @@
         }
 
     </style>
-    <style>
-        .green{
-            background-color: green;
-            text-align: center;
-            vertical-align: middle;
-        }
-        .center{
-            text-align: center;
-            vertical-align: middle;
-        }
-        .name{
-            color:blue ;
-            font-family: italic;
-        }
-    </style>
 </head>
 
 <body bgcolor="#FFFFFF">
 
 <!-- HEADER -->
-<td><h3><i>Isgh</i></h3></td>
+<h3><i>Isgh</i></h3>
 
-<td><h4>Mr. <span class="name" >{{$data["ad_data"][0]["name"]}}</span>,<br/>We would like to inform you that the schedule have been approved and you can see Khateeb's details below: </h4></td>
+<h4>Mr. <span style="color:blue ;font-family: italic;" >{{$data["ad_data"][0]["name"]}}</span>,<br/>We would like to inform you that the schedule have been approved and you can see Khateeb's details below: </h4>
 
-<table class="table table-responsive table-bordered">
-    <thead>
-    <td class="green">Date</td>
-    <td class="green">Khateeb Name</td>
-    <td class="green">Phone</td>
-    <td class="green">Email</td>
+<table style="width: 100%;font-size:10px;font-weight: bold;border:1px solid gray;background-color: gray">
+    <col width="20%">
+    <col width="40%">
+    <col width="20%">
+    <col width="20%">
+    <thead style="background-color: #008800">
+    <td style="background-color: #008800;text-align: center;vertical-align: middle;padding: 8px ;font-size: 17px;">Date</td>
+    <td style="background-color: #008800;text-align: center;vertical-align: middle;;font-size: 17px;">Khateeb Name</td>
+    <td style="background-color: #008800;text-align: center;vertical-align: middle;;font-size: 17px;">Phone</td>
+    <td  style="background-color: #008800;text-align: center;vertical-align: middle;;font-size: 17px;">Email</td>
     </thead>
     <tbody>
     @foreach($data["khateebs"] as $khateeb)
         <tr>
-            <td class="center">{{ $khateeb["date"] }}</td>
-            <td class="center">{{ $khateeb["name"] }}</td>
-            <td class="center">{{ $khateeb["phone"] }}</td>
-            <td class="center">{{ $khateeb["email"] }}</td>
+            <td style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff">{{ $khateeb["date"] }}</td>
+            <td  style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff">{{ $khateeb["name"] }}</td>
+            <td  style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff">{{ $khateeb["phone"] }}</td>
+            <td  style="font-family:italic ;text-align: center;vertical-align: middle;padding: 8px;border-top: 1px solid #ddd;font-size: 15px;border-right: 1px solid gray;background-color: #ffffff">{{ $khateeb["email"] }}</td>
         </tr>
     @endforeach
     </tbody>

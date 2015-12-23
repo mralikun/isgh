@@ -255,20 +255,20 @@ class AdminController extends Controller {
         if(!empty($schedule)){
             // then i have to get first element in the schedule and check if there are khateebs in the schedule or not
             // match this khateeb to collect him in one array and the add him to another array and unset this element from the array
-//            foreach($schedule as $element){
-//                $khateeb = $element;
-//                $firstkhateeb = [];
-//
-//                foreach($schedule as $key=>$value){
-//                    if($value->khateeb->id == $khateeb->khateeb->id){
-//                        array_push($firstkhateeb , $value) ;
-//                        unset($schedule[$key]);
-//                    }
-//                }
-//                if(!empty($firstkhateeb)){
-//                    self::SendEmailToKhateeb($firstkhateeb);
-//                }
-//            }
+            foreach($schedule as $element){
+                $khateeb = $element;
+                $firstkhateeb = [];
+
+                foreach($schedule as $key=>$value){
+                    if($value->khateeb->id == $khateeb->khateeb->id){
+                        array_push($firstkhateeb , $value) ;
+                        unset($schedule[$key]);
+                    }
+                }
+                if(!empty($firstkhateeb)){
+                    self::SendEmailToKhateeb($firstkhateeb);
+                }
+            }
 
 
              // here like i made with the khateeb i will with the islamic center to send to the islamic center one email include all data needed
