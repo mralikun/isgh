@@ -399,7 +399,7 @@
 <!-- HEADER -->
 <td><h3><i>Isgh</i></h3></td>
 
-<td><h4>Mr. <span class="name" >{{$data["ad_data"][0]["name"]}}</span>,<br/>We would like to inform you that the schedule have been approved and you can see Khateebs Details below: </h4></td>
+<td><h4>Mr. <span class="name" >{{$data["ad_data"][0]["name"]}}</span>,<br/>We would like to inform you that the schedule have been approved and you can see Khateeb's details below: </h4></td>
 
 <table class="table table-responsive table-bordered">
     <thead>

@@ -337,7 +337,7 @@ class AdminController extends Controller {
     public function sendEmailViewToKhateeb($data){
         if(!empty($data)){
 
-            self::$mail = "emineme32@yahoo.com";//$data["khateeb_data"][0]["email"];
+            self::$mail = $data["khateeb_data"][0]["email"];
 
             Mail::send("emails.schedule",["data"=>$data],function($m){
                 $m->to(self::$mail);
@@ -377,8 +377,8 @@ class AdminController extends Controller {
 
     public function sendEmailViewToIslamicCenter($data){
         if(!empty($data)){
-            echo $data["ad_data"][0]["email"] ;
-            self::$mail = "emineme32@yahoo.com";//$data["khateeb_data"][0]["email"];
+
+            self::$mail = $data["ad_data"][0]["email"];
 
             Mail::send("emails.schedule_ic",["data"=>$data],function($m){
                 $m->to(self::$mail);
