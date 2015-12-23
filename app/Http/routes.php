@@ -153,3 +153,6 @@ Route::post("/availableThisFriday/{id}/{ic}","UserController@availableThisFriday
 
 // here route for editing schedule
 Route::post("/editSchedule","UserController@EditSchedule");
+
+// here route for approve the schedule
+Route::get("/approve","AdminController@approveSchedule");

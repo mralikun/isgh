@@ -13,15 +13,17 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 class AdminController extends Controller {
+    protected static $mail ;
 
     public function __construct()
     {
-        $this->middleware('admin');
-        $this->middleware('auth');
-        $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
+//        $this->middleware('admin');
+//        $this->middleware('auth');
+//        $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
     /**
      * here for returning view for creating new islamic center
@@ -224,7 +226,10 @@ class AdminController extends Controller {
         }
     }
 
-
+    /**
+     * @return mixed
+     * return the schedule for the current cycle
+     */
     public function getSchedule(){
         $schedule = Schedule::wherecycle_id(Cycle::currentCycle())->get();
 
@@ -242,5 +247,146 @@ class AdminController extends Controller {
         }
         return $schedule ;
     }
+
+    public function approveSchedule(){
+        // first get the schedule into an array
+        $schedule = self::getSchedule();
+
+        if(!empty($schedule)){
+            // then i have to get first element in the schedule and check if there are khateebs in the schedule or not
+            // match this khateeb to collect him in one array and the add him to another array and unset this element from the array
+//            foreach($schedule as $element){
+//                $khateeb = $element;
+//                $firstkhateeb = [];
+//
+//                foreach($schedule as $key=>$value){
+//                    if($value->khateeb->id == $khateeb->khateeb->id){
+//                        array_push($firstkhateeb , $value) ;
+//                        unset($schedule[$key]);
+//                    }
+//                }
+//                if(!empty($firstkhateeb)){
+//                    self::SendEmailToKhateeb($firstkhateeb);
+//                }
+//            }
+
+
+             // here like i made with the khateeb i will with the islamic center to send to the islamic center one email include all data needed
+             // for khateebs and any info they need
+            foreach($schedule as $element){
+                if(!empty($schedule)){
+                    $islamic_center = $element;
+                    $firstic = [];
+
+                    foreach($schedule as $key=>$value){
+                        if($value->islamic_center->id == $islamic_center->islamic_center->id){
+                            array_push($firstic , $value) ;
+                            unset($schedule[$key]);
+                        }
+                    }
+                    if(!empty($firstic)){
+                        self::SendEmailToIslamicCenter($firstic);
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * @param $array_of_ic_to_khateeb
+     * here managing data to be sent to view
+     */
+    public function SendEmailToKhateeb($array_of_ic_to_khateeb){
+        $merged_data = ["khateeb_data"=>[],"islamic_centers"=>[]];
+
+        $khateeb_info = [
+            "name"=>$array_of_ic_to_khateeb[0]->khateeb->name,
+            "email"=>$array_of_ic_to_khateeb[0]->khateeb->email,
+        ];
+        array_push($merged_data["khateeb_data"],$khateeb_info);
+
+        foreach($array_of_ic_to_khateeb as $ic){
+            $ad = User::GetUserDataForSchedule(Schedule::Return_Associated_ad($ic->islamic_center->id),3) ;
+            $ad_phone = $ad->phone ;
+            $ad_email = $ad->email ;
+
+            $element =[
+                "date"=>$ic->friday->date ,
+                "ic_name"=>$ic->islamic_center->name ,
+                "khutbah_start"=>date("G:i",strtotime($ic->islamic_center->khutbah_start)) ,
+                "khutbah_end"=>date("G:i",strtotime($ic->islamic_center->khutbah_end)) ,
+                "parking_information"=>$ic->islamic_center->parking_information ,
+                "address"=>$ic->islamic_center->address ,
+                "other_information"=>$ic->islamic_center->other_information,
+                "ad_phone"=>$ad_phone,
+                "ad_email"=>$ad_email
+
+            ];
+            array_push($merged_data["islamic_centers"],$element);
+        }
+        if(!empty($merged_data)){
+            self::sendEmailViewToKhateeb($merged_data);
+        }
+    }
+
+    /**
+     * @param $data
+     * here sending data to view
+     */
+    public function sendEmailViewToKhateeb($data){
+        if(!empty($data)){
+
+            self::$mail = "emineme32@yahoo.com";//$data["khateeb_data"][0]["email"];
+
+            Mail::send("emails.schedule",["data"=>$data],function($m){
+                $m->to(self::$mail);
+                $m->subject("Isgh Schedule");
+            });
+        }
+    }
+
+    public function SendEmailToIslamicCenter($array_of_khateebs_to_ic){
+
+        $merged_data = ["ad_data"=>[],"khateebs"=>[]];
+        $ad = AssociateDirector::whereid($array_of_khateebs_to_ic[0]->islamic_center->director_id)->first();
+
+        $ad_info = [
+            "name"=>$ad->name,
+            "email"=>$ad->email
+        ];
+
+        array_push($merged_data["ad_data"],$ad_info);
+
+        foreach($array_of_khateebs_to_ic as $khateeb){
+
+            $element =[
+                "date"=>$khateeb->friday->date ,
+                "name"=>$khateeb->khateeb->name ,
+                "phone"=>$khateeb->khateeb->phone ,
+                "email"=>$khateeb->khateeb->email
+
+            ];
+            array_push($merged_data["khateebs"],$element);
+        }
+
+        if(!empty($merged_data)){
+            self::sendEmailViewToIslamicCenter($merged_data);
+        }
+    }
+
+    public function sendEmailViewToIslamicCenter($data){
+        if(!empty($data)){
+            echo $data["ad_data"][0]["email"] ;
+            self::$mail = "emineme32@yahoo.com";//$data["khateeb_data"][0]["email"];
+
+            Mail::send("emails.schedule_ic",["data"=>$data],function($m){
+                $m->to(self::$mail);
+                $m->subject("Isgh Schedule");
+            });
+        }
+    }
+
+
 
 }

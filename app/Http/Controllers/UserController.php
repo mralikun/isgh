@@ -502,4 +502,9 @@ class UserController extends Controller {
 
     }
 
+
+    /**
+     *
+     */
+
 }
