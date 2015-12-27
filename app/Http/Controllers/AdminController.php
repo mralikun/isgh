@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
@@ -72,7 +73,17 @@ class AdminController extends Controller {
      * @return \Illuminate\View\schedule
      */
     public function Manage_schedule(){
-        return view("admin.schedule");
+        if(Auth::user()->role_id == 3){
+            $ad = AssociateDirector::whereid(Auth::user()->user_id)->first();
+            if($ad->reviewerschedule == 1){
+                return view("admin.schedule",compact("reviewer"));
+            }else{
+                return Redirect::to("/");
+            }
+        }else{
+            return view("admin.schedule");
+        }
+
     }
     /**
      * here for returning view for editing members
