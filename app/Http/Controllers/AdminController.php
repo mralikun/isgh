@@ -76,7 +76,8 @@ class AdminController extends Controller {
         if(Auth::user()->role_id == 3){
             $ad = AssociateDirector::whereid(Auth::user()->user_id)->first();
             if($ad->reviewer == 1){
-                return view("admin.schedule");
+                $admin = "true";
+                return view("admin.schedule",compact("admin"));
             }elseif($ad->reviewerschedule == 1) {
                 $reviewer = "true";
                 return view("admin.schedule",compact("reviewer"));
