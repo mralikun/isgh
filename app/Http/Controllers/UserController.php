@@ -459,10 +459,10 @@ class UserController extends Controller {
         $arrays = Input::get("data");
         if(!empty($arrays)){
             foreach($arrays as $array){
-                $friday_id = $array[0];
-                $islamic_center = $array[1];
-                $previous_id = $array[2];
-                $new_id = $array[3];
+                $friday_id = $array["friday_id"];
+                $islamic_center = $array["islamic_center"];
+                $previous_id = $array["prev_value"];
+                $new_id = $array["current"];
 
                 if($previous_id == 0){
                     $schedule = new Schedule();
