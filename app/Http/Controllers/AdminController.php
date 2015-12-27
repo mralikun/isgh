@@ -26,9 +26,9 @@ class AdminController extends Controller {
 
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin',["except"=>["Manage_schedule"]]);
         $this->middleware('auth');
-        $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
+        $this->middleware('cycleCheck',["only"=>["Create_members","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
     /**
      * here for returning view for creating new islamic center
@@ -80,8 +80,10 @@ class AdminController extends Controller {
             }else{
                 return Redirect::to("/");
             }
-        }else{
+        }elseif(Auth::user()->role_id == 1){
             return view("admin.schedule");
+        }else{
+            Redirect::to("/");
         }
 
     }
