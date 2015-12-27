@@ -251,6 +251,22 @@ class AdminController extends Controller {
         return $schedule ;
     }
 
+    public function CheckScheduleExistence(){
+        $cycle = cycle::currentCycle();
+        $schedule = Schedule::latest()->first();
+        if(empty($schedule)){
+            return "false";
+        }else{
+            $cycle_id = $schedule->cycle_id ;
+            if($cycle_id == $cycle){
+                return "true";
+            }
+            else{
+                return "false";
+            }
+        }
+    }
+
     public function approveSchedule(){
         // first get the schedule into an array
         $schedule = self::getSchedule();
@@ -473,12 +489,14 @@ class AdminController extends Controller {
 
                     $cells->setBackground('#4CAF50');
                     $cells->setFontColor('#ffffff');
+                    $cells->setAlignment("vertical");
                     $cells->setFontSize(22);
                 });
 
                 $sheet->cells('A1:M1', function($cells) {
                     $cells->setBorder("thin","thin","thin","thin");
                     $cells->setAlignment("horizontal");
+                    $cells->setAlignment("vertical");
                     $cells->setBackground('#808080');
                     $cells->setFontColor('#ffffff');
                     $cells->setFontSize(25);
