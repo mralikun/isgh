@@ -1,21 +1,21 @@
 @extends("templates.master")
-
-
 @section("navigation")
-@if(!isset($reviewer))
-<li><a href="/admin/members/create">Create new members</a></li>
-<li><a href="/admin/islamic_center/create">Create islamic center</a></li>
-<li><a href="/admin/schedule">Manage Schedule</a></li>
-@elseif(isset($reviewer) and $reviewer or isset($admin) and $admin)
+
+@if(isset($admin) and $admin)
 <li><a href="/user/profile">View Profile</a></li>
 <li><a href="/user/dates">Available Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
-@if($reviewer)
-<li><a href="/admin/schedule">Review Schedule</a></li>
+
 @endif
-@endif
+
+@if(!isset($reviewer))
+<li><a href="/admin/members/create">Create new members</a></li>
+<li><a href="/admin/islamic_center/create">Create islamic center</a></li>
+<li><a href="/admin/schedule">Manage Schedule</a></li>
 <li><a href="/auth/logout">Logout</a></li>
+@endif
+
 @stop
 
 @section("pageTitle")

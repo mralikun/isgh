@@ -3,6 +3,13 @@
 
 @section("navigation")
 
+@if(isset($admin) and $admin)
+<li><a href="/user/profile">View Profile</a></li>
+<li><a href="/user/dates">Available Dates</a></li>
+<li><a href="/user/BlockedDates">Blocked Dates</a></li>
+<li><a href="/user/rating">Rating</a></li>
+<li><a href="/user/edit_profile">Update Profile Information</a></li>
+@endif
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 <li><a href="/admin/schedule">Manage Schedule</a></li>
