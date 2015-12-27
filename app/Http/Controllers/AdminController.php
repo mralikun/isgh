@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
+
 class AdminController extends Controller {
     protected static $mail ;
+    protected static $fridays ;
 
     public function __construct()
     {
@@ -387,6 +390,189 @@ class AdminController extends Controller {
         }
     }
 
+    public function ExportSchedule(){
+
+        $schedule = self::getSchedule();
+
+        $islamic_centers = [];
+        foreach($schedule as $element){
+            if(!empty($schedule)){
+                $islamic_center = $element;
+                $firstic = [];
+
+                foreach($schedule as $key=>$value){
+                    if($value->islamic_center->id == $islamic_center->islamic_center->id){
+                        array_push($firstic , $value) ;
+                        unset($schedule[$key]);
+                    }
+                }
+                if(!empty($firstic)){
+                    array_push($islamic_centers , $firstic);
+                }
+            }
+        }
+
+        $fridays = Fridays::wherecycle_id(Cycle::currentCycle())->get();
+        $fridays = Schedule::return_array($fridays ,"date");
+        self::$fridays = $fridays ;
+
+        $islamic_centers = array_map(function($item){
+            return [
+                  "islamic_center"=>$item[0]["islamic_center"]["name"],
+                "friday_khateeb"=>self::returndata($item)
+            ];
+        },$islamic_centers);
+
+        $islamic_centers = array_map(function($element){
+            return [
+              "name"=>$element["islamic_center"],
+              "fridays"=>self::returnDatahandeled($element["friday_khateeb"])
+            ];
+        },$islamic_centers);
+
+        foreach($islamic_centers as $ic){
+
+            foreach($ic["fridays"] as $i){
+                usort($ic["fridays"],function( $a, $b ) {
+                    foreach($a as $w){
+                        foreach($b as $s){
+                            return strtotime($w["friday"]) - strtotime($s["friday"]);
+                        }
+                    }
+                });
+            }
+        }
+
+        $main = "";
+        foreach($islamic_centers as $ic){
+            $data = "<tr>
+                        <td  style='background-color: #808080;color:#ffffff ; text-align: center;padding: 20px;'>".$ic["name"]."</td>";
+                        foreach($ic["fridays"] as $i){
+                            $khateebs = "<td style=' text-align: center;'>";
+                                foreach($i as $w){
+                                    $khateebs = $khateebs.$w["khateebs"]."</td>" ;
+                                }
+                            $data = $data.$khateebs;
+                        }
+            $data = $data."</tr>";
+            $main = $main.$data ;
+        }
+
+        Excel::create("Schedule", function($excel) use($main) {
+
+            $excel->sheet('Schedule', function($sheet) use($main) {
+
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name'      =>  'Calibri',
+                        'size'      =>  18,
+                        'bold'      =>  false
+                    )
+                ));
+                $sheet->cells('A2:N2', function($cells) {
+
+                    $cells->setBackground('#4CAF50');
+                    $cells->setFontColor('#ffffff');
+                    $cells->setFontSize(22);
+                });
+
+                $sheet->cells('A1:M1', function($cells) {
+                    $cells->setBorder("thin","thin","thin","thin");
+                    $cells->setAlignment("horizontal");
+                    $cells->setBackground('#808080');
+                    $cells->setFontColor('#ffffff');
+                    $cells->setFontSize(25);
+                    $cells->setFontFamily("italic");
+                });
+
+                $sheet->cells('A3:Z19', function($cells) {
+                    $cells->setFontSize(15);
+                    $cells->setAlignment("horizontal");
+                });
+
+                $sheet->setWidth(array(
+                    'A'=>25, 'B' => 25, 'C' =>25, 'D' =>25, 'E' =>25, 'F' =>25, 'G' =>25, 'H' =>25, 'I' =>25, 'J' =>25, 'K' =>25, 'L' =>25, 'M' =>25, 'N' =>25,
+                ));
+
+                $sheet->loadView('excel.schedule')
+                    ->with('data', $main)
+                    ->with('fridays', self::$fridays);
+            });
+        })->export('xlsx');
 
 
+    }
+
+    public function returndata($item){
+            $global_array = [];
+
+            foreach(self::$fridays as $friday){
+                $data = array_filter($item ,function($i) use ($friday){
+                    return $friday == $i["friday"]["date"];
+                });
+
+                $data = array_map(function($item){
+                    return[
+                      "friday"=>$item->friday->date ,
+                      "khateeb"=>$item->khateeb->name
+                    ];
+                },$data);
+
+                array_push($global_array ,["fridays"=>$data]);
+            }
+
+            $fridays = [];
+            foreach($global_array as $el){
+                if(!empty($el)){
+                    foreach($el["fridays"] as $f){
+                        if(!empty($f)){
+                           array_push($fridays,$f["friday"]);
+                        }
+                    }
+                }else{
+                    unset($el);
+                }
+            }
+
+
+            foreach(self::$fridays as $friday){
+                if(!in_array($friday,$fridays)){
+                    array_push($fridays,$friday);
+                    array_push($global_array,["fridays"=>[
+                        [
+                            "friday"=>$friday,
+                            "khateeb"=>"--"
+                        ]
+                    ]]);
+                }
+            }
+            return $global_array ;
+    }
+
+    public function returnDatahandeled($islamic_centers){
+        foreach($islamic_centers as $key=>$ic){
+            if(empty($ic["fridays"])){
+               unset($islamic_centers[$key]);
+            }
+        }
+
+        $general = [];
+        foreach($islamic_centers as $ic){
+            $data = [];
+            foreach($ic as $el){
+                $khateebs = "";
+                $innerArray= "";
+                    foreach($el as $e1){
+                        if($innerArray ==""){
+                            $innerArray = $e1["friday"];
+                        }
+                        $khateebs =  $e1["khateeb"]." , ".$khateebs;
+                    }
+                array_push($data ,["friday"=>$innerArray ,"khateebs"=>$khateebs]);
+            }
+            array_push($general , $data);
+        }
+
+        return $general ;
+    }
 }
