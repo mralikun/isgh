@@ -1,5 +1,6 @@
 <?php namespace App\Http\Middleware;
 
+use App\AssociateDirector;
 use Closure;
 use Illuminate\Auth\Guard;
 use Illuminate\Support\Facades\Redirect;
@@ -37,7 +38,7 @@ class AuthenticateifAdmin {
         }
 
 
-        if ($this->auth->user()->role_id == 2 || $this->auth->user()->role_id == 3)
+        if ($this->auth->user()->role_id == 2 )
         {
             if ($request->ajax())
             {
@@ -46,6 +47,16 @@ class AuthenticateifAdmin {
             else
             {
                 return redirect()->guest('/user/profile');
+            }
+
+        }elseif($this->auth->user()->role_id == 3){
+
+            $user_data = AssociateDirector::whereid($this->auth->user()->user_id)->first();
+            if(!empty($user_data)){
+
+                if($user_data->reviewer == 0) {
+                    return redirect()->guest('/user/profile');
+                }
             }
         }
 

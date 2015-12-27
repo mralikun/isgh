@@ -1,5 +1,6 @@
 <?php namespace App\Http\Middleware;
 
+use App\AssociateDirector;
 use App\Cycle;
 use Closure;
 use Illuminate\Auth\Guard;
@@ -25,7 +26,7 @@ class CycleExistence {
     public function handle($request, Closure $next)
     {
 
-        if ($this->auth->guest() ||$this->auth->user()->role_id == 2 || $this->auth->user()->role_id == 3)
+        if ($this->auth->guest())
         {
             if ($request->ajax())
             {
@@ -35,6 +36,41 @@ class CycleExistence {
             {
                 return redirect()->guest('/');
             }
+        }elseif($this->auth->user()->role_id == 3){
+
+            $user_data = AssociateDirector::whereid($this->auth->user()->user_id)->first();
+
+            if(!empty($user_data)){
+
+                if($user_data->reviewer == 0) {
+
+                }else{
+
+                        if($user_data->reviewer == 0) {
+                             //->guest('/user/profile');
+                        }else{
+                            if (!$request->ajax())
+                            {
+                                $latest_cycle = cycle::latest()->first();
+
+                                if(empty($latest_cycle)){
+                                    return redirect('/admin/cycle');
+                                }else{
+
+                                    $latest_cycle_end_date = $latest_cycle->end_date ;
+                                    // check if the end_date of the last cycle is older
+                                    if (strtotime($latest_cycle_end_date) - time() <= 1296000) {
+                                        // okay we need to create new cycle
+                                        return redirect('/admin/cycle');
+                                    }
+
+                                }
+                            }
+                        }
+                }
+            }
+        }elseif($this->auth->user()->role_id == 2){
+            return $next($request);
         }
 
 

@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Admin;
+use App\Approve;
 use App\AssociateDirector;
 use App\Cycle;
 use App\Fridays;
@@ -24,9 +25,9 @@ class AdminController extends Controller {
 
     public function __construct()
     {
-//        $this->middleware('admin');
-//        $this->middleware('auth');
-//        $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
+        $this->middleware('admin');
+        $this->middleware('auth');
+        $this->middleware('cycleCheck',["only"=>["Create_members","Manage_schedule","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
     /**
      * here for returning view for creating new islamic center
@@ -267,9 +268,39 @@ class AdminController extends Controller {
         }
     }
 
+    public function checkScheduleApprove(){
+        $cycle = Cycle::currentCycle();
+        $approve = Approve::wherecycle_id($cycle);
+        if(!empty($approve)){
+            if($approve->approve == 0){
+                return "false";
+            }else{
+                return "true";
+            }
+        }else{
+            return "false";
+        }
+    }
+
+    public function approveCurrentCycle(){
+        $cycle = Cycle::currentCycle();
+        $approve = Approve::wherecycle_id($cycle);
+        if(empty($approve)){
+            $approve = new Approve();
+            $approve->cycle_id = $cycle ;
+            $approve->approve = 1 ;
+            $approve->save();
+        }else{
+            $approve->approve = 1 ;
+            $approve->save();
+        }
+    }
+
     public function approveSchedule(){
         // first get the schedule into an array
         $schedule = self::getSchedule();
+        // approve schedule
+        self::approveCurrentCycle();
 
         if(!empty($schedule)){
             // then i have to get first element in the schedule and check if there are khateebs in the schedule or not

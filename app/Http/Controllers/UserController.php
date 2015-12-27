@@ -27,6 +27,7 @@ class UserController extends Controller {
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('user',["except"=>["getEditProfile","updateProfile"]]);
+        $this->middleware('cycleCheck');
     }
 
     /**
