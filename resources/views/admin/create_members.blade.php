@@ -85,6 +85,14 @@ Create new member
 
     </div>
     
+    <div class="form-group" ng-show="tempUser.role == 0" ng-init="tempUser.admin_priv = 0">
+        <label class="col-sm-2 control-label">Admin privileges ?</label>
+        <div class="col-sm-10">
+            <label class="col-sm-3 control-label"><input type="radio" name="admin" value="1" ng-model="tempUser.admin_priv"> Yes </label>
+            <label class="col-sm-3 control-label"><input type="radio" name="admin" value="0" ng-model="tempUser.admin_priv"> No </label>
+        </div>
+    </div>
+    
     <div class="form-group" ng-show="tempUser.role == 1" ng-init="tempUser.isgh_member = 0">
         
         <label class="control-label col-sm-2">ISGH Member ?</label>
