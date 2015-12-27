@@ -6,9 +6,15 @@
 <li><a href="/user/BlockedDates">Blocked Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
-@if($reviewer)
+@if(isset($reviewer) and $reviewer)
 <li><a href="/admin/schedule">Review Schedule</a></li>
 @endif
+
+@if(isset($admin) and $admin)
+<li><a href="/admin/members/create">Create new members</a></li>
+<li><a href="/admin/islamic_center/create">Create islamic center</a></li>
+@endif
+
 <li><a href="/auth/logout">Logout</a></li>
 @stop
 

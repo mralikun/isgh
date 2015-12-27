@@ -6,7 +6,7 @@
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 <li><a href="/admin/schedule">Manage Schedule</a></li>
-@elseif(isset($reviewer) and $reviewer)
+@elseif(isset($reviewer) and $reviewer or isset($admin) and $admin)
 <li><a href="/user/profile">View Profile</a></li>
 <li><a href="/user/dates">Available Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
@@ -23,7 +23,6 @@
 Schedule Management
 
 @stop
-
 
 <style>
     td , th {

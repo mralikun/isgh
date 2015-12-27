@@ -17,7 +17,6 @@ Edit/Delete Islamic Center
 
 @stop
 
-
 @section("content")
 
 @if(sizeof($all) > 0)

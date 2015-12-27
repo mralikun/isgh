@@ -14,8 +14,9 @@ Create new cycle
 
 @stop
 
-
 @section("content")
+
+<h4 class="text-center text-warning">Please note , you may create a new cycle 15 days before the current cycle's end , In this case all saved rating and dates selection of the previous cycle can't be edited and a new session will begin.</h4>
 
 <form action="/admin/create_cycle" method="POST" class="form-horizontal">
     
