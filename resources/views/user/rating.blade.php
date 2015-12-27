@@ -7,6 +7,9 @@
 <li><a href="/user/dates">Available Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
+@if($reviewer)
+<li><a href="/admin/schedule">Review Schedule</a></li>
+@endif
 <li><a href="/auth/logout">Logout</a></li>
 
 @stop

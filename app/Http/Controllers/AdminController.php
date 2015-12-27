@@ -26,7 +26,7 @@ class AdminController extends Controller {
 
     public function __construct()
     {
-        $this->middleware('admin',["except"=>["Manage_schedule"]]);
+        $this->middleware('admin',["except"=>["Manage_schedule","CheckScheduleExistence","checkScheduleApprove","getSchedule"]]);
         $this->middleware('auth');
         $this->middleware('cycleCheck',["only"=>["Create_members","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
@@ -75,10 +75,11 @@ class AdminController extends Controller {
     public function Manage_schedule(){
         if(Auth::user()->role_id == 3){
             $ad = AssociateDirector::whereid(Auth::user()->user_id)->first();
-            if($ad->reviewerschedule == 1){
-                return view("admin.schedule",compact("reviewer"));
-            }elseif($ad->reviewer == 1) {
+            if($ad->reviewer == 1){
                 return view("admin.schedule");
+            }elseif($ad->reviewerschedule == 1) {
+                $reviewer = "true";
+                return view("admin.schedule",compact("reviewer"));
             }else{
                 return Redirect::to("/");
             }
@@ -250,6 +251,7 @@ class AdminController extends Controller {
      * return the schedule for the current cycle
      */
     public function getSchedule(){
+    
         $schedule = Schedule::wherecycle_id(Cycle::currentCycle())->get();
 
         foreach($schedule as $sch){

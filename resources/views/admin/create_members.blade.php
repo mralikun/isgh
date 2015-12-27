@@ -8,8 +8,8 @@
 <li><a href="/admin/schedule">Manage Schedule</a></li>
 <li><a href="/auth/logout">Logout</a></li>
 <li><a href="/admin/members/edit" class="sub-link">Edit/Delete Members</a></li>
-@stop
 
+@stop
 
 @section("pageTitle")
 

@@ -56,17 +56,18 @@ class UserController extends Controller {
 
             // if this ad have islamic center attached to him then git the id and th name
                 $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
-
+                $reviewer = self::checkifReviewer();
             if(empty($islamic_center_data)){
                 // here ad does not attached to islamic center
                 $islamic_center_existence = false ;
-                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence" , "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose"));
+                
+                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence" , "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose","reviewer"));
             }else{
                 //else this ad is attached to islamic center return that it's already exists
                 $islamic_center_existence = true ;
                 $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
 
-                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence", "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose"));
+                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence", "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose","reviewer"));
             }
 
         }else{

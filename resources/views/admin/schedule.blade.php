@@ -2,12 +2,20 @@
 
 
 @section("navigation")
-
+@if(!isset($reviewer))
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 <li><a href="/admin/schedule">Manage Schedule</a></li>
+@elseif(isset($reviewer) and $reviewer)
+<li><a href="/user/profile">View Profile</a></li>
+<li><a href="/user/dates">Available Dates</a></li>
+<li><a href="/user/rating">Rating</a></li>
+<li><a href="/user/edit_profile">Update Profile Information</a></li>
+@if($reviewer)
+<li><a href="/admin/schedule">Review Schedule</a></li>
+@endif
+@endif
 <li><a href="/auth/logout">Logout</a></li>
-
 @stop
 
 @section("pageTitle")
@@ -144,7 +152,7 @@ Schedule Management
             </div>
         </div>
     </div>
-    
+    @if(!isset($reviewer))
     <div class="text-right schedule-opts">
         <div class="text-center text-warning" ng-show="schedule_edited"><strong><u>You need to refresh to see your modifications to the schedule!</u></strong></div>
         <button class="btn btn-isgh approve" ng-show="schedule_generated && !schedule_approved" ng-disabled="processing" ng-click="approve_schedule()">Approve To Schedule</button><img src="/assets/images/loading.gif" alt="Loading Image" style="margin: 0 5px;" ng-show="processing">
@@ -152,10 +160,21 @@ Schedule Management
         <a href="/ExportSchedule" class="btn btn-isgh excel" ng-show="schedule_approved" ng-disabled="processing" target="_blank">Export Excel</a>
 
     </div>
+    @endif
 
-    <div class="text-center help-block" ng-show="!schedule_generated">
+   @if(!isset($reviewer))
+   <div class="text-center help-block" ng-show="!schedule_generated">
         <h4>[[msg]]</h4>
     </div>
+    
+    @else
+    
+    <div class="text-center help-block" ng-show="!schedule_generated">
+        <h4>No Schedule is Generated Yet!</h4>
+    </div>
+    
+   @endif
+
     <div class="schedule-wrapper">
         <table class="table table-bordered" ng-show="schedule_generated">
 
@@ -164,7 +183,9 @@ Schedule Management
                 <tr>
                     <th>Center</th>
                     <th ng-repeat="date in dates">[[date]]</th>
+                    @if(!isset($reviewer))
                     <th>Options</th>
+                    @endif
                 </tr>
 
             </thead>
@@ -179,9 +200,11 @@ Schedule Management
                         </ul>
                         <span ng-show="!kh.data.length">--</span>
                     </td>
+                    @if(!isset($reviewer))
                     <td>
                         <button class="btn btn-isgh" data-toggle="modal" data-target="#editModal" data-ic="[[ic.islamic_center.name]]" ng-click="prep_edit($event)">Edit</button>
                     </td>
+                    @endif
                 </tr>
 
             </tbody>
