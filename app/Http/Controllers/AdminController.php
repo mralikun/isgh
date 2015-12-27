@@ -30,6 +30,8 @@ class AdminController extends Controller {
         $this->middleware('auth');
         $this->middleware('cycleCheck',["only"=>["Create_members","edit_members","Edit_Islamic_Center_Information","Edit_Members_Information"]]);
     }
+
+
     /**
      * here for returning view for creating new islamic center
      * @return \Illuminate\View\create_islamic_center
@@ -49,9 +51,19 @@ class AdminController extends Controller {
 
             $director_id  = $islamic_center->director_id ;
             $director_data = AssociateDirector::whereid($director_id)->select("id","name","phone")->first();
-            return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
+            if(Auth::user()->role_id == 3){
+                $admin = "true";
+                return view("admin.create_islamic_center",compact("directors","islamic_center","director_data","admin"));
+            }else{
+                return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
+            }
         }else{
-            return view("admin.create_islamic_center",compact("directors","islamic_center","director_data"));
+            if(Auth::user()->role_id == 3) {
+                $admin = "true";
+                return view("admin.create_islamic_center", compact("directors", "islamic_center", "director_data", "admin"));
+            }else{
+                return view("admin.create_islamic_center", compact("directors", "islamic_center", "director_data"));
+            }
         }
     }
     /**
@@ -59,14 +71,26 @@ class AdminController extends Controller {
      * @return \Illuminate\View\create_members
      */
     public function Create_members(){
-        return view("admin.create_members");
+        if(Auth::user()->role_id == 3) {
+            $admin = "true";
+            return view("admin.create_members",compact("admin"));
+        }else{
+            return view("admin.create_members");
+        }
+
     }
     /**
      * @return \Illuminate\View\View
      * return admin to create cycle
      */
     public function getCyclePage(){
-        return view("admin.create_cycle");
+        if(Auth::user()->role_id == 3) {
+            $admin = "true";
+            return view("admin.create_cycle",compact("admin"));
+        }else{
+            return view("admin.create_cycle");
+        }
+
     }
     /**
      * here for returning view for creating new schedule
@@ -97,7 +121,13 @@ class AdminController extends Controller {
      */
     public function Edit_Members_Information(){
         $all = User::getUserNames();
-        return view("admin.edit_members",compact("all"));
+        if(Auth::user()->role_id == 3) {
+            $admin = "true";
+            return view("admin.edit_members",compact("all","admin"));
+        }else{
+            return view("admin.edit_members",compact("all"));
+        }
+
     }
     /**
      * here for returning view for edit islamic center
@@ -105,7 +135,13 @@ class AdminController extends Controller {
      */
     public function Edit_Islamic_Center_Information(){
         $all = IslamicCenter::select("id","name")->get();
-        return view("admin.edit_islamic_center",compact("all"));
+        if(Auth::user()->role_id == 3) {
+            $admin = "true";
+            return view("admin.edit_islamic_center",compact("all","admin"));
+        }else{
+            return view("admin.edit_islamic_center",compact("all"));
+        }
+
     }
 
     /**
