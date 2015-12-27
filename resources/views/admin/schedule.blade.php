@@ -56,11 +56,51 @@ Schedule Management
         max-width: 100%;
         overflow-x: auto;
     }
+    
+    .khateeb {
+        border: 1px solid #888;
+        padding: 5px;
+        position: relative;
+        margin: 0 5px;
+    }
+    
+    .khateeb .khateeb-name {
+        display: inline-block;
+        margin-right: 7.5%;
+    }
+    
+    .khateeb .remove-khateeb{
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        border-left: 1px solid #777;
+        transition: all 300ms;
+    }
+    
+    .khateeb .remove-khateeb:hover {
+        color: white;
+        background-color: #f33;
+    }
+    
+    .add-khateeb {
+        border: 1px solid #777;
+        background-color: transparent;
+        transition: all 300ms;
+    }
+    
+    .add-khateeb:hover {
+        background-color: #3a3;
+        color: white;
+    }
+    
 </style>
 
 @section("content")
 <div ng-controller="ScheduleController as SC">
-   
     <div class="modal fade" id="editModal" aria-labelledby="EditingModal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-header">
@@ -80,13 +120,17 @@ Schedule Management
                                 <tr ng-repeat="rec in record.khutbahs">
                                     <th>[[rec.date]]</th>
                                     <td>
-                                         <select class="khateeb-edit" ng-repeat="kh in rec.data" data-prev-value="[[kh.khateeb.id]]" data-date="[[rec.data[0].friday_id]]" ng-model="pre_made" ng-change="handle_change()" ng-click="set_element($event)">
-                                             <option value="0">--</option>
-                                             <option value="[[kh.khateeb.id]]" selected>[[kh.khateeb.name]]</option>
-                                         </select>
-                                         <select class="khateeb-edit" ng-repeat="em in rec.missing" data-date="[[em.date_id]]" ng-model="somethingelse" ng-change="handle_change" ng-click="set_element($event)">
-                                             <option value="0">--</option>
-                                         </select>
+                                       
+                                       <span ng-repeat="kh in rec.data" class="khateeb">
+                                           <span class="khateeb-name">[[kh.khateeb.name]]</span>
+                                           <button class="remove-khateeb" ng-click="removeKhateeb(rec , kh , $event)">X</button>
+                                       </span>
+                                       <span ng-repeat="mi in rec.missing track by $index">
+                                           <button class="add-khateeb" ng-click="addKhateeb(rec , mi.date_id , $event)" ng-show="!editing_mode || editing_fri != mi.date_id">+</button>
+                                           <select class="khateeb-edit" data-fri="[[mi.date_id]]" ng-show="editing_mode && editing_fri == mi.date_id" ng-change="markKhateeb(mi.date_id)" ng-model="tempChoice">
+                                               <option ng-repeat="op in available_ops" ng-value="[[op.id]]">[[op.name]]</option>
+                                           </select>
+                                       </span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -96,16 +140,16 @@ Schedule Management
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-isgh">Close</button>
-                <button type="button" class="btn btn-isgh" style="margin: 5px;" ng-disabled="processing">Save</button><img src="/assets/images/loading.gif" alt="Loading" ng-show="processing">
+                <button type="button" class="btn btn-isgh" style="margin: 5px;" ng-disabled="processing" ng-click="editSchedule()">Save</button><img src="/assets/images/loading.gif" alt="Loading" ng-show="processing">
             </div>
         </div>
     </div>
     
     <div class="text-right schedule-opts">
-
-        <button class="btn btn-isgh approve" ng-show="schedule_generated && !schedule_approved" ng-disabled="processing">Approve To Schedule</button>
+        <div class="text-center text-warning" ng-show="schedule_edited"><strong><u>You need to refresh to see your modifications to the schedule!</u></strong></div>
+        <button class="btn btn-isgh approve" ng-show="schedule_generated && !schedule_approved" ng-disabled="processing" ng-click="approve_schedule()">Approve To Schedule</button><img src="/assets/images/loading.gif" alt="Loading Image" style="margin: 0 5px;" ng-show="processing">
         <button class="btn btn-isgh generate" ng-hide="schedule_generated" ng-click="generate()" ng-disabled="processing">Generate Schedule</button>
-        <button class="btn btn-isgh excel" ng-show="schedule_approved" ng-disabled="processing">Export Excel</button>
+        <a href="/ExportSchedule" class="btn btn-isgh excel" ng-show="schedule_approved" ng-disabled="processing" target="_blank">Export Excel</a>
 
     </div>
 

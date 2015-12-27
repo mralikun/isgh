@@ -270,7 +270,7 @@ class AdminController extends Controller {
 
     public function checkScheduleApprove(){
         $cycle = Cycle::currentCycle();
-        $approve = Approve::wherecycle_id($cycle);
+        $approve = Approve::wherecycle_id($cycle)->first();
         if(!empty($approve)){
             if($approve->approve == 0){
                 return "false";
@@ -284,7 +284,7 @@ class AdminController extends Controller {
 
     public function approveCurrentCycle(){
         $cycle = Cycle::currentCycle();
-        $approve = Approve::wherecycle_id($cycle);
+        $approve = Approve::wherecycle_id($cycle)->first();
         if(empty($approve)){
             $approve = new Approve();
             $approve->cycle_id = $cycle ;
@@ -339,6 +339,8 @@ class AdminController extends Controller {
                     }
                 }
             }
+        }else{
+            return "false";
         }
 
     }
