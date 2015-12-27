@@ -57,23 +57,38 @@ class UserController extends Controller {
             // if this ad have islamic center attached to him then git the id and th name
                 $islamic_center_data = IslamicCenter::whereid(Auth::user()->user_id)->with("Ad")->first();
                 $reviewer = self::checkifReviewer();
+                $admin = self::checkifadmin();
             if(empty($islamic_center_data)){
                 // here ad does not attached to islamic center
                 $islamic_center_existence = false ;
                 
-                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence" , "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose","reviewer"));
+                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence" , "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose","reviewer","admin"));
             }else{
                 //else this ad is attached to islamic center return that it's already exists
                 $islamic_center_existence = true ;
                 $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
 
-                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence", "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose","reviewer"));
+                return view("user.available_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence", "fridays_Ad_want_to_give_Khutbah_in" , "fridays_Ad_didnot_choose","reviewer","admin"));
             }
 
         }else{
             return view("user.available_dates",compact("name","role","fridays","fridays_choosen"));
         }
 
+    }
+
+    // if reviewer
+    public function checkifadmin(){
+        if(Auth::user()->role_id == 3){
+            $ad = AssociateDirector::whereid(Auth::user()->user_id)->first();
+            if($ad->reviewer == 1){
+                return "true";
+            }else{
+                return "false";
+            }
+        }else{
+            return "false";
+        }
     }
 
 
@@ -109,18 +124,19 @@ class UserController extends Controller {
 
             // if this ad have islamic center attached to him then get the id and the name
             $islamic_center_data = IslamicCenter::wheredirector_id(Auth::user()->user_id)->with("Ad")->first();
+            $reviewer = self::checkifReviewer();
+            $admin = self::checkifadmin();
 
             if(empty($islamic_center_data)){
                 // here ad doesnot attached to islamic center
                 $islamic_center_existence = false ;
-                $reviewer = self::checkifReviewer();
-                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic","reviewer"));
+
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic","reviewer","admin"));
             }else{
                 //else this ad is attached to islamic center return that it's already exists
                 $islamic_center_existence = true ;
                 $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
-                $reviewer = self::checkifReviewer();
-                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic","reviewer"));
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic","reviewer","admin"));
             }
         }
     }
@@ -145,9 +161,10 @@ class UserController extends Controller {
                 $photo = "true" ;
             }
             $reviewer = self::checkifReviewer();
-            return view("user.rating",compact("role","photo","reviewer"));
+            $admin = self::checkifadmin();
+            return view("user.rating",compact("role","photo","reviewer","admin"));
         }
-        return view("user.rating",compact("role","reviewer"));
+        return view("user.rating",compact("role"));
     }
 
     /**
@@ -163,8 +180,8 @@ class UserController extends Controller {
         $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
         $blocked_dates = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Auth::user()->user_id)->select("friday_id")->get();
         $reviewer = self::checkifReviewer();
-
-        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic","blocked_dates","reviewer"));
+        $admin = self::checkifadmin();
+        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic","blocked_dates","reviewer","admin"));
     }
 
     /**
@@ -180,8 +197,9 @@ class UserController extends Controller {
         $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
         $blocked_dates = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Auth::user()->user_id)->select("friday_id")->get();
         $reviewer = self::checkifReviewer();
+        $admin = self::checkifadmin();
 
-        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic","blocked_dates","reviewer"));
+        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic","blocked_dates","reviewer","admin"));
     }
 
     /**
@@ -218,14 +236,14 @@ class UserController extends Controller {
         // $adminEditing = $id; if this variable is set then he is admin accessing user profile to edit him else do not pass the admin editing var
         if(isset($adminEditing)){
             if(Auth::user()->role_id == 3){
-                $reviewer = self::checkifReviewer();
-                return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing","reviewer"));
+                $reviewer = self::checkifReviewer();$admin = self::checkifadmin();
+                return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing","reviewer","admin"));
             }
              return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing"));
         }else {
             if(Auth::user()->role_id == 3){
-                $reviewer = self::checkifReviewer();
-                return view("user.edit_profile",compact("firstTime","result","user_id","role","reviewer"));
+                $reviewer = self::checkifReviewer();$admin = self::checkifadmin();
+                return view("user.edit_profile",compact("firstTime","result","user_id","role","reviewer","admin"));
             }
             return view("user.edit_profile",compact("firstTime","result","user_id","role"));
         }
@@ -241,8 +259,8 @@ class UserController extends Controller {
         $user_info = User::getUserData($user_id , $role);
 
         if(Auth::user()->role_id == 3){
-            $reviewer = self::checkifReviewer();
-            return view("user.profile",compact("user_info","reviewer"));
+            $reviewer = self::checkifReviewer();$admin = self::checkifadmin();
+            return view("user.profile",compact("user_info","reviewer","admin"));
         }else{
             return view("user.profile",compact("user_info"));
         }
