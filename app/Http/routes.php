@@ -160,3 +160,5 @@ Route::post("/approve","AdminController@approveSchedule");
 // here route for Exporting Schedule
 Route::get("/ExportSchedule","AdminController@ExportSchedule");
 
+// here route for approve the schedule
+Route::post("/checkScheduleApprove","AdminController@checkScheduleApprove");
