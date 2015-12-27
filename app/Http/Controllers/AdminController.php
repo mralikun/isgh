@@ -274,8 +274,8 @@ class AdminController extends Controller {
             }
 
 
-             // here like i made with the khateeb i will with the islamic center to send to the islamic center one email include all data needed
-             // for khateebs and any info they need
+            // here like i made with the khateeb i will with the islamic center to send to the islamic center one email include all data needed
+            // for khateebs and any info they need
             foreach($schedule as $element){
                 if(!empty($schedule)){
                     $islamic_center = $element;
@@ -418,15 +418,15 @@ class AdminController extends Controller {
 
         $islamic_centers = array_map(function($item){
             return [
-                  "islamic_center"=>$item[0]["islamic_center"]["name"],
+                "islamic_center"=>$item[0]["islamic_center"]["name"],
                 "friday_khateeb"=>self::returndata($item)
             ];
         },$islamic_centers);
 
         $islamic_centers = array_map(function($element){
             return [
-              "name"=>$element["islamic_center"],
-              "fridays"=>self::returnDatahandeled($element["friday_khateeb"])
+                "name"=>$element["islamic_center"],
+                "fridays"=>self::returnDatahandeled($element["friday_khateeb"])
             ];
         },$islamic_centers);
 
@@ -447,13 +447,13 @@ class AdminController extends Controller {
         foreach($islamic_centers as $ic){
             $data = "<tr>
                         <td  style='background-color: #808080;color:#ffffff ; text-align: center;padding: 20px;'>".$ic["name"]."</td>";
-                        foreach($ic["fridays"] as $i){
-                            $khateebs = "<td style=' text-align: center;'>";
-                                foreach($i as $w){
-                                    $khateebs = $khateebs.$w["khateebs"]."</td>" ;
-                                }
-                            $data = $data.$khateebs;
-                        }
+            foreach($ic["fridays"] as $i){
+                $khateebs = "<td style=' text-align: center;'>";
+                foreach($i as $w){
+                    $khateebs = $khateebs.$w["khateebs"]."</td>" ;
+                }
+                $data = $data.$khateebs;
+            }
             $data = $data."</tr>";
             $main = $main.$data ;
         }
@@ -504,55 +504,55 @@ class AdminController extends Controller {
     }
 
     public function returndata($item){
-            $global_array = [];
+        $global_array = [];
 
-            foreach(self::$fridays as $friday){
-                $data = array_filter($item ,function($i) use ($friday){
-                    return $friday == $i["friday"]["date"];
-                });
+        foreach(self::$fridays as $friday){
+            $data = array_filter($item ,function($i) use ($friday){
+                return $friday == $i["friday"]["date"];
+            });
 
-                $data = array_map(function($item){
-                    return[
-                      "friday"=>$item->friday->date ,
-                      "khateeb"=>$item->khateeb->name
-                    ];
-                },$data);
+            $data = array_map(function($item){
+                return[
+                    "friday"=>$item->friday->date ,
+                    "khateeb"=>$item->khateeb->name
+                ];
+            },$data);
 
-                array_push($global_array ,["fridays"=>$data]);
-            }
+            array_push($global_array ,["fridays"=>$data]);
+        }
 
-            $fridays = [];
-            foreach($global_array as $el){
-                if(!empty($el)){
-                    foreach($el["fridays"] as $f){
-                        if(!empty($f)){
-                           array_push($fridays,$f["friday"]);
-                        }
+        $fridays = [];
+        foreach($global_array as $el){
+            if(!empty($el)){
+                foreach($el["fridays"] as $f){
+                    if(!empty($f)){
+                        array_push($fridays,$f["friday"]);
                     }
-                }else{
-                    unset($el);
                 }
+            }else{
+                unset($el);
             }
+        }
 
 
-            foreach(self::$fridays as $friday){
-                if(!in_array($friday,$fridays)){
-                    array_push($fridays,$friday);
-                    array_push($global_array,["fridays"=>[
-                        [
-                            "friday"=>$friday,
-                            "khateeb"=>"--"
-                        ]
-                    ]]);
-                }
+        foreach(self::$fridays as $friday){
+            if(!in_array($friday,$fridays)){
+                array_push($fridays,$friday);
+                array_push($global_array,["fridays"=>[
+                    [
+                        "friday"=>$friday,
+                        "khateeb"=>"--"
+                    ]
+                ]]);
             }
-            return $global_array ;
+        }
+        return $global_array ;
     }
 
     public function returnDatahandeled($islamic_centers){
         foreach($islamic_centers as $key=>$ic){
             if(empty($ic["fridays"])){
-               unset($islamic_centers[$key]);
+                unset($islamic_centers[$key]);
             }
         }
 
@@ -562,12 +562,12 @@ class AdminController extends Controller {
             foreach($ic as $el){
                 $khateebs = "";
                 $innerArray= "";
-                    foreach($el as $e1){
-                        if($innerArray ==""){
-                            $innerArray = $e1["friday"];
-                        }
-                        $khateebs =  $e1["khateeb"]." , ".$khateebs;
+                foreach($el as $e1){
+                    if($innerArray ==""){
+                        $innerArray = $e1["friday"];
                     }
+                    $khateebs =  $e1["khateeb"]." , ".$khateebs;
+                }
                 array_push($data ,["friday"=>$innerArray ,"khateebs"=>$khateebs]);
             }
             array_push($general , $data);
