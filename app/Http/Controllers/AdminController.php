@@ -252,6 +252,41 @@ class AdminController extends Controller {
         return $schedule ;
     }
 
+
+
+
+    /**
+     * here editing schedule if there is a previous khateeb remove him and add new
+     * if  there is no khateebs add new khateeb for this islamic center
+     */
+    public function EditSchedule(){
+        $arrays = Input::get("data");
+        if(!empty($arrays)){
+            foreach($arrays as $array){
+                $friday_id = $array["friday_id"];
+                $islamic_center = $array["islamic_center"];
+                $previous_id = $array["prev_value"];
+                $new_id = $array["current"];
+
+                if($previous_id == 0){
+                    $schedule = new Schedule();
+                    $schedule->friday_id =$friday_id ;
+                    $schedule->ic_id = $islamic_center ;
+                    $schedule->khateeb_id =$new_id ;
+                    $schedule->cycle_id =cycle::currentCycle() ;
+                    $schedule->save();
+                }else{
+                    $schedule = Schedule::wherefriday_id($friday_id)->whereic_id($islamic_center)->wherekhateeb_id($previous_id)->first();
+                    $schedule->khateeb_id = $new_id ;
+                    $schedule->update() ;
+                }
+            }
+        }
+
+    }
+
+
+
     public function CheckScheduleExistence(){
         $cycle = cycle::currentCycle();
         $schedule = Schedule::latest()->first();

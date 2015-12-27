@@ -76,6 +76,19 @@ class UserController extends Controller {
     }
 
 
+    public function checkifReviewer(){
+        if(Auth::user()->role_id == 3){
+            $ad = AssociateDirector::whereid(Auth::user()->user_id)->first();
+            if($ad->reviewerschedule == 1){
+                return "true";
+            }else{
+                return "false";
+            }
+        }else{
+            return "false";
+        }
+    }
+
     /**
      * return islamic center blocked dates
      */
@@ -99,13 +112,14 @@ class UserController extends Controller {
             if(empty($islamic_center_data)){
                 // here ad doesnot attached to islamic center
                 $islamic_center_existence = false ;
-                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic"));
+                $reviewer = self::checkifReviewer();
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic","reviewer"));
             }else{
                 //else this ad is attached to islamic center return that it's already exists
                 $islamic_center_existence = true ;
                 $islamic_center = IslamicCenter::wheredirector_id($user_id)->select("id","name")->first();
-
-                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic"));
+                $reviewer = self::checkifReviewer();
+                return view("user.blocked_dates",compact("name","role","fridays","fridays_choosen","islamic_center","islamic_center_existence","fridays_choosen_my_ic","fridays_choosen_other_ic","reviewer"));
             }
         }
     }
@@ -129,9 +143,10 @@ class UserController extends Controller {
             }else{
                 $photo = "true" ;
             }
-            return view("user.rating",compact("role","photo"));
+            $reviewer = self::checkifReviewer();
+            return view("user.rating",compact("role","photo","reviewer"));
         }
-        return view("user.rating",compact("role"));
+        return view("user.rating",compact("role","reviewer"));
     }
 
     /**
@@ -146,8 +161,9 @@ class UserController extends Controller {
         $fridays_choosen = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
         $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
         $blocked_dates = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Auth::user()->user_id)->select("friday_id")->get();
+        $reviewer = self::checkifReviewer();
 
-        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic","blocked_dates"));
+        return view("user.ad_same_ic",compact("name","fridays","fridays_choosen","fridays_choosen_other_ic","blocked_dates","reviewer"));
     }
 
     /**
@@ -162,8 +178,9 @@ class UserController extends Controller {
         $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->select("friday_id")->get();
         $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
         $blocked_dates = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Auth::user()->user_id)->select("friday_id")->get();
+        $reviewer = self::checkifReviewer();
 
-        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic","blocked_dates"));
+        return view("user.ad_other_ics",compact("name","fridays","fridays_choosen","fridays_choosen_my_ic","blocked_dates","reviewer"));
     }
 
     /**
@@ -199,9 +216,17 @@ class UserController extends Controller {
 
         // $adminEditing = $id; if this variable is set then he is admin accessing user profile to edit him else do not pass the admin editing var
         if(isset($adminEditing)){
+            if(Auth::user()->role_id == 3){
+                $reviewer = self::checkifReviewer();
+                return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing","reviewer"));
+            }
              return view("user.edit_profile",compact("firstTime","result","user_id","role","adminEditing"));
         }else {
-             return view("user.edit_profile",compact("firstTime","result","user_id","role"));
+            if(Auth::user()->role_id == 3){
+                $reviewer = self::checkifReviewer();
+                return view("user.edit_profile",compact("firstTime","result","user_id","role","reviewer"));
+            }
+            return view("user.edit_profile",compact("firstTime","result","user_id","role"));
         }
     }
 
@@ -213,7 +238,13 @@ class UserController extends Controller {
         $user_id = Auth::user()->user_id ;
         $role = Auth::user()->role_id ;
         $user_info = User::getUserData($user_id , $role);
-        return view("user.profile",compact("user_info"));
+
+        if(Auth::user()->role_id == 3){
+            $reviewer = self::checkifReviewer();
+            return view("user.profile",compact("user_info","reviewer"));
+        }else{
+            return view("user.profile",compact("user_info"));
+        }
     }
 
     /**
@@ -450,37 +481,6 @@ class UserController extends Controller {
         }
 
     }
-
-    /**
-     * here editing schedule if there is a previous khateeb remove him and add new
-     * if  there is no khateebs add new khateeb for this islamic center
-     */
-    public function EditSchedule(){
-        $arrays = Input::get("data");
-        if(!empty($arrays)){
-            foreach($arrays as $array){
-                $friday_id = $array["friday_id"];
-                $islamic_center = $array["islamic_center"];
-                $previous_id = $array["prev_value"];
-                $new_id = $array["current"];
-
-                if($previous_id == 0){
-                    $schedule = new Schedule();
-                    $schedule->friday_id =$friday_id ;
-                    $schedule->ic_id = $islamic_center ;
-                    $schedule->khateeb_id =$new_id ;
-                    $schedule->cycle_id =cycle::currentCycle() ;
-                    $schedule->save();
-                }else{
-                    $schedule = Schedule::wherefriday_id($friday_id)->whereic_id($islamic_center)->wherekhateeb_id($previous_id)->first();
-                    $schedule->khateeb_id = $new_id ;
-                    $schedule->update() ;
-                }
-            }
-        }
-
-    }
-
 
     /**
      *

@@ -8,7 +8,7 @@ class AssociateDirector extends Model
 
     protected $table = "associate_director";
 
-    protected $fillable = ["id", "name", "email", "phone", "address", "bio", "post_code"];
+    protected $fillable = ["id", "name", "email", "phone", "address", "bio", "post_code","reviewerschedule"];
 
     public function islamicCenter(){
         return $this->hasOne("App\IslamicCenter");

@@ -152,7 +152,7 @@ Route::post("/islamicCenterData/{id}","AdminController@islamicCenterData");
 Route::post("/availableThisFriday/{id}/{ic}","UserController@availableThisFriday");
 
 // here route for editing schedule
-Route::post("/editSchedule","UserController@EditSchedule");
+Route::post("/editSchedule","AdminController@EditSchedule");
 
 // here route for approve the schedule
 Route::post("/approve","AdminController@approveSchedule");

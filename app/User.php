@@ -154,7 +154,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     private function add_new_ad($input)
     {
         $ad = new AssociateDirector();
-        $ad->reviewer = $input["reviewer"] ;
+
+        // he is not admin he only watch the schedule
+        $ad->reviewerschedule = $input["reviewer"] ;
+
+        // he is admin
+        $ad->reviewer = $input["admin_priv"] ;
         if ($ad->save()) {
             return $ad->id;
         } else {
