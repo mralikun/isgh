@@ -143,7 +143,7 @@ Route::post('/schedule', 'AdminController@getSchedule');
 Route::post("/islamicCentersForRating","UserController@return_islamic_centers_for_Rating");
 
 // return check schedule Exicstence
-Route::post("/checkScheduleExistence","UserController@CheckScheduleExistence");
+Route::post("/checkScheduleExistence","AdminController@CheckScheduleExistence");
 
 // return this islamic center
 Route::post("/islamicCenterData/{id}","AdminController@islamicCenterData");
@@ -155,4 +155,4 @@ Route::post("/availableThisFriday/{id}/{ic}","UserController@availableThisFriday
 Route::post("/editSchedule","UserController@EditSchedule");
 
 // here route for approve the schedule
-Route::get("/approve","AdminController@approveSchedule");
+Route::post("/approve","AdminController@approveSchedule");

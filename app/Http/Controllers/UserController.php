@@ -401,28 +401,6 @@ class UserController extends Controller {
     }
 
     /**
-     * check if schedule exists by returning the cycle_id and then return the latest cycle
-     * check if it has a schedule
-     * @return string
-     */
-    public function CheckScheduleExistence(){
-        $cycle = cycle::currentCycle();
-        $schedule = Schedule::latest()->first();
-        if(empty($schedule)){
-            return "false";
-        }else{
-            $cycle_id = $schedule->cycle_id ;
-            if($cycle_id == $cycle){
-                return "true";
-            }
-            else{
-                return "false";
-            }
-        }
-    }
-
-
-    /**
      * @param $friday_id
      * @param $islamic_center
      * @return array
