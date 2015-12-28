@@ -7,11 +7,11 @@
 <li><a href="/user/dates">Available Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
-@if(isset($reviewer) and $reviewer)
+@if(isset($reviewer) and $reviewer == "true")
 <li><a href="/admin/schedule">Review Schedule</a></li>
 @endif
 
-@if(isset($admin) and $admin)
+@if(isset($admin) and $admin == "true")
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 @endif

@@ -1,7 +1,7 @@
 @extends("templates.master")
 @section("navigation")
 
-@if(isset($admin) and $admin)
+@if(isset($admin) and $admin == "true")
 <li><a href="/user/profile">View Profile</a></li>
 <li><a href="/user/dates">Available Dates</a></li>
 <li><a href="/user/rating">Rating</a></li>
