@@ -70,7 +70,7 @@ Available Dates
                <h5>{{$friday->date}}</h5>
             </div>
         </div>
-       @elseif(in_array($friday->id , $other_choice) || in_array($friday->id , $blocked))
+       @elseif(in_array($friday->id , $other_choice))
         <div class="date reserved" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
