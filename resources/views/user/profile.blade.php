@@ -3,9 +3,12 @@
 
 @section("navigation")
 <li><a href="/user/profile">View Profile</a></li>
-<li><a href="/user/dates">Available Dates</a></li>
-<li><a href="/user/rating">Rating</a></li>
-<li><a href="/user/edit_profile">Update Profile Information</a></li>
+<li><a href="/user/rating">Prefrences</a></li>
+@if(Auth::user()->role_id == 3)
+<li><a href="/user/BlockedDates">Blocked Dates</a></li>
+@endif
+<li><a href="/user/dates">Available Dates as khateeb</a></li>
+<li><a href="/user/edit_profile">Update Profile</a></li>
 @if(isset($reviewer) and $reviewer == "true")
 <li><a href="/admin/schedule">Review Schedule</a></li>
 @endif

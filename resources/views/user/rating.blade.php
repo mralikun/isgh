@@ -3,10 +3,14 @@
 
 @section("navigation")
 
+
 <li><a href="/user/profile">View Profile</a></li>
-<li><a href="/user/dates">Available Dates</a></li>
-<li><a href="/user/rating">Rating</a></li>
-<li><a href="/user/edit_profile">Update Profile Information</a></li>
+<li><a href="/user/rating">Prefrences</a></li>
+@if($role == 3)
+<li><a href="/user/BlockedDates">Blocked Dates</a></li>
+@endif
+<li><a href="/user/dates">Available Dates as khateeb</a></li>
+<li><a href="/user/edit_profile">Update Profile</a></li>
 @if(isset($reviewer) and $reviewer == "true")
 <li><a href="/admin/schedule">Review Schedule</a></li>
 @endif
@@ -51,6 +55,7 @@
     .loading {
         display: none;
     }
+    
 </style>
 
 @section("pageTitle")
@@ -63,7 +68,7 @@ Rating
 @section("content")
 @if($role == 3)
 <div class="rating-options text-center">
-    <button class="btn btn-isgh" data-kh="1">Rate khateebs</button><button class="btn btn-isgh" data-kh="0">Rate Other Islamic Centers</button>
+    <button class="btn btn-isgh" data-kh="1">Khateebs prefrences for my islamic center</button><button class="btn btn-isgh" data-kh="0">My khutbah prefrences as khateeb</button>
 </div>
 @endif
 @if(isset($photo) && $photo == 'false')
@@ -91,9 +96,6 @@ Rating
   <div class="text-right">
       <button class="btn btn-isgh back" style="display: none;">Back</button>
   </div>
-<div class="heading">
-    <h4 class="text-center">The Rate goes from 0 ~ 7 where 0 <mark>(The X button)</mark> is not preferrable at all ,1 is least preferrable and 7 is most preferrable.</h4>
-</div>
    <input type="hidden" name="_token" value="{{csrf_token()}}">
 </div>
 @stop

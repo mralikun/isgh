@@ -282,6 +282,27 @@ tbody tr:hover {
     background-position: center;
 }
 
+.stars {
+    position: relative;
+}
+
+.stars:after , .stars:before {
+    position: absolute;
+    top: -20px;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.stars:after {
+    content: "Most Preferable";
+    right: -24px;
+}
+
+.stars:before {
+    content: "Least Preferable";
+    left: 30%;
+}
+
 /**
 
     LOGIN PAGE AND LOGIN FORM
@@ -446,6 +467,9 @@ label[for="start_time"] , label[for="end_time"] {
     max-height: 120px;
     min-height: 92px;
     box-shadow: 0 0 10px rgba(0,0,0,.3);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .rating-name {

@@ -7,7 +7,7 @@
 <li><a href="/user/profile">View Profile</a></li>
 <li><a href="/user/dates">Available Dates</a></li>
 <li><a href="/user/BlockedDates">Blocked Dates</a></li>
-<li><a href="/user/rating">Rating</a></li>
+<li><a href="/user/rating">Prefrences</a></li>
 <li><a href="/user/edit_profile">Update Profile Information</a></li>
 @endif
 <li><a href="/admin/members/create">Create new members</a></li>
@@ -100,15 +100,8 @@ Create new member
         </div>
     </div>
     
-    <div class="form-group" ng-show="tempUser.role == 1" ng-init="tempUser.isgh_member = 0">
-        
-        <label class="control-label col-sm-2">ISGH Member ?</label>
-        <div class="col-sm-10">
-            <label class="col-sm-3 control-label"><input type="radio" name="isgh_member" value="1" ng-model="tempUser.isgh_member"> Yes </label>
-            <label class="col-sm-3 control-label"><input type="radio" name="isgh_member" value="0" ng-model="tempUser.isgh_member"> No </label>
-        </div>
-        
-    </div>
+    <span class="form-group" ng-init="tempUser.isgh_member = 0">
+    </span>
     
     <div class="form-group" ng-show="tempUser.role == 2">
         <label class="control-label col-sm-2">E-mail</label>
