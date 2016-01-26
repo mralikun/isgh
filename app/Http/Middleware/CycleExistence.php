@@ -51,7 +51,7 @@ class CycleExistence {
                         }else{
                             if (!$request->ajax())
                             {
-                                $latest_cycle = cycle::latest()->first();
+                                $latest_cycle = Cycle::latest()->first();
 
                                 if(empty($latest_cycle)){
                                     return redirect('/admin/cycle');
@@ -78,7 +78,7 @@ class CycleExistence {
         {
             if (!$request->ajax())
             {
-                $latest_cycle = cycle::latest()->first();
+                $latest_cycle = Cycle::latest()->first();
 
                 if(empty($latest_cycle)){
                     return redirect('/admin/cycle');

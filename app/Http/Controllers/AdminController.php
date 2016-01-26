@@ -264,9 +264,9 @@ class AdminController extends Controller {
         $date = Input::get("cycle_start_date");
         $months = Input::get("months");
         $newDate = $this::getEndDate($date , $months);
-        $result = cycle::CreateNewCycle($date , $newDate);
+        $result = Cycle::CreateNewCycle($date , $newDate);
         if(is_numeric($result)){
-            $cycle = cycle::whereid($result)->first();
+            $cycle = Cycle::whereid($result)->first();
             $final_result = Fridays::addFridays($cycle,$date ,$this::getEndDate($date , $months));
             if($final_result == "true"){
                 return redirect("/admin/members/create");
@@ -327,7 +327,7 @@ class AdminController extends Controller {
                     $schedule->friday_id =$friday_id ;
                     $schedule->ic_id = $islamic_center ;
                     $schedule->khateeb_id =$new_id ;
-                    $schedule->cycle_id =cycle::currentCycle() ;
+                    $schedule->cycle_id =Cycle::currentCycle() ;
                     $schedule->save();
                 }else{
                     $schedule = Schedule::wherefriday_id($friday_id)->whereic_id($islamic_center)->wherekhateeb_id($previous_id)->first();
@@ -342,7 +342,7 @@ class AdminController extends Controller {
 
 
     public function CheckScheduleExistence(){
-        $cycle = cycle::currentCycle();
+        $cycle = Cycle::currentCycle();
         $schedule = Schedule::latest()->first();
         if(empty($schedule)){
             return "false";

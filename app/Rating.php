@@ -38,7 +38,7 @@ class Rating extends Model {
                 }
 
                 // get current cycle id
-                $cycle = cycle::latest()->first();
+                $cycle = Cycle::latest()->first();
                 $cycle_id= $cycle->id ;
 
                 $rate->ad_id = $rated_user ;
@@ -77,7 +77,7 @@ class Rating extends Model {
                     }else{
                         $rate = new Rating();
                     }
-                    $cycle = cycle::latest()->first();
+                    $cycle = Cycle::latest()->first();
                     $cycle_id= $cycle->id ;
                     $rate->ad_id =  $user_who_rate_id;
                     $rate->khateeb_id =  $user->id;
@@ -108,7 +108,7 @@ class Rating extends Model {
                     }else{
                         $rate = new Rating();
                     }
-                    $cycle = cycle::latest()->first();
+                    $cycle = Cycle::latest()->first();
                     $cycle_id= $cycle->id ;
                     $rate->ad_id =  $user_who_rate_id;
                     $rate->khateeb_id =  $user->id;
@@ -153,7 +153,7 @@ class Rating extends Model {
             }else{
                 $rate = new Rating();
             }
-            $cycle = cycle::latest()->first();
+            $cycle = Cycle::latest()->first();
             $cycle_id= $cycle->id ;
             $rate->ad_id =  $rated_ad->id;
             $rate->khateeb_id =  Auth::user()->id;
@@ -169,7 +169,7 @@ class Rating extends Model {
 
     // return rate row for ad khateebs
     public static function returnRateRow($ad_id ,$khateeb_user_id){
-        $cycle = cycle::currentCycle();
+        $cycle = Cycle::currentCycle();
 
         $row = Rating::wheread_id($ad_id)->wherekhateeb_id($khateeb_user_id)->wherecycle_id($cycle)->first();
         if(empty($row)){
@@ -181,7 +181,7 @@ class Rating extends Model {
 
     // return rate row for islamic center
     public static function returnRateRowIslamicCenter( $ad_id , $khateeb_user_id ){
-        $cycle = cycle::currentCycle();
+        $cycle = Cycle::currentCycle();
 
         $row = Rating::wheread_id($ad_id)->wherekhateeb_id($khateeb_user_id)->wherecycle_id($cycle)->first();
         if(empty($row)){
@@ -205,7 +205,7 @@ class Rating extends Model {
         $user_id = $user->id ;
 
         // get the current cycle
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $cycle_id = $cycle->id;
 
         // check if this islamic center ad choosed this friday to give khutbah in it

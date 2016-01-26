@@ -17,7 +17,7 @@ class AdBlockedDates extends Model {
         /**
          * Now i will get the running cycle
          */
-        $current_cycle = cycle::latest()->first();
+        $current_cycle = Cycle::latest()->first();
         $cycle_id = $current_cycle->id ;
 
         /**

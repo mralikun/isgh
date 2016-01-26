@@ -246,9 +246,9 @@ class Khateeb extends Model {
             // now get me the distance between this khateeb and this ad
 
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
+
             if($distance_between_khateeb_islamicCenter != null) {
                 $distance = $distance_between_khateeb_islamicCenter->distance;
-
 
                 // now get me all khateebs gave any other islamic center 4-6 and islamic center gave him 4-6 but not 7 - 7
                 $data = DB::table('rating')
@@ -278,6 +278,8 @@ class Khateeb extends Model {
                         }
 
                     }
+                }else{
+                    array_push($shortest_khateebs_to_islamic_center, $khateeb);
                 }
             }
         }
@@ -447,6 +449,8 @@ class Khateeb extends Model {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
                     }
+                }else{
+                    array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                 }
             }
 
@@ -557,6 +561,8 @@ class Khateeb extends Model {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
                     }
+                }else{
+                    array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                 }
             }
         }
@@ -664,6 +670,8 @@ class Khateeb extends Model {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
                     }
+                }else{
+                    array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                 }
             }
 
@@ -768,6 +776,8 @@ class Khateeb extends Model {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
                     }
+                }else{
+                    array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                 }
             }
 

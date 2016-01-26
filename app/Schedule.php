@@ -17,7 +17,7 @@ class Schedule extends Model {
 
 
     public static function start(){
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $cycle_id = $cycle->id ;
 
         $fridays = Fridays::wherecycle_id($cycle_id)->get();

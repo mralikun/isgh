@@ -15,7 +15,7 @@ class cycle extends Model {
      * for DRY i made this function
      */
     private static function saveCycle($startDate , $endDate){
-        $cycle = new cycle();
+        $cycle = new Cycle();
         $cycle->start_date = $startDate ;
         $cycle->end_date = $endDate ;
         if($cycle->save()){
@@ -33,7 +33,7 @@ class cycle extends Model {
      * existing cycle get end date and check if it is finished or not
      */
     public static function CreateNewCycle($startDate , $endDate){
-        $latest_cycle = cycle::latest()->first();
+        $latest_cycle = Cycle::latest()->first();
 
         if(empty($latest_cycle)){
             $result = self::saveCycle($startDate , $endDate);
