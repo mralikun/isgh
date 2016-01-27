@@ -26,7 +26,7 @@ Edit/Delete Islamic Center
 @section("content")
 
 @if(sizeof($all) > 0)
-<table class="table table-bordered" ng-controller="IslamicCenterController as icc">
+<table class="table table-bordered ic-table" ng-controller="IslamicCenterController as icc">
     
     <thead>
         

@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-
-
 <html lang="en">
-    
     <head>
         
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Welcome to ISGH</title>
         <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="/assets/css/main.css">
@@ -15,52 +13,41 @@
     
     
     <body ng-app="isgh">
-       
-        <header class="container-fluid">
-
-            <div class="col-sm-4 col-md-2 col-lg-2"><h2>ISGH</h2></div>
-            <div class="col-sm-8 col-md-10 col-lg-10">
-                <nav>
-                    <ul>
-                    
-                        @yield("navigation")
-                    
-                    </ul>
-                </nav>
-
-            </div>
-
-        </header>
-        
-        <div class="alert">
-            
+       <div class="alert">
             <div class="content">
                 <h4 class="message"></h4>
                 <button class="accept btn-isgh" data-confirm="1">Yes</button><button class="decline btn-isgh" data-confirm="0">No</button>
             </div>
-            
         </div>
-        
         <div class="notification"><p></p></div>
-        
-        <main>
-   
-            <h2 class="page-title">@yield("pageTitle")</h2>
-
-            <div class="container-fluid">
-
-                <div class="col-sm-6 col-md-6 col-lg-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 content-holder">
-
-                    @yield("content")
-
-                </div>
-                
-                <div class="col-sm-3 col-md-3 col-lg-3">
-                    @yield("aside")
-                </div>
-                
+        <nav class="navbar navbar-primary" role="navigation">
+            <div class="navbar-header">
+                <button type="button" data-target="#isghNav" data-toggle="collapse" class="navbar-toggle">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <a href="/" class="navbar-brand"><h2>ISGH</h2></a>
             </div>
-        </main>    
+            <div class="collapse navbar-collapse" id="isghNav">
+                <ul class="nav navbar-nav">
+                    @yield("navigation")
+                </ul>
+            </div>
+        </nav>
+        
+           <div class="row">
+               <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                   <h2 class="page-title">@yield("pageTitle")</h2>
+               </div>
+               <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                   @yield("content")
+               </div>
+               <div class="col-xs-12">
+                   @yield("aside")
+               </div>
+           </div>
+       
+
+   
         
         <script src="/assets/js/core/jquery.min.js"></script>
         <script src="/assets/js/core/angular.min.js"></script>

@@ -28,18 +28,26 @@ h4 {
     padding: 15px;
 }
 
-header h2 {
-    padding: 0 35px;
+h2 {
+    margin-bottom: 0;
+    color: #fff;
+    margin-top: 5px;
+}
+
+button.navbar-toggle {
+    color: #fff;
+    font-size: 2em;
 }
 
 .navbar {
     background-color: #007bb3;
     border: none;
+    border-radius: 0;
 }
 
 nav {
     display: block;
-    margin-top: 20px;
+    margin-bottom: 0!important;
 }
 
 nav ul {
@@ -47,20 +55,6 @@ nav ul {
     text-align: center;
     margin: 0;
     padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    padding: 2px 15px;
-}
-
-nav ul li:not(:last-child){
-    border-right: 2px solid white;
-}
-
-nav ul li a {
-    color: white;
-    padding: 10px;
 }
 
 label , h4.first-time{
@@ -73,13 +67,13 @@ textarea {
 }
 
 .page-title {
-    min-width: 15%;
-    max-width: 25%;
-    display: inline-block;
-    padding: 15px;
     background-color: #007bb3;
     color: white;
     text-align: center;
+    margin: 0;
+    margin-top: 15px;
+    font-size: 1.5em;
+    padding: 10px 0;
 }
 
 .form-group {
@@ -150,12 +144,12 @@ a:hover {
 }
 
 .btn-isgh {
-    
     padding: 5px 15px;
     margin: 5px 5px;
     border: 2px solid rgba(128,128,128,.5);
     background: white;
     color: #007bb3;
+    white-space: normal;
 }
 
 .alert button {
@@ -224,10 +218,18 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
     border: 1px solid rgba(128,128,128,.75);
     background-color: white;
     color: #007bb3;
+    margin-top: 5px;
 }
 
 .tabs-links button:focus {
     outline: none;
+}
+
+@media (max-width: 768px){
+    .tabs-links button {
+        width: 100%;
+        margin: 10px 0;
+    }
 }
 
 .content-tabs{
@@ -301,6 +303,36 @@ tbody tr:hover {
 .stars:before {
     content: "Least Preferable";
     left: 30%;
+}
+
+.navbar a {
+    color: white;
+}
+
+.navbar {
+    width: 100%;
+}
+
+.navbar-nav {
+    float: none;
+    text-align: center;
+}
+
+.navbar-nav a {
+    padding-top: 5px!important;
+    padding-bottom: 5px!important;
+}
+
+.navbar-nav a:hover {
+    background-color:transparent!important;
+    color: #fff!important;
+    text-decoration: underline!important;
+}
+
+.navbar-nav li {
+    margin: 15px;
+    display: inline-block;
+    float: none;
 }
 
 /**
@@ -380,6 +412,20 @@ tbody tr:hover {
     box-sizing: border-box;
 }
 
+@media (max-width: 768px){
+    #login-form {
+        width: 100%;
+        margin-top: 0;
+        padding-top: 25px;
+        border-top: thin solid #ddd;
+    }
+    
+    #auth-img {
+        transform: translateY(5%);
+    }
+}
+
+
 /**
 
     PROFILE PAGE
@@ -432,6 +478,11 @@ tbody tr:hover {
     CREATE ISLAMIC CENTER
 
 */
+
+label {
+    margin-top: 10px;
+    text-indent: 10px;
+}
 
 label[for="start_time"] , label[for="end_time"] {
     margin-top: 7px;
@@ -612,4 +663,37 @@ td > button:hover {
 .schedule tr {
     border-bottom: 1px solid rgba(128,128,128,.5);
     transition: initial;
+}
+
+[class^="col-"] {
+    padding-right: 0!important;
+    padding-left: 0!important;
+}
+
+.row {
+    margin: 0!important;
+}
+
+.address-part {
+    margin-top: 5px;
+}
+
+.ic-table {
+    margin-top: 15px!important;
+}
+
+@media (max-width: 1110px){
+    .navbar-nav li {
+        display: block;
+    }
+    
+    .page-title {
+        font-size: 1.5em;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: thin solid #ddd;
+        margin-top: 0;
+    }
+    
+
 }

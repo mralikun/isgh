@@ -17,7 +17,7 @@
 
 @section("content")
 <span class="text-right note">All fields with a <sup>*</sup> sign are required fields</span>
-<form method="POST" class="form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
+<form method="POST" class="col-xs-10 col-xs-offset-1 form-horizontal" ng-controller="IslamicCenterController as icc" ng-submit="create()" name="icForm">
    <div class="form-group" ng-class="{'has-success': center.name}">
        <label class="col-sm-2 control-label">Name <sup>*</sup></label>
        <div class="col-sm-10">
@@ -47,10 +47,10 @@
            <div class="row form-group">
 
                 <label class="col-sm-2">Country <sup>*</sup></label>
-                <div class="col-sm-3"><input type="text" name="country" class="form-control" disabled placeholder="Country" required/></div>
+                <div class="col-sm-3"><input type="text" name="country" class="form-control address-part" disabled placeholder="Country" required/></div>
 
                 <label class="col-sm-2">City <sup>*</sup></label>
-                <div class="col-sm-3"><input type="text" name="locality" class="form-control" disabled placeholder="City" required/></div>
+                <div class="col-sm-3"><input type="text" name="locality" class="form-control address-part" disabled placeholder="City" required/></div>
 
            </div>
 
@@ -58,10 +58,10 @@
             <div class="row form-group">
 
                 <label class="col-sm-2">State <sup>*</sup></label>
-                <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control" disabled placeholder="State" required/></div>
+                <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control address-part" disabled placeholder="State" required/></div>
 
                 <label class="col-sm-2">Postal Code <sup>*</sup></label>
-                <div class="col-sm-3"><input name="postal_code" class="form-control" type="text" disabled placeholder="Postal Code" required/></div>
+                <div class="col-sm-3"><input name="postal_code" class="form-control address-part" type="text" disabled placeholder="Postal Code" required/></div>
 
             </div>
 

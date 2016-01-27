@@ -30,12 +30,16 @@ Profile
 @section("content")
 <div class="row">
 @if(!isset($user_info->reviewer))
-<div class="col-sm-3 col-md-3 col-lg-3 profile-page-picture" style="background-image: url(/images/khateeb_pictures/{{$user_info->picture_url}});">
+<div class="col-xs-10 col-xs-offset-1 col-sm-3 col-md-3 col-lg-3 profile-page-picture" style="background-image: url(/images/khateeb_pictures/{{$user_info->picture_url}});">
 </div>
 @endif
-<div class="col-sm-8 col-md-8 col-lg-8 username"><h1>{{$user_info->name}}</h1></div>
+<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-md-8 col-lg-8 username"><h1>{{$user_info->name}}</h1></div>
 
 </div>
-<div class="row"><p class="bio text-center">{{$user_info->bio}}</p></div>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <p class="bio text-center">{{$user_info->bio}}</p>
+    </div>
+</div>
 
 @stop

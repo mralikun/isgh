@@ -35,7 +35,7 @@ Update Profile
 <h4 class="first-time">It seems this is your first time logging into ISGH System ,Please take a minute to update your personal information</h4>
 @endif
 <span class="text-right note">All of the following fields are required</span>
-<form class="form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
+<form class="col-xs-10 col-xs-offset-1 form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
   @if(isset($adminEditing) and $adminEditing != null)
   <input type="hidden" value="{{$adminEditing}}" name="userID">
   @endif
@@ -89,15 +89,6 @@ Update Profile
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <label for="" class="control-label col-sm-3">Biography</label>
-        <div class="col-sm-9">
-            <textarea name="bio" rows="5" class="form-control" placeholder="Tell us about yourself" required>{{$result->bio}}</textarea>
-            <div ng-messages="profile.bio.$error">
-                <div ng-message="required">Please provide your biography</div>
-            </div>
-        </div>
-    </div>   
     @if($role == 2)
     <div class="form-group">
         <label for="" class="control-label col-sm-3">Educational Background</label>

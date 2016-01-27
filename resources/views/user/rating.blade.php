@@ -60,16 +60,21 @@
 
 @section("pageTitle")
 
-Rating
+Preferences
 
 @stop
 
 
 @section("content")
 @if($role == 3)
-<div class="rating-options text-center">
-    <button class="btn btn-isgh" data-kh="1">Khateebs prefrences for my islamic center</button><button class="btn btn-isgh" data-kh="0">My khutbah prefrences as khateeb</button>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="rating-options text-center">
+            <button class="btn btn-isgh" data-kh="1">Khateebs prefrences for my islamic center</button><button class="btn btn-isgh" data-kh="0">My khutbah prefrences as khateeb</button>
+        </div>
+    </div>
 </div>
+
 @endif
 @if(isset($photo) && $photo == 'false')
 <div class="upload-pic">
