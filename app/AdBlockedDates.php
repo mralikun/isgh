@@ -10,14 +10,14 @@ class AdBlockedDates extends Model {
 
     protected $fillable= ["id","friday_id","ad_id"];
 
-    public static function addBlockedDates($fridays , $user_id){
+    public static function addBlockedDates($fridays , $user_id ,$names){
         $islamicCenter_With_DirectorData = IslamicCenter::with("ad")->whereid($user_id)->first();
 
         $khateeb_row = AdBlockedDates::whereic_id($user_id)->first();
         /**
          * Now i will get the running cycle
          */
-        $current_cycle = cycle::latest()->first();
+        $current_cycle = Cycle::latest()->first();
         $cycle_id = $current_cycle->id ;
 
         /**
@@ -29,11 +29,13 @@ class AdBlockedDates extends Model {
 
             if(!empty($fridays )){
 
-                foreach($fridays as $friday){
+                foreach($fridays as $key=>$friday){
                     // ksf abbreviation to khateeb selected fridays
                     $ksf = new AdBlockedDates();
                     $ksf->ic_id = $user_id ;
                     $ksf->friday_id = $friday ;
+                    $ksf->confirm = 1 ;
+                    $ksf->visitor_name = $names[$key] ;
                     $ksf->cycle_id = $cycle_id ;
                     $ksf->save() ;
                 }
@@ -49,10 +51,12 @@ class AdBlockedDates extends Model {
             }
             // Add new records to the database
             if(!empty($fridays)){
-                foreach($fridays as $friday){
+                foreach($fridays as $key=>$friday){
                     $abd = new AdBlockedDates();
                     $abd->ic_id = $user_id ;
                     $abd->friday_id = $friday ;
+                    $abd->confirm = 1 ;
+                    $abd->visitor_name = $names[$key] ;
                     $abd->cycle_id = $cycle_id ;
                     $abd->save() ;
                 }
@@ -70,7 +74,7 @@ class AdBlockedDates extends Model {
      */
     public static function islamic_Centers_Available_This_Friday($friday_id){
         // here return the id's of all islamic centers that have blocked dates this friday and do not want khateeb in that day
-        $islamic_centers_id = AdBlockedDates::wherefriday_id($friday_id)->select("ic_id")->get();
+        $islamic_centers_id = AdBlockedDates::wherefriday_id($friday_id)->whereconfirm(2)->select("ic_id")->get();
 
         // create array to hold the islamic centers that block this friday
         $islamic_centers_id_array = [];
@@ -83,8 +87,26 @@ class AdBlockedDates extends Model {
         }
 
         // here i want to get all islamic centers not in the array $islamic_centers_id_array
-        return $islamic_centers_available = $users = (array)DB::table('islamic_center')->whereNotIn('id',$islamic_centers_id_array )->select("id","speech_num")->get();
 
+        $islamic_centers_available = $users = (array)DB::table('islamic_center')->whereNotIn('id',$islamic_centers_id_array )->select("id","speech_num")->get();
+
+        return $islamic_centers_available ;
+    }
+
+    /**
+     * @param $id
+     * @param $status
+     * @return string
+     * updating a record only
+     */
+    public function updateRecord($id , $status){
+        $record = AdBlockedDates::whereid($id)->first();
+        $record->confirm = $status ;
+        if($record->save){
+            return "true";
+        }else{
+            return "false";
+        }
     }
 
 }

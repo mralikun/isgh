@@ -38,7 +38,7 @@ class UserController extends Controller {
         $role = Auth::user()->role_id ;
         $user_data = User::getUserData($user_id , $role);
         $name = $user_data->name ;
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
 
         if(Auth::user()->role_id == 2){
@@ -113,7 +113,7 @@ class UserController extends Controller {
         $role = Auth::user()->role_id ;
         $user_data = User::getUserData($user_id , $role);
         $name = $user_data->name ;
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         if(Auth::user()->role_id == 3) {
             $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Schedule::Return_Associated_Islamic_Center($user_id))->select("friday_id")->get();
@@ -145,7 +145,7 @@ class UserController extends Controller {
      * post request to save islamic center blocked dates
      */
     public function setIslamicCenterBlockedDates($ic_id){
-        return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$ic_id);
+        return $result = AdBlockedDates::addBlockedDates(Input::all("dates"),$ic_id ,Input::get("names"));
     }
 
     /**
@@ -174,7 +174,7 @@ class UserController extends Controller {
         $user_data = User::getUserData(Auth::user()->user_id , 3);
         $name = $user_data->name ;
 
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         $fridays_choosen = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->get();
         $fridays_choosen_other_ic = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
@@ -191,7 +191,7 @@ class UserController extends Controller {
         $user_data = User::getUserData(Auth::user()->user_id , 3);
         $name = $user_data->name ;
 
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->select("friday_id")->get();
         $fridays_choosen = Khateebselectedfridays::wherecycle_id($cycle->id)->wherekhateeb_id(Auth::user()->id)->whererole_id(3)->select("friday_id")->get();
@@ -337,7 +337,7 @@ class UserController extends Controller {
         switch(Auth::user()->role_id){
             case 2 :
                 $khateeb_id = Auth::user()->id ;
-                return DB::select("SELECT islamic_center.director_id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ad_id = islamic_center.director_id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null and name !=''");
+                return DB::select("SELECT islamic_center.id as id ,islamic_center.name , rating.khateeb_rate_ad FROM `islamic_center` left JOIN rating on rating.ic_id = islamic_center.id and rating.khateeb_id = $khateeb_id or rating.khateeb_id is null and name !=''");
                 break;
             case 3 :
                  //return DB::select("SELECT khateeb.id , khateeb.name , khateeb.picture_url , rating.ad_rate_khateeb FROM `khateeb` left JOIN rating on rating.khateeb_id = khateeb.id where rating.ad_id = $ad_id or rating.khateeb_id is null and name !='' ");
@@ -473,7 +473,7 @@ class UserController extends Controller {
         // then filter the result and return khateebs that gave this islamic center higher from 0
         $ad_id = User::whereid(Schedule::Return_Associated_ad($islamic_center))->first();
             if(!empty($all_khateebs_choosed_this_friday)){
-                $khateebs_allowed = Rating::wheread_id($ad_id->user_id)->whereIn("khateeb_id",Schedule::return_array($all_khateebs_choosed_this_friday,"khateeb_id"))->wherecycle_id(cycle::currentCycle())->where("ad_rate_khateeb","!=",0)->where("khateeb_rate_ad","!=",0)->get();
+                $khateebs_allowed = Rating::wheread_id($ad_id->user_id)->whereIn("khateeb_id",Schedule::return_array($all_khateebs_choosed_this_friday,"khateeb_id"))->wherecycle_id(Cycle::currentCycle())->where("ad_rate_khateeb","!=",0)->where("khateeb_rate_ad","!=",0)->get();
                 $khateebs_allowed = $khateebs_allowed->toArray();
             }else{
                 $khateebs_allowed = [];

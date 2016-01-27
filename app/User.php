@@ -157,10 +157,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         // he is not admin he only watch the schedule
         $ad->reviewerschedule = $input["reviewer"] ;
+        $ic= $input["ic"] ;
 
+        $islamic_center = IslamicCenter::whereid($ic)->first();
         // he is admin
         $ad->reviewer = $input["admin_priv"] ;
         if ($ad->save()) {
+            // assign ad to the islamic center
+                $islamic_center->director_id = $ad->id ;
+                $islamic_center->update();
+
             return $ad->id;
         } else {
             return "true";

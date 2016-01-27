@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\AdBlockedDates;
 use App\Admin;
 use App\Approve;
 use App\AssociateDirector;
@@ -71,11 +72,14 @@ class AdminController extends Controller {
      * @return \Illuminate\View\create_members
      */
     public function Create_members(){
+        $islamic_centers = IslamicCenter::select(["id","name"])->get();
+
         if(Auth::user()->role_id == 3) {
             $admin = "true";
-            return view("admin.create_members",compact("admin"));
+
+            return view("admin.create_members",compact("admin" ,"islamic_centers"));
         }else{
-            return view("admin.create_members");
+            return view("admin.create_members",compact("islamic_centers"));
         }
 
     }
@@ -264,9 +268,9 @@ class AdminController extends Controller {
         $date = Input::get("cycle_start_date");
         $months = Input::get("months");
         $newDate = $this::getEndDate($date , $months);
-        $result = cycle::CreateNewCycle($date , $newDate);
+        $result = Cycle::CreateNewCycle($date , $newDate);
         if(is_numeric($result)){
-            $cycle = cycle::whereid($result)->first();
+            $cycle = Cycle::whereid($result)->first();
             $final_result = Fridays::addFridays($cycle,$date ,$this::getEndDate($date , $months));
             if($final_result == "true"){
                 return redirect("/admin/members/create");
@@ -327,7 +331,7 @@ class AdminController extends Controller {
                     $schedule->friday_id =$friday_id ;
                     $schedule->ic_id = $islamic_center ;
                     $schedule->khateeb_id =$new_id ;
-                    $schedule->cycle_id =cycle::currentCycle() ;
+                    $schedule->cycle_id =Cycle::currentCycle() ;
                     $schedule->save();
                 }else{
                     $schedule = Schedule::wherefriday_id($friday_id)->whereic_id($islamic_center)->wherekhateeb_id($previous_id)->first();
@@ -342,7 +346,7 @@ class AdminController extends Controller {
 
 
     public function CheckScheduleExistence(){
-        $cycle = cycle::currentCycle();
+        $cycle = Cycle::currentCycle();
         $schedule = Schedule::latest()->first();
         if(empty($schedule)){
             return "false";
@@ -715,4 +719,131 @@ class AdminController extends Controller {
 
         return $general ;
     }
+
+    public function startSchedule(){
+        $blocked = AdBlockedDates::where("cycle_id","=",Cycle::currentCycle())->where("confirm","=",1)->get();
+//        if(!empty($blocked)){
+//            return "There are blocked dates can not be escaped";
+//        }
+        $schedule = new \App\Schedule;
+        return $schedule->start();
+    }
+
+    /**
+     * @return array
+     * this function resbonsible for returning all blocked data requested
+     */
+    public function CheckBlockedDates(){
+        $requested = Input::get("requested");
+        if(empty($requested)){
+            $requested = null ;
+        }
+
+        $blocked = AdBlockedDates::where("cycle_id","=",Cycle::currentCycle())->get();
+
+        if(!empty($blocked)){
+            $blocked = self::mapBlocked($blocked);
+            $accepted = array_filter($blocked, function ($block) {
+                if ($block["status"] == 2) {
+                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                }
+            });
+            $waiting = array_filter($blocked, function ($block) {
+                if ($block["status"] == 1) {
+                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                }
+            });
+            $rejected = array_filter($blocked, function ($block) {
+                if ($block["status"] == 3) {
+                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                }
+            });
+            $data = ["accepted"=>$this->mapBlocked($accepted , "director") , "waiting"=>$this->mapBlocked($waiting , "director") , "rejected"=>$this->mapBlocked($rejected , "director")];
+
+            if($requested != null){
+                $returned = [];
+                foreach ($requested as $r) {
+                    if($r == "accepted"){
+                        array_push($returned , ["accepted"=>$data["accepted"]]);
+                    }elseif($r == "rejected"){
+                        array_push($returned , ["rejected"=>$data["rejected"]]);
+                    }elseif($r == "waiting"){
+                        array_push($returned , ["waiting"=>$data["waiting"]]);
+                    }
+                }
+                return $returned ;
+
+            }else{
+                return $data ;
+            }
+
+        }else{
+            return [] ;
+        }
+
+    }
+
+    /**
+     * @param $blocked_dates
+     * @param null $element
+     * @return array
+     */
+    public function mapBlocked($blocked_dates ,$element = null){
+        if($element == null){
+            $blocked_dates = $blocked_dates->toArray();
+
+            return array_map(function($item){
+                return[
+                    "record_id_block_date"=>$item["id"],
+                    "islamic_center_data"=>IslamicCenter::whereid($item["ic_id"])->select("name","director_id")->first(),
+                    "friday_data"=>Fridays::whereid($item["friday_id"])->select("date")->first(),
+                    "status"=>$item["confirm"]
+                ];
+            },$blocked_dates);
+        }else{
+            if(!empty($blocked_dates)){
+
+                return array_map(function($item){
+                    return[
+                        "record_id_block_date"=>$item["record_id_block_date"],
+                        "islamic_center_name"=>$item["islamic_center_data"]["name"],
+                        "director_name"=>AssociateDirector::whereid($item["islamic_center_data"]["director_id"])->select("name")->first(),
+                        "friday_date"=>$item["friday_data"],
+                        "status"=>$this->filterStatus($item["status"])
+                    ];
+                },$blocked_dates);
+
+            }else{
+                return $blocked_dates ;
+            }
+
+        }
+
+    }
+
+    /**
+     * @param $status
+     * @return string
+     * filter like angular huh for returning status
+     */
+    public function filterStatus($status){
+        if($status == 1 ){
+            return "waiting";
+        }elseif($status == 2){
+            return "accepted";
+        }else{
+            return "rejected";
+        }
+    }
+
+    /**
+     * update a record in adblockeddatestable
+     * @return string
+     */
+    public function EditBlockedDatesStatus(){
+        $id = Input::get("id");
+        $status = Input::get("status");
+        return AdBlockedDates::updateRecord($id , $status);
+    }
+
 }

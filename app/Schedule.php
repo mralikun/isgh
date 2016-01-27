@@ -17,7 +17,7 @@ class Schedule extends Model {
 
 
     public static function start(){
-        $cycle = cycle::latest()->first();
+        $cycle = Cycle::latest()->first();
         $cycle_id = $cycle->id ;
 
         $fridays = Fridays::wherecycle_id($cycle_id)->get();
@@ -52,15 +52,15 @@ class Schedule extends Model {
         private static function Initial($friday_id){
             // first return all khateebs available in this friday
             $khateebs = Khateebselectedfridays::Get_Khateebs_Choosed_that_Friday($friday_id);
-            if(empty($khateebs)){
-                return "Sorry there is no Khateebs Available in this Friday";
-            }
+//            if(empty($khateebs)){
+//                return "Sorry there is no Khateebs Available in this Friday";
+//            }
 
             // Second return all Islamic Centers have no blocked dates and available this friday
             $islamic_centers = AdBlockedDates::islamic_Centers_Available_This_Friday($friday_id);
-            if(empty($islamic_centers)){
-                return "Sorry there is no Khateebs Available in this Friday";
-            }
+//            if(empty($islamic_centers)){
+//                return "Sorry there is no Khateebs Available in this Friday";
+//            }
             // now create new array and assign data to it
             self::$khateebs = $khateebs ;
             self::$islamic_centers = $islamic_centers ;

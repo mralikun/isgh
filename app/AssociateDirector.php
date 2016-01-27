@@ -35,7 +35,7 @@ class AssociateDirector extends Model
         $ad->email = $info["email"];
         $ad->phone = $info["cell_phone"];
         $ad->address = $info["address"];
-        $ad->bio = $info["bio"];
+//        $ad->bio = $info["bio"];
         $ad->post_code = $info["postal_code"];
 
         $user = User::whereid($user_id)->first() ;

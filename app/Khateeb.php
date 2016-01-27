@@ -122,13 +122,13 @@ class Khateeb extends Model {
             $rules = ["ad_rate_khateeb"=>7 ,"khateeb_rate_ad"=>7 ];
 
             // here get me the distance between current khateeb and current islamic center
-            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->first();
 
             if($distance_between_khateeb_islamicCenter != null){
                 $current_distance = $distance_between_khateeb_islamicCenter->distance ;
 
                 // now get me the islamic center this khateeb give and take 7-7 ordered by distance
-                $data = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"!=", $ad_id)->where($rules)->orderBy("distance","asc")->first();
+                $data = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"!=", Schedule::Return_Associated_Islamic_Center($ad_id))->where($rules)->orderBy("distance","asc")->first();
 
                 // now i will check if associated islamic center not blocked this friday
                 if(!empty($data)){
@@ -136,13 +136,13 @@ class Khateeb extends Model {
                     // check the distance with current ic with distance with the lowest distance
                     // if current distance less than or equal $distance_other_ic then apply matching
                     if($current_distance <= $distance_other_ic){
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($Available_Khateebs_For_This_IC, $khateeb);
                         }
                     }
                     // else if current distance larger than $distance_other_ic then do not apply the matching process
                 }else{
-                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true){
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true){
                         array_push($Available_Khateebs_For_This_IC,$khateeb);
                     }
                 }
@@ -245,21 +245,22 @@ class Khateeb extends Model {
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
 
-            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
+
             if($distance_between_khateeb_islamicCenter != null) {
                 $distance = $distance_between_khateeb_islamicCenter->distance;
-
 
                 // now get me all khateebs gave any other islamic center 4-6 and islamic center gave him 4-6 but not 7 - 7
                 $data = DB::table('rating')
                     ->where('khateeb_id', "=", $khateeb)
-                    ->where("ad_id", "!=", $ad_id)
+                    ->where("ic_id", "!=", Schedule::Return_Associated_Islamic_Center($ad_id))
                     ->whereBetween('khateeb_rate_ad', array(4, 7))
                     ->whereBetween('ad_rate_khateeb', array(4, 7))->
                     where(function ($query) {
                         $query->where('khateeb_rate_ad', '!=', 7)
                             ->orWhere('ad_rate_khateeb', '!=', 7);
                     })->orderBy("distance", "asc")->first();
+
 
                 // now check if minimum path to islamic center and not to his islamic center
                 if (!empty($data)) {
@@ -269,14 +270,18 @@ class Khateeb extends Model {
                      * | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
                      */
                     if ($distance <= $distance_new_islamic_center) {
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center, $khateeb);
                         }
                     } else {
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $khateeb);
                         }
 
+                    }
+                }else{
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
+                        array_push($shortest_khateebs_to_islamic_center, $khateeb);
                     }
                 }
             }
@@ -415,14 +420,14 @@ class Khateeb extends Model {
         foreach($khateebs as $khateeb){
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
-            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
             if($distance_between_khateeb_islamicCenter != null){
                 $distance = $distance_between_khateeb_islamicCenter->distance ;
 
                 // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
                 $data = DB::table('rating')
                     ->where('khateeb_id',"=", $khateeb)
-                    ->where("ad_id" ,"!=", $ad_id)
+                    ->where("ic_id" ,"!=", Schedule::Return_Associated_Islamic_Center($ad_id))
                     ->whereBetween('khateeb_rate_ad', array(1,7))
                     ->whereBetween('ad_rate_khateeb', array(4,7))->
                     where(function($query)
@@ -439,13 +444,17 @@ class Khateeb extends Model {
                     | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
                      */
                     if($distance <= $distance_new_islamic_center){
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center, $khateeb);
                         }
                     }else{
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
+                    }
+                }else{
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
+                        array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
                 }
             }
@@ -525,14 +534,14 @@ class Khateeb extends Model {
         foreach($khateebs as $khateeb){
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
-            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
             if($distance_between_khateeb_islamicCenter != null){
                 $distance = $distance_between_khateeb_islamicCenter->distance ;
 
                 // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
                 $data = DB::table('rating')
                     ->where('khateeb_id',"=", $khateeb)
-                    ->where("ad_id" ,"!=", $ad_id)
+                    ->where("ic_id" ,"!=", Schedule::Return_Associated_Islamic_Center($ad_id))
                     ->whereBetween('khateeb_rate_ad', array(1,7))
                     ->whereBetween('ad_rate_khateeb', array(1,7))->
                     where(function($query)
@@ -549,13 +558,17 @@ class Khateeb extends Model {
                     | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
                      */
                     if($distance <= $distance_new_islamic_center){
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center, $khateeb);
                         }
                     }else{
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
+                    }
+                }else{
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
+                        array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
                 }
             }
@@ -632,14 +645,14 @@ class Khateeb extends Model {
         foreach($khateebs as $khateeb){
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
-            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
             if($distance_between_khateeb_islamicCenter != null){
                 $distance = $distance_between_khateeb_islamicCenter->distance ;
 
                 // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
                 $data = DB::table('rating')
                     ->where('khateeb_id',"=", $khateeb)
-                    ->where("ad_id" ,"!=", $ad_id)
+                    ->where("ic_id" ,"!=", Schedule::Return_Associated_Islamic_Center($ad_id))
                     ->whereBetween('khateeb_rate_ad', array(0,7))
                     ->where('ad_rate_khateeb',"=", 0)->
                     where(function($query)
@@ -656,13 +669,17 @@ class Khateeb extends Model {
                     | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
                      */
                     if($distance <= $distance_new_islamic_center){
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center, $khateeb);
                         }
                     }else{
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
+                    }
+                }else{
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
+                        array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
                 }
             }
@@ -736,14 +753,14 @@ class Khateeb extends Model {
         foreach($khateebs as $khateeb){
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
-            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ad_id" ,"=", $ad_id)->select("distance")->latest()->first();
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
             if($distance_between_khateeb_islamicCenter != null){
                 $distance = $distance_between_khateeb_islamicCenter->distance ;
 
                 // now get me all khateebs gave any other islamic center 1-6 and islamic center gave him 4-6 but not 7 - 7
                 $data = DB::table('rating')
                     ->where('khateeb_id',"=", $khateeb)
-                    ->where("ad_id" ,"!=", $ad_id)
+                    ->where("ic_id" ,"!=", Schedule::Return_Associated_Islamic_Center($ad_id))
                     ->whereBetween('ad_rate_khateeb', array(0,7))
                     ->where('khateeb_rate_ad',"=", 0)->
                     where(function($query)
@@ -760,13 +777,17 @@ class Khateeb extends Model {
                     | if $distance > $distance_new_islamic_center then do not add him there is other islamic center best for him
                      */
                     if($distance <= $distance_new_islamic_center){
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center, $khateeb);
                         }
                     }else{
-                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks($ad_id , $khateeb , Schedule::$current_friday) == true) {
+                        if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                             array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                         }
+                    }
+                }else{
+                    if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
+                        array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
                 }
             }

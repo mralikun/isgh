@@ -122,10 +122,7 @@ Route::post('/user/adSameIslamicCenter', 'UserController@same_islamic_center');
 // here ad choose some fridays to give khutbah in his own islamic center
 Route::post('/user/adOtherIslamicCenters', 'UserController@setDates');
 
-Route::get("/when",function(){
-    $schedule = new \App\Schedule;
-    return $schedule->start();
-});
+Route::get("/when","AdminController@startSchedule");
 
 // Get all Islamic centers to ad to rate them
 Route::post('/user/getIcRating', 'UserController@getIcRating');
@@ -162,3 +159,12 @@ Route::get("/ExportSchedule","AdminController@ExportSchedule");
 
 // here route for approve the schedule
 Route::post("/checkScheduleApprove","AdminController@checkScheduleApprove");
+
+// status update and all its processes
+    Route::post("/blockedDates/status" , "AdminController@CheckBlockedDates");
+    // update blocked date status
+    Route::get("/blockedDates/editStatus" , "AdminController@EditBlockedDatesStatus");
+
+
+
+
