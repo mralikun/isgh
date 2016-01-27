@@ -130,7 +130,9 @@ class Schedule extends Model {
             // here before calling this function i will ensure there is a place that i can decrease it
             $ad_id = IslamicCenter::whereid($ic_id)->select("director_id")->first();
             $ad  = User::whereuser_id($ad_id->director_id)->whererole_id(3)->first();
-            return $ad->id ;
+            if(!empty($ad)){
+                return $ad->id ;
+            }
         }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

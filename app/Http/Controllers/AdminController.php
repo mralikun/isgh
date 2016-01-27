@@ -393,9 +393,10 @@ class AdminController extends Controller {
         // first get the schedule into an array
         $schedule = self::getSchedule();
         // approve schedule
-        self::approveCurrentCycle();
+//        self::approveCurrentCycle();
 
         if(!empty($schedule)){
+
             // then i have to get first element in the schedule and check if there are khateebs in the schedule or not
             // match this khateeb to collect him in one array and the add him to another array and unset this element from the array
             foreach($schedule as $element){
@@ -403,7 +404,7 @@ class AdminController extends Controller {
                 $firstkhateeb = [];
 
                 foreach($schedule as $key=>$value){
-                    if($value->khateeb->id == $khateeb->khateeb->id){
+                    if($khateeb->khateeb_id === $value->khateeb_id){
                         array_push($firstkhateeb , $value) ;
                         unset($schedule[$key]);
                     }
@@ -452,9 +453,17 @@ class AdminController extends Controller {
         array_push($merged_data["khateeb_data"],$khateeb_info);
 
         foreach($array_of_ic_to_khateeb as $ic){
-            $ad = User::GetUserDataForSchedule(Schedule::Return_Associated_ad($ic->islamic_center->id),3) ;
-            $ad_phone = $ad->phone ;
-            $ad_email = $ad->email ;
+            $ad = Schedule::Return_Associated_ad($ic->islamic_center->id) ;
+            if(!empty($ad)){
+                $ad = User::GetUserDataForSchedule($ad,3) ;
+            }
+            if(!empty($ad)){
+                $ad_phone = $ad->phone ;
+                $ad_email = $ad->email ;
+            }else{
+                $ad_phone = "no associated ad";
+                $ad_email = "no associated ad";
+            }
 
             $element =[
                 "date"=>$ic->friday->date ,
