@@ -27,6 +27,7 @@ class Schedule extends Model {
             self::$islamic_center_available_places = [];
             self::$current_friday = $friday->id;
             self::startSchedule($friday->id);
+
         }
         self::run_CheckingExistenseOfCycle($cycle_id);
         return self::$schedule ;
@@ -64,6 +65,7 @@ class Schedule extends Model {
             // now create new array and assign data to it
             self::$khateebs = $khateebs ;
             self::$islamic_centers = $islamic_centers ;
+
         }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +117,9 @@ class Schedule extends Model {
             $ad_id = $ad_id->user_id ;*/
             // here before calling this function i will ensure there is a place that i can decrease it
            $ic_id = IslamicCenter::wheredirector_id($ad_id)->select("id")->first();
+            if(empty($ic_id)){
+                return $ad_id ;
+            }
             return $ic_id->id ;
         }
 
@@ -156,10 +161,12 @@ class Schedule extends Model {
             $islamic_centers = self::$islamic_centers ;
             if(!empty($islamic_centers)){
                 // loop through all islamic centers and get me all khateebs in our array gived this islamic center 7 and vise versa
+
                 foreach($islamic_centers as $islamic_center){
                     // get me all khateebs gived this islamic center 7 and islamic center gived them 7 also
                     Rating::Get_all_khateebs_givied_Islamic_Center_7($islamic_center->id , self::$khateebs);
                 }
+
             }
 
         }

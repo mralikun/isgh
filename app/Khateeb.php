@@ -245,7 +245,11 @@ class Khateeb extends Model {
             // this is the available khateebs this friday not assigned until now to islamic centers
             // now get me the distance between this khateeb and this ad
 
+
             $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
+
+            $distance_between_khateeb_islamicCenter = DB::table('rating')->where('khateeb_id',"=", $khateeb)->where("ic_id" ,"=", Schedule::Return_Associated_Islamic_Center($ad_id))->select("distance")->latest()->first();
+
 
             if($distance_between_khateeb_islamicCenter != null) {
                 $distance = $distance_between_khateeb_islamicCenter->distance;
@@ -280,9 +284,11 @@ class Khateeb extends Model {
 
                     }
                 }else{
+
                     if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                         array_push($shortest_khateebs_to_islamic_center, $khateeb);
                     }
+
                 }
             }
         }
@@ -453,9 +459,11 @@ class Khateeb extends Model {
                         }
                     }
                 }else{
+
                     if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                         array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
+
                 }
             }
 
@@ -567,6 +575,7 @@ class Khateeb extends Model {
                         }
                     }
                 }else{
+
                     if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                         array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
@@ -678,9 +687,11 @@ class Khateeb extends Model {
                         }
                     }
                 }else{
+
                     if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                         array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
+
                 }
             }
 
@@ -690,6 +701,7 @@ class Khateeb extends Model {
             // count available khateebs
             $count = count($shortest_khateebs_to_islamic_center);
             // if the array have alot of records i only want some of them
+
             if($count < $remainder){
                 // here we are lower than what we want now i have to add what i have in the
                 // know i will go to 4-7 and make same process
@@ -736,6 +748,7 @@ class Khateeb extends Model {
             }
 
         }else{
+
             self::Get_Khateebs_Gave_Islamic_Center_7_0($ad_id,$remainder );
         }
     }
@@ -745,6 +758,7 @@ class Khateeb extends Model {
             $islamic_center_available_places = Schedule::Return_Associated_Islamic_Center($ad_id);
             $remainder = Schedule::Get_Islamic_Center_Available_Places($islamic_center_available_places);
         }
+
         $shortest_khateebs_to_islamic_center = [];
         $shortest_khateebs_to_islamic_center_alternative = [];
         // return available khateebs in this friday not assigned to any islamic center
@@ -786,9 +800,11 @@ class Khateeb extends Model {
                         }
                     }
                 }else{
+
                     if(Schedule::Check_Khateeb_Gived_IC_From_4_Weeks(Schedule::Return_Associated_Islamic_Center($ad_id) , $khateeb , Schedule::$current_friday) == true) {
                         array_push($shortest_khateebs_to_islamic_center_alternative, $data);
                     }
+
                 }
             }
 
@@ -847,7 +863,8 @@ class Khateeb extends Model {
             }
 
         }else{
-
+            Schedule::update_Islamic_Center_Available_Places(Schedule::Return_Associated_Islamic_Center($ad_id),$remainder);
+            
         }
     }
 

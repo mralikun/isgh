@@ -18,7 +18,10 @@ class Rating extends Model {
                 $khateeb = Khateeb::whereid($user_who_rate_id)->first();
                 $khateeb_address = $khateeb->post_code ;
 
-                $ad = IslamicCenter::wheredirector_id($rated_user)->first();
+                $ad = IslamicCenter::whereid($rated_user)->first();
+                if(empty($ad)){
+                    return "sorry there is no associated associate Director ";
+                }
                 $ad_address = $ad->postal_code ;
                 $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=$khateeb_address&destinations=$ad_address&key=AIzaSyAreAoOFcm44KdplQ8GCWMox-3-QZlLcEA";
                 $data   = @file_get_contents($url);
@@ -29,7 +32,7 @@ class Rating extends Model {
                 * check if khateeb_id and ad_id is already added
                 */
                 // until getting cycle id
-                $check_exsitence = Rating::where("ic_id","=",Schedule::Return_Associated_Islamic_Center($rated_user))->where("khateeb_id","=",User::getWhateveruser_id_from_user_table($user_who_rate_id,2))->latest()->first();
+                $check_exsitence = Rating::where("ic_id","=",$rated_user)->where("khateeb_id","=",User::getWhateveruser_id_from_user_table($user_who_rate_id,2))->latest()->first();
 
                 if(!empty($check_exsitence)){
                     $rate = Rating::whereid($check_exsitence->id)->first();
@@ -41,7 +44,7 @@ class Rating extends Model {
                 $cycle = Cycle::latest()->first();
                 $cycle_id= $cycle->id ;
 
-                $rate->ic_id = Schedule::Return_Associated_Islamic_Center($rated_user) ;
+                $rate->ic_id = $rated_user ;
                 $rate->khateeb_id =  User::getWhateveruser_id_from_user_table($user_who_rate_id,2) ;
                 $rate->khateeb_rate_ad = $rate_id ;
                 $rate->cycle_id = $cycle_id ;
@@ -229,6 +232,7 @@ class Rating extends Model {
             }
 
         }
+
             $khateebs_available = Schedule::return_array($khateebs_available, "khateeb_id");
 
             $rules = ["ic_id" => Schedule::Return_Associated_Islamic_Center($ad_id), "ad_rate_khateeb" => 7, "khateeb_rate_ad" => 7];
