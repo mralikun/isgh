@@ -115,7 +115,7 @@ Schedule Management
             </div>
             <div class="modal-content">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
                         <table class="table table-bordered edit-table">
                             <thead>
                                 <tr>
@@ -174,7 +174,7 @@ Schedule Management
     
    @endif
 
-    <div class="schedule-wrapper">
+    <div class="schedule-wrapper col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
         <table class="table table-bordered" ng-show="schedule_generated">
 
             <thead>

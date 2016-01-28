@@ -47,16 +47,20 @@ Available Dates
         return $fr->friday_id;
     });
 ?>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <h3>{{$name}}</h3>
+        <span class="hint"><strong>Choose the dates which you want the system to assign you to give khutbahs <mark>in your own Islamic Center.</mark></strong></span>
+        <div class="options">
 
-<h3>{{$name}}</h3>
-<span class="hint"><strong>Choose the dates which you want the system to assign you to give khutbahs <mark>in your own Islamic Center.</mark></strong></span>
-<div class="options">
-    
-    <button class="btn btn-isgh select-all">Select All</button>
-    <button class="btn btn-isgh unselect-all">Unselect All</button>
-    <button class="btn btn-isgh reverse-select">Reverse Selection</button>
-    
+            <button class="btn btn-isgh select-all">Select All</button>
+            <button class="btn btn-isgh unselect-all">Unselect All</button>
+            <button class="btn btn-isgh reverse-select">Reverse Selection</button>
+
+        </div>
+    </div>
 </div>
+
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">

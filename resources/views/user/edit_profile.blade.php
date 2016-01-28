@@ -60,10 +60,10 @@ Update Profile
            <div class="row form-group">
 
                 <label class="col-sm-2">Country</label>
-                <div class="col-sm-3"><input type="text" name="country" class="form-control" disabled placeholder="Country"/></div>
+                <div class="col-sm-3"><input type="text" name="country" class="form-control address-part" disabled placeholder="Country"/></div>
 
                 <label class="col-sm-2">City</label>
-                <div class="col-sm-3"><input type="text" name="locality" class="form-control" disabled placeholder="City"/></div>
+                <div class="col-sm-3"><input type="text" name="locality" class="form-control address-part" disabled placeholder="City"/></div>
 
            </div>
 
@@ -71,10 +71,10 @@ Update Profile
             <div class="row form-group">
 
                 <label class="col-sm-2">State</label>
-                <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control" disabled placeholder="State"/></div>
+                <div class="col-sm-3"><input type="text" name="administrative_area_level_1" class="form-control address-part" disabled placeholder="State"/></div>
 
                 <label class="col-sm-2">Postal Code</label>
-                <div class="col-sm-3"><input name="postal_code" class="form-control" type="text" disabled placeholder="Postal Code" value="{{$result->post_code}}"/></div>
+                <div class="col-sm-3"><input name="postal_code" class="form-control address-part" type="text" disabled placeholder="Postal Code" value="{{$result->post_code}}"/></div>
 
             </div>
 

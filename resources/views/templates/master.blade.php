@@ -35,15 +35,17 @@
         </nav>
         
            <div class="row">
+
                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                    <h2 class="page-title">@yield("pageTitle")</h2>
+               </div>
+             <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 pull-right">
+                   @yield("aside")
                </div>
                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                    @yield("content")
                </div>
-               <div class="col-xs-12">
-                   @yield("aside")
-               </div>
+               
            </div>
        
 

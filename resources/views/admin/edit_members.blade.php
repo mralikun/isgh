@@ -61,7 +61,7 @@ Edit/Delete Members
        
        @else
        
-       <h4 class="text-center">There're no other admins registered in the system. <a href="/admin/members/create" class="inline-link">Create New Member</a></h4>
+       <h4 class="text-center">There're no other admins registered in the system other than you!. <a href="/admin/members/create" class="inline-link">Create New Admin</a></h4>
        
        @endif
    </div>

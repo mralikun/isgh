@@ -29,17 +29,22 @@ Profile
 
 @section("content")
 <div class="row">
-@if(!isset($user_info->reviewer))
-<div class="col-xs-10 col-xs-offset-1 col-sm-3 col-md-3 col-lg-3 profile-page-picture" style="background-image: url(/images/khateeb_pictures/{{$user_info->picture_url}});">
-</div>
-@endif
-<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-md-8 col-lg-8 username"><h1>{{$user_info->name}}</h1></div>
-
-</div>
-<div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-        <p class="bio text-center">{{$user_info->bio}}</p>
+<div class="the-table">
+    <div class="the-row">
+        <div class="the-cell">
+            @if(!isset($user_info->reviewer))
+            <div class="profile-page-picture" style="background-image: url(/images/khateeb_pictures/{{$user_info->picture_url}});">
+            </div>
+            @endif
+            <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1 username text-center">
+                <h1>Welcome, {{$user_info->name}}</h1>
+                <a href="/user/rating" class="quick-start"><i class="fa fa-star"></i>Setup your preferences</a><a href="/user/dates" class="quick-start"><i class="fa fa-calendar"></i>Setup your available dates</a>
+            </div>
+        </div>
     </div>
+</div>
+
+
 </div>
 
 @stop

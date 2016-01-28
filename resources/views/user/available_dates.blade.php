@@ -41,18 +41,22 @@ Available Dates
         return $fr->friday_id;
     });
 ?>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <h3>{{$name}}</h3>
+        @if($role == 2)
+        <span class="hint"><strong>Check the box for all dates you're willing to give khutbah in and leave the box blank if you don't want to give any khutbah at that day , <mark>You must check at least 1 box.</mark></strong></span>
+        <div class="options">
 
-<h3>{{$name}}</h3>
-@if($role == 2)
-<span class="hint"><strong>Check the box for all dates you're willing to give khutbah in and leave the box blank if you don't want to give any khutbah at that day , <mark>You must check at least 1 box.</mark></strong></span>
-<div class="options">
-    
-    <button class="btn btn-isgh select-all">Select All</button>
-    <button class="btn btn-isgh unselect-all">Unselect All</button>
-    <button class="btn btn-isgh reverse-select">Reverse Selection</button>
-    
+            <button class="btn btn-isgh select-all">Select All</button>
+            <button class="btn btn-isgh unselect-all">Unselect All</button>
+            <button class="btn btn-isgh reverse-select">Reverse Selection</button>
+
+        </div>
+        @endif
+    </div>
 </div>
-@endif
+
 
 @if($role == 2)
 <form id="blocked-dates-form">

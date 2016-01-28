@@ -60,18 +60,23 @@ Blocked Dates
         background-color: #DD0E1D;
     }
 </style>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <h3>{{$name}} @ {{$islamic_center->name}}</h3>
 
-<h3>{{$name}} @ {{$islamic_center->name}}</h3>
+        <span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
 
-<span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
+        <div class="options">
 
-<div class="options">
-    
-    <button class="btn btn-isgh select-all">Select All</button>
-    <button class="btn btn-isgh unselect-all">Unselect All</button>
-    <button class="btn btn-isgh reverse-select">Reverse Selection</button>
-    
+            <button class="btn btn-isgh select-all">Select All</button>
+            <button class="btn btn-isgh unselect-all">Unselect All</button>
+            <button class="btn btn-isgh reverse-select">Reverse Selection</button>
+
+        </div>
+    </div>
 </div>
+
+
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
