@@ -6,29 +6,6 @@ var app = angular.module("isgh" , ["ngMessages"])
 
 var ISGH = {
     
-    Paginator: {
-        currentPage: 1,
-        lastPage: 1,
-        next: function(){
-            (this.currentPage < this.lastPage) && this.currentPage++;
-            this.show();
-        },
-        prev: function(){
-            this.currentPage != 0 && this.currentPage--;
-            this.show();
-        },
-        show: function(pageNum){
-            $(".pagins").hide();
-            if(pageNum !== undefined){
-                $(".pagins[data-page='"+pageNum+"']").show();
-            }else
-                $(".pagins[data-page='"+ this.currentPage +"']").show();
-        },
-        init: function(){
-            
-        }
-    },
-    
     Tabs: {
         
         activate: function(contentNum){
@@ -142,29 +119,6 @@ var ISGH = {
             this.changeMode( mode );
             this.show();
         }
-        
-    },
-    
-    // This object is used for data validation
-    
-    Validator:  {
-        
-        /**
-         * Checks an Object model against a Collection of strings representing input names or object attributes.
-         * if any of the strings doesn't match a key within the object model even if the input is the same it will still return false.
-         * @param   Collection fields   set of strings 
-         * @param   Object objModel the object to compage its keys agains the fields.
-         * @returns Boolean  whether all fields exist in the form of keys within the object model
-         */
-        
-        required: function ( fields , objModel ){
-            
-            for(var i = 0; i < fields.length; i++){
-                if(!objModel.hasOwnProperty(fields[i]))
-                    return false;
-            }
-            return true;
-        },
         
     },
     
@@ -318,7 +272,29 @@ var ISGH = {
         });
         //  HANDLING CLICK EVENT FOR DATES.
         
+        $(".visitor_name_save").on("click" , function(){
+            var id = $(this).attr("data-id");
+            var name = $("#visitor_name_value").val();
+            if(name){
+                self.Dates.select( parseInt( id , 10 ) );
+                $("#visitor-name").modal("hide");
+            }
+            else
+                alert("Please insert a visitor name!");
+        });
+        
+        $(".visitor-canceled").on("click" , function(){
+            var id = $(this).attr("data-id");
+            $(".date[id='"+id+"']").removeClass("available");
+            self.Dates.deselect(id);
+        });
+        
         $(".dates-calendar").on("click" , ".date:not(.reserved)" , function(e){
+            
+            // blocked or available ?
+            
+            var route = window.location.pathname;
+            var blocked_dates_view = (route.indexOf("Blocked") !== -1) ? true : false;
             
             // handling the view part
             
@@ -335,8 +311,14 @@ var ISGH = {
                 ID = parseInt( $(this).attr("id") );
             }
             
+            $(".visitor_name_save , .visitor-canceled").attr("data-id" , ID);
+            
             if($(this).hasClass("available")){
-                self.Dates.select(ID);
+                if(blocked_dates_view){
+                    $("#visitor-name").modal({keyboard: false , backdrop: "static"}).modal("show");
+                }else {
+                    self.Dates.select(ID);
+                }
             }else {
                 self.Dates.deselect(ID);
             }

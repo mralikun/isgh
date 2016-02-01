@@ -22,7 +22,6 @@
 
 @stop
 
-
 @section("pageTitle")
 
 Blocked Dates
@@ -31,6 +30,33 @@ Blocked Dates
 
 
 @section("content")
+
+<div class="modal fade" id="visitor-name">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <strong>Please provide the visitor name...</strong>
+                </h4>
+            </div>
+            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                       <label for="">Visitor Name</label>
+                        <input type="text" placeholder="Visitor Name" nam="visitor_name" class="form-control" id="visitor_name_value">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer text-center" style="padding-bottom: 1em;">
+                <button class="btn btn-isgh visitor_name_save">Save</button><button class="btn btn-isgh visitor-canceled" data-dismiss="modal">Cancel</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
 <?php 
 
     function Map($arr , $cb){
