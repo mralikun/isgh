@@ -92,6 +92,7 @@ Blocked Dates
 
         <span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
 
+<!--
         <div class="options">
 
             <button class="btn btn-isgh select-all">Select All</button>
@@ -99,6 +100,7 @@ Blocked Dates
             <button class="btn btn-isgh reverse-select">Reverse Selection</button>
 
         </div>
+-->
     </div>
 </div>
 

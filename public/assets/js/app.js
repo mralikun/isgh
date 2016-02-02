@@ -275,9 +275,13 @@ var ISGH = {
         $(".visitor_name_save").on("click" , function(){
             var id = $(this).attr("data-id");
             var name = $("#visitor_name_value").val();
+//            var to_reserve = JSON.parse(localStorage.getItem("to_reserve"));
+//            console.log(to_reserve);
             if(name){
                 self.Dates.select( parseInt( id , 10 ) );
                 $("#visitor-name").modal("hide");
+                $(".temp-reserved").addClass("reserved");
+                $(".last-reserved").removeClass("last-reserved reserved temp-reserved");
             }
             else
                 alert("Please insert a visitor name!");
@@ -295,7 +299,7 @@ var ISGH = {
             
             var route = window.location.pathname;
             var blocked_dates_view = (route.indexOf("Blocked") !== -1) ? true : false;
-            
+//            localStorage.setItem("to_reserve" , JSON.stringify(next_siblings));
             // handling the view part
             
             $(this).toggleClass("available"); // scales the date
@@ -314,6 +318,20 @@ var ISGH = {
             $(".visitor_name_save , .visitor-canceled").attr("data-id" , ID);
             
             if($(this).hasClass("available")){
+                var next_siblings = $(this).nextAll().slice(0,3).each(function(index , element){
+                    $el = $(element);
+                    if(index == 2){
+                        if($el.next().hasClass("temp-reserved")){
+                            console.log($el.nextUntil(".date.available:not(.temp-reserved)" , ".temp-reserved.reserved"));
+//                            $el.nextUntil(":not(.temp-reserved)").each(function(ind , e){
+//                                if($(e).hasClass("temp-reserved"))
+//                                    $(e).addClass("last-reserved");
+//                            });
+                        }
+                    }
+                    if(!$(element).hasClass("reserved"))
+                        $(element).addClass("temp-reserved");
+                });
                 if(blocked_dates_view){
                     $("#visitor-name").modal({keyboard: false , backdrop: "static"}).modal("show");
                 }else {
