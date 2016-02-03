@@ -79,6 +79,9 @@ Blocked Dates
         return $fr->friday_id;
     });
 
+    $visitors = Map($fridays_choosen , function($fr){
+        return $fr->visitor_name;
+    });
 ?>
 
 <style>
@@ -91,16 +94,7 @@ Blocked Dates
         <h3>{{$name}} @ {{$islamic_center->name}}</h3>
 
         <span class="hint"><strong>Check the box for all dates you want to <mark><em><u>Block</u></em></mark> from being assigned a khateeb by the system.</strong></span>
-
-<!--
-        <div class="options">
-
-            <button class="btn btn-isgh select-all">Select All</button>
-            <button class="btn btn-isgh unselect-all">Unselect All</button>
-            <button class="btn btn-isgh reverse-select">Reverse Selection</button>
-
-        </div>
--->
+        
     </div>
 </div>
 
@@ -108,22 +102,25 @@ Blocked Dates
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
-       @foreach($fridays as $friday)
+      <?php $counter = 3; $step = 0;?>
+       @foreach($fridays as $key => $friday)
        @if(in_array($friday->id , $choosen))
         <div class="date available" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
+               <h6 class="visitor-name">{{$visitors[$step]}}</h6>
                <h5>{{$friday->date}}</h5>
             </div>
         </div>
-       @elseif(in_array($friday->id , $other_ics) || in_array($friday->id , $my_ic))
+        <?php $counter = 0; $step++; ?>
+       @elseif(in_array($friday->id , $other_ics) || in_array($friday->id , $my_ic) || $counter != 3)
         <div class="date reserved" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
                <h5>{{$friday->date}}</h5>
             </div>
         </div>
-       
+       <?php $counter ++; ?>
        @else
        <div class="date" id="{{$friday->id}}">
             <div class="date-content">

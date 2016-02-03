@@ -163,15 +163,26 @@ var ISGH = {
     
     Dates: {
         choosen: [],
+        visitors: [],
         path: "",
         init: function(url){
             this.path = url;
             var IDS = $(".date.available").map(function(ind , el){
                 return el.id;
             });
+            
+            var visitors = $(".visitor-name").map(function(ind , el){
+                return $(el).text();
+            });
+            
             for(var i = 0; i < IDS.length; i++){
                 this.select(parseInt(IDS[i]));
             }
+            
+            for(var i = 0; i < visitors.length; i++){
+                this.add_visitor(visitors[i]);
+            }
+            
         },
         select: function(_id){
             if(this.choosen.indexOf(_id) === -1)
@@ -182,12 +193,16 @@ var ISGH = {
                 this.choosen.splice( this.choosen.indexOf(id) , 1 );
         },
         patch: function(){
-            
             var u = this.path;
+            var data_obj = {
+                dates: this.choosen,
+                _token: $("input[name='_token']").val(),
+                names: this.visitors
+            }
             $.ajax({
                 url: u,
                 type: "POST",
-                data: {dates: this.choosen , _token: $("input[name='_token']").val()},
+                data: data_obj,
                 success: function(){
                     ISGH.notify("Your selection has been saved!");
                 },
@@ -199,6 +214,13 @@ var ISGH = {
         reset: function(){
             for(var i = 0; i < this.choosen.length; i++)
                 this.deselect(this.choosen[i]);
+        },
+        add_visitor: function(visitor_name){
+            this.visitors.push(visitor_name);
+        },
+        remove_visitor: function(friday_id){
+            var the_index = this.choosen.indexOf(friday_id);
+            this.visitors.splice(the_index ,1);
         }
     },
     
@@ -275,12 +297,19 @@ var ISGH = {
         $(".visitor_name_save").on("click" , function(){
             var id = $(this).attr("data-id");
             var name = $("#visitor_name_value").val();
-//            var to_reserve = JSON.parse(localStorage.getItem("to_reserve"));
-//            console.log(to_reserve);
+            $(".date#"+id).nextAll().slice(0,3).each(function(ind , ele){
+                var $el = $(ele);
+                if($el.hasClass("available")){
+                    var temp_id = parseInt( $el.attr("id") , 10 );
+                    self.Dates.remove_visitor(temp_id);
+                    self.Dates.deselect(temp_id);
+                }
+            });
             if(name){
                 self.Dates.select( parseInt( id , 10 ) );
+                self.Dates.add_visitor(name);
                 $("#visitor-name").modal("hide");
-                $(".temp-reserved").addClass("reserved");
+                $(".temp-reserved").addClass("reserved").removeClass("available");
                 $(".last-reserved").removeClass("last-reserved reserved temp-reserved");
             }
             else
@@ -299,7 +328,7 @@ var ISGH = {
             
             var route = window.location.pathname;
             var blocked_dates_view = (route.indexOf("Blocked") !== -1) ? true : false;
-//            localStorage.setItem("to_reserve" , JSON.stringify(next_siblings));
+            
             // handling the view part
             
             $(this).toggleClass("available"); // scales the date
@@ -317,30 +346,45 @@ var ISGH = {
             
             $(".visitor_name_save , .visitor-canceled").attr("data-id" , ID);
             
-            if($(this).hasClass("available")){
-                var next_siblings = $(this).nextAll().slice(0,3).each(function(index , element){
+            
+            function block_for_a_month(par){
+                var next_siblings = $(par).nextAll().slice(0,3).each(function(index , element){
                     $el = $(element);
                     if(index == 2){
                         if($el.next().hasClass("temp-reserved")){
-                            console.log($el.nextUntil(".date.available:not(.temp-reserved)" , ".temp-reserved.reserved"));
-//                            $el.nextUntil(":not(.temp-reserved)").each(function(ind , e){
-//                                if($(e).hasClass("temp-reserved"))
-//                                    $(e).addClass("last-reserved");
-//                            });
+                            $el.nextUntil(".date.available:not(.temp-reserved)" , ".temp-reserved.reserved").each(function(ind , e){
+                                if($(e).hasClass("temp-reserved"))
+                                    $(e).addClass("last-reserved");
+                            });
                         }
                     }
                     if(!$(element).hasClass("reserved"))
                         $(element).addClass("temp-reserved");
                 });
+            }
+            
+            function release_for_a_month(par){
+                var next_siblings = $(par).nextAll().slice(0,3).each(function(index , element){
+                    var $el = $(element);
+                    if($el.hasClass("temp-reserved reserved")){
+                        $el.removeClass("temp-reserved reserved");
+                    }
+                });
+            }
+            
+            if($(this).hasClass("available")){
+                block_for_a_month(this); // disable the next 3 fridays from being choosen.
                 if(blocked_dates_view){
                     $("#visitor-name").modal({keyboard: false , backdrop: "static"}).modal("show");
                 }else {
                     self.Dates.select(ID);
                 }
             }else {
+                release_for_a_month(this); // enables the next 3 fridays to be choosen.
+                if(blocked_dates_view)
+                    self.Dates.remove_visitor(ID);
                 self.Dates.deselect(ID);
             }
-            
         });
         
         //  SELECTS ALL DATES.
