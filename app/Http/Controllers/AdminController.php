@@ -309,31 +309,36 @@ class AdminController extends Controller {
             $sch->islamic_center = IslamicCenter::find($sch->ic_id) ;
         }
 
+        $schedule = $schedule->toArray();
+
         $blocked_dates = Schedule::addingBlockedDatesVisitorNames();
-        foreach($blocked_dates as $bd){
-            $user_id = $bd->khateeb_id ;
-
+        foreach($blocked_dates as $key=>$bd){
             // getting user data either khateeb or associative director
-            $bd->khateeb = new stdClass();
-            $bd->khateeb->name = "not available" ;
-            $bd->khateeb->address = "not available" ;
-            $bd->khateeb->bio = "not available" ;
-            $bd->khateeb->created_at = "not available" ;
-            $bd->khateeb->edu_background = "not available" ;
-            $bd->khateeb->id = 5000 ;
-            $bd->khateeb->member_isgh = 0 ;
-            $bd->khateeb->phone = 0 ;
-            $bd->khateeb->picture_url = "not available" ;
-            $bd->khateeb->post_code = "not available" ;
-            $bd->khateeb->updated_at = "not available" ;
+            $bd["khateeb"] = [];
+            $bd["khateeb"]["name"] = $bd["khateeb_id"] ;
+            $bd["khateeb"]["address"] = "not available" ;
+            $bd["khateeb"]["bio"] = "not available" ;
+            $bd["khateeb"]["created_at"] = "not available" ;
+            $bd["khateeb"]["edu_background"] = "not available" ;
+            $bd["khateeb"]["id"] = 5000 ;
+            $bd["khateeb"]["member_isgh"] = 0 ;
+            $bd["khateeb"]["phone"] = 0 ;
+            $bd["khateeb"]["picture_url"] = "not available" ;
+            $bd["khateeb"]["post_code"] = "not available" ;
+            $bd["khateeb"]["updated_at"] = "not available" ;
 
             // now getting friday associated to this row
-            $bd->friday = Fridays::find($sch->friday_id) ;
+            $bd["friday"] = Fridays::find($bd["friday_id"]) ;
 
             // now getting friday associated to this row
-            $bd->islamic_center = IslamicCenter::find($sch->ic_id) ;
+            $bd["islamic_center"] = IslamicCenter::find($bd["ic_id"]) ;
+            $blocked_dates[$key]["khateeb"] = $bd["khateeb"] ;
+            $blocked_dates[$key]["friday"] = $bd["friday"] ;
+            $blocked_dates[$key]["islamic_center"] = $bd["islamic_center"] ;
+            array_push($schedule ,$blocked_dates[$key]);
         }
-        return $blocked_dates ;
+
+        return $schedule ;
     }
 
 
