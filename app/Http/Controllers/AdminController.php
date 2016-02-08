@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class AdminController extends Controller {
     protected static $mail ;
@@ -307,7 +308,32 @@ class AdminController extends Controller {
             // now getting friday associated to this row
             $sch->islamic_center = IslamicCenter::find($sch->ic_id) ;
         }
-        return $schedule ;
+
+        $blocked_dates = Schedule::addingBlockedDatesVisitorNames();
+        foreach($blocked_dates as $bd){
+            $user_id = $bd->khateeb_id ;
+
+            // getting user data either khateeb or associative director
+            $bd->khateeb = new stdClass();
+            $bd->khateeb->name = "not available" ;
+            $bd->khateeb->address = "not available" ;
+            $bd->khateeb->bio = "not available" ;
+            $bd->khateeb->created_at = "not available" ;
+            $bd->khateeb->edu_background = "not available" ;
+            $bd->khateeb->id = 5000 ;
+            $bd->khateeb->member_isgh = 0 ;
+            $bd->khateeb->phone = 0 ;
+            $bd->khateeb->picture_url = "not available" ;
+            $bd->khateeb->post_code = "not available" ;
+            $bd->khateeb->updated_at = "not available" ;
+
+            // now getting friday associated to this row
+            $bd->friday = Fridays::find($sch->friday_id) ;
+
+            // now getting friday associated to this row
+            $bd->islamic_center = IslamicCenter::find($sch->ic_id) ;
+        }
+        return $blocked_dates ;
     }
 
 
@@ -815,6 +841,7 @@ class AdminController extends Controller {
                 return array_map(function($item){
                     return[
                         "record_id_block_date"=>$item["record_id_block_date"],
+                        "visitor_name"=>AdBlockedDates::whereid($item["record_id_block_date"])->select("visitor_name")->first(),
                         "islamic_center_name"=>$item["islamic_center_data"]["name"],
                         "director_name"=>AssociateDirector::whereid($item["islamic_center_data"]["director_id"])->select("name")->first(),
                         "friday_date"=>$item["friday_data"],

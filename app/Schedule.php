@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\cycle;
+use App\AdBlockedDates;
 
 class Schedule extends Model {
 
@@ -17,6 +18,8 @@ class Schedule extends Model {
 
 
     public static function start(){
+
+
         $cycle = Cycle::latest()->first();
         $cycle_id = $cycle->id ;
 
@@ -27,10 +30,10 @@ class Schedule extends Model {
             self::$islamic_center_available_places = [];
             self::$current_friday = $friday->id;
             self::startSchedule($friday->id);
-
         }
+        //self::addingBlockedDatesVisitorNames();
         self::run_CheckingExistenseOfCycle($cycle_id);
-        return self::$schedule ;
+        return "Generated Schedule Successfully";
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,6 +223,25 @@ class Schedule extends Model {
         }
 
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Start Schedule
+    public static function addingBlockedDatesVisitorNames(){
+        $blocked = AdBlockedDates::where("cycle_id","=",Cycle::currentCycle())->where("confirm","=",1)->get();
+        if(!empty($blocked)){
+            $blocked = $blocked->toArray();
+            $data = [];
+            foreach($blocked as $blocked_day){
+                $assign = ["friday_id"=>$blocked_day["friday_id"], "ic_id"=>$blocked_day["ic_id"],"khateeb_id"=>$blocked_day["visitor_name"]];
+                array_push($data,$assign) ;
+            }
+            return $data ;
+        }else{
+            return [];
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // here I will check if this cycle have schedule already have schedule created for it

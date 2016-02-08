@@ -163,7 +163,7 @@ Route::post("/checkScheduleApprove","AdminController@checkScheduleApprove");
 // status update and all its processes
     Route::post("/blockedDates/status" , "AdminController@CheckBlockedDates");
     // update blocked date status
-    Route::get("/blockedDates/editStatus" , "AdminController@EditBlockedDatesStatus");
+    Route::post("/blockedDates/editStatus" , "AdminController@EditBlockedDatesStatus");
 
 
 
