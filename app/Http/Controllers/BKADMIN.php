@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class AdminController extends Controller {
     protected static $mail ;
@@ -308,32 +307,7 @@ class AdminController extends Controller {
             // now getting friday associated to this row
             $sch->islamic_center = IslamicCenter::find($sch->ic_id) ;
         }
-
-        $blocked_dates = Schedule::addingBlockedDatesVisitorNames();
-        foreach($blocked_dates as $bd){
-            $user_id = $bd->khateeb_id ;
-
-            // getting user data either khateeb or associative director
-            $bd->khateeb = new stdClass();
-            $bd->khateeb->name = "not available" ;
-            $bd->khateeb->address = "not available" ;
-            $bd->khateeb->bio = "not available" ;
-            $bd->khateeb->created_at = "not available" ;
-            $bd->khateeb->edu_background = "not available" ;
-            $bd->khateeb->id = 5000 ;
-            $bd->khateeb->member_isgh = 0 ;
-            $bd->khateeb->phone = 0 ;
-            $bd->khateeb->picture_url = "not available" ;
-            $bd->khateeb->post_code = "not available" ;
-            $bd->khateeb->updated_at = "not available" ;
-
-            // now getting friday associated to this row
-            $bd->friday = Fridays::find($sch->friday_id) ;
-
-            // now getting friday associated to this row
-            $bd->islamic_center = IslamicCenter::find($sch->ic_id) ;
-        }
-        return $blocked_dates ;
+        return $schedule ;
     }
 
 
@@ -780,19 +754,22 @@ class AdminController extends Controller {
             $blocked = self::mapBlocked($blocked);
             $accepted = array_filter($blocked, function ($block) {
                 if ($block["status"] == 2) {
-                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                    return self::mapBlocked($block);
                 }
             });
+            
             $waiting = array_filter($blocked, function ($block) {
                 if ($block["status"] == 1) {
-                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                    return self::mapBlocked($block);
                 }
             });
+            
             $rejected = array_filter($blocked, function ($block) {
                 if ($block["status"] == 3) {
-                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                    return self::mapBlocked($block);
                 }
             });
+            
             $data = ["accepted"=>self::returnArrayNonReserverdKeys($this->mapBlocked($accepted , "director")) ,
                      "waiting"=>self::returnArrayNonReserverdKeys($this->mapBlocked($waiting , "director")) ,
                      "rejected"=>self::returnArrayNonReserverdKeys($this->mapBlocked($rejected , "director"))];
@@ -819,8 +796,8 @@ class AdminController extends Controller {
         }
 
     }
-    
-     /**
+
+    /**
     this function returns data in new array
      */
     public static function returnArrayNonReserverdKeys($array){
@@ -831,43 +808,51 @@ class AdminController extends Controller {
         return $newArray ;
     }
     
-
+    
     /**
      * @param $blocked_dates
      * @param null $element
      * @return array
      */
     public function mapBlocked($blocked_dates ,$element = null){
-        if($element == null){
-            $blocked_dates = $blocked_dates->toArray();
-
-            return array_map(function($item){
-                return[
-                    "record_id_block_date"=>$item["id"],
-                    "islamic_center_data"=>IslamicCenter::whereid($item["ic_id"])->select("name","director_id")->first(),
-                    "friday_data"=>Fridays::whereid($item["friday_id"])->select("date")->first(),
-                    "status"=>$item["confirm"]
-                ];
-            },$blocked_dates);
-        }else{
-            if(!empty($blocked_dates)){
-
+        if(!empty($blocked_dates)){
+            if($element == null){
+                if(gettype($blocked_dates )== "object"){
+                    $blocked_dates = $blocked_dates->toArray();
+                }
                 return array_map(function($item){
                     return[
-                        "record_id_block_date"=>$item["record_id_block_date"],
-                        "visitor_name"=>AdBlockedDates::whereid($item["record_id_block_date"])->select("visitor_name")->first(),
-                        "islamic_center_name"=>$item["islamic_center_data"]["name"],
-                        "director_name"=>AssociateDirector::whereid($item["islamic_center_data"]["director_id"])->select("name")->first(),
-                        "friday_date"=>$item["friday_data"],
-                        "status"=>$this->filterStatus($item["status"])
+                        "record_id_block_date"=>$item["id"],
+                        "visitor_name"=>$item["visitor_name"],
+                        "islamic_center_data"=>IslamicCenter::whereid($item["ic_id"])->select("name","director_id")->first(),
+                        "friday_data"=>Fridays::whereid($item["friday_id"])->select("date")->first(),
+                        "status"=>$item["confirm"]
                     ];
                 },$blocked_dates);
-
             }else{
-                return $blocked_dates ;
-            }
+                if(!empty($blocked_dates)){
+                    $data = array_map(function($newone){
+                        dd($newone);
+                        return[
+                            "visitor_name"=>$newone["visitor_name"],
+                            "record_id_block_date"=>$newone["record_id_block_date"],
+                            "islamic_center_name"=>$newone["islamic_center_data"]["name"],
 
+                            "director_name"=>AssociateDirector::whereid($newone["islamic_center_data"]["director_id"])->select("name")->first(),
+                            "friday_date"=>$newone["friday_data"],
+                            "status"=>$this->filterStatus($newone["status"])
+                        ];
+                    },$blocked_dates);
+                    return $data ;
+                }else{
+                    return $blocked_dates ;
+                }
+
+            }
+        }else{
+            return [];
         }
+        
 
     }
 

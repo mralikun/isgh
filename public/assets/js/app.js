@@ -220,7 +220,8 @@ var ISGH = {
         },
         remove_visitor: function(friday_id){
             var the_index = this.choosen.indexOf(friday_id);
-            this.visitors.splice(the_index ,1);
+            if(the_index !== -1)
+                this.visitors.splice(the_index ,1);
         }
     },
     
@@ -292,22 +293,26 @@ var ISGH = {
                 processData: false
             });
         });
-        //  HANDLING CLICK EVENT FOR DATES.
         
         $(".visitor_name_save").on("click" , function(){
             var id = $(this).attr("data-id");
             var name = $("#visitor_name_value").val();
-            $(".date#"+id).nextAll().slice(0,3).each(function(ind , ele){
-                var $el = $(ele);
-                if($el.hasClass("available")){
-                    var temp_id = parseInt( $el.attr("id") , 10 );
-                    self.Dates.remove_visitor(temp_id);
-                    self.Dates.deselect(temp_id);
-                }
-            });
+            
             if(name){
+                // if one of the dates to be blocked is choosen before.
+                $(".date#"+id).nextAll().slice(0,3).each(function(ind , ele){
+                    var $el = $(ele);
+                    if($el.hasClass("available")){
+                        var temp_id = parseInt( $el.attr("id") , 10 );
+                        self.Dates.remove_visitor(temp_id);
+                        self.Dates.deselect(temp_id);
+                    }
+                });
+                //  add the ID to the choosen fridays
                 self.Dates.select( parseInt( id , 10 ) );
+                //  add the visitor name
                 self.Dates.add_visitor(name);
+                
                 $("#visitor-name").modal("hide");
                 $(".temp-reserved").addClass("reserved").removeClass("available");
                 $(".last-reserved").removeClass("last-reserved reserved temp-reserved");
@@ -319,34 +324,17 @@ var ISGH = {
         $(".visitor-canceled").on("click" , function(){
             var id = $(this).attr("data-id");
             $(".date[id='"+id+"']").removeClass("available");
+            self.Dates.remove_visitor(id);
             self.Dates.deselect(id);
         });
         
+        //  HANDLING CLICK EVENT FOR DATES.
+        
         $(".dates-calendar").on("click" , ".date:not(.reserved)" , function(e){
             
-            // blocked or available ?
+            //  helper functions
             
-            var route = window.location.pathname;
-            var blocked_dates_view = (route.indexOf("Blocked") !== -1) ? true : false;
-            
-            // handling the view part
-            
-            $(this).toggleClass("available"); // scales the date
-            
-            // handling the data part.
-            
-            var ID = undefined;
-            
-            if(!$(this).hasClass("date")){
-                ID = parseInt( $(this).parents(".date").attr("id") );
-                
-            }else {
-                ID = parseInt( $(this).attr("id") );
-            }
-            
-            $(".visitor_name_save , .visitor-canceled").attr("data-id" , ID);
-            
-            
+            //  disables the next 3 fridays to the choosen one!
             function block_for_a_month(par){
                 var next_siblings = $(par).nextAll().slice(0,3).each(function(index , element){
                     $el = $(element);
@@ -363,14 +351,36 @@ var ISGH = {
                 });
             }
             
+            //  enables the next 3 fridays to the choosen one
             function release_for_a_month(par){
                 var next_siblings = $(par).nextAll().slice(0,3).each(function(index , element){
                     var $el = $(element);
-                    if($el.hasClass("temp-reserved reserved")){
+                    if($el.hasClass("temp-reserved reserved") || ($el.hasClass("reserved") && !$el.hasClass("original-reserved"))){
                         $el.removeClass("temp-reserved reserved");
                     }
                 });
             }
+            
+            // blocked or available ?
+            
+            var route = window.location.pathname;
+            var blocked_dates_view = (route.indexOf("Blocked") !== -1) ? true : false;
+            
+            // handling the view part
+            
+            $(this).toggleClass("available"); // scales the date
+            
+            // handling the data part.
+            
+            var ID = undefined;
+            
+            if(!$(this).hasClass("date")){
+                ID = parseInt( $(this).parents(".date").attr("id") );
+            }else {
+                ID = parseInt( $(this).attr("id") );
+            }
+            
+            $(".visitor_name_save , .visitor-canceled").attr("data-id" , ID);
             
             if($(this).hasClass("available")){
                 block_for_a_month(this); // disable the next 3 fridays from being choosen.
@@ -435,7 +445,7 @@ var ISGH = {
         });
         
         $("#blocked-dates-form").on("submit" , function(){
-            if(self.Dates.choosen.length === 0){
+            if(self.Dates.choosen.length === 0 && window.location.pathname.indexOf("Blocked") === -1){
                 ISGH.alertBox.init("Please choose at least 1 Friday" , false);
                 return false;
             }

@@ -13,6 +13,7 @@
 <li><a href="/admin/members/create">Create new members</a></li>
 <li><a href="/admin/islamic_center/create">Create islamic center</a></li>
 <li><a href="/admin/schedule">Manage Schedule</a></li>
+<li><a href="/admin/blocked_dates_report">Blocked Dates Report</a></li>
 <li><a href="/auth/logout">Logout</a></li>
 @endif
 
@@ -174,7 +175,7 @@ Schedule Management
     
    @endif
 
-    <div class="schedule-wrapper col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+    <div class="schedule-wrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table table-bordered" ng-show="schedule_generated">
 
             <thead>

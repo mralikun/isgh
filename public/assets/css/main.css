@@ -207,6 +207,7 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
 
 .tabs-links {
     text-align: center;
+    padding: 15px;
 }
 
 .tabs-links button {
@@ -271,7 +272,6 @@ tbody tr:hover {
 }
 
 .removed {
-
     transform: translateX(-120px);
     opacity: 0;
 }

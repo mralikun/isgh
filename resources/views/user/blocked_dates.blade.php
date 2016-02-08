@@ -78,10 +78,6 @@ Blocked Dates
     $my_ic = Map($fridays_choosen_my_ic , function($fr){
         return $fr->friday_id;
     });
-
-    $visitors = Map($fridays_choosen , function($fr){
-        return $fr->visitor_name;
-    });
 ?>
 
 <style>
@@ -98,23 +94,32 @@ Blocked Dates
     </div>
 </div>
 
-
 <form id="blocked-dates-form">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="dates-calendar">
-      <?php $counter = 3; $step = 0;?>
+      <?php $counter = 3;?>
        @foreach($fridays as $key => $friday)
        @if(in_array($friday->id , $choosen))
         <div class="date available" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
-               <h6 class="visitor-name">{{$visitors[$step]}}</h6>
+               <h5 class="visitor-name"><?php echo array_values(array_filter($fridays_choosen->toArray() , function($fr) use ($friday){
+                    return $fr["friday_id"] == $friday->id;
+                }))[0]["visitor_name"]; ?></h5>
                <h5>{{$friday->date}}</h5>
             </div>
         </div>
-        <?php $counter = 0; $step++; ?>
-       @elseif(in_array($friday->id , $other_ics) || in_array($friday->id , $my_ic) || $counter != 3)
-        <div class="date reserved" id="{{$friday->id}}">
+        <?php $counter = 0;?>
+       @elseif(in_array($friday->id , $other_ics) || in_array($friday->id , $my_ic))
+        <div class="date original-reserved reserved" id="{{$friday->id}}">
+            <div class="date-content">
+               <h4>Friday</h4>
+               <h5>{{$friday->date}}</h5>
+            </div>
+        </div>
+       <?php $counter ++; ?>
+       @elseif(gmp_cmp(3 , $counter) == 1)
+       <div class="date reserved" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
                <h5>{{$friday->date}}</h5>

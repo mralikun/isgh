@@ -106,8 +106,8 @@ class UserController extends Controller {
     }
 
     /**
-     * return islamic center blocked dates
-     */
+     * return islamic center blocked date
+     * */
     public function getIslamicCenterBlockedDates(){
         $user_id = Auth::user()->user_id ;
         $role = Auth::user()->role_id ;
@@ -116,7 +116,7 @@ class UserController extends Controller {
         $cycle = Cycle::latest()->first();
         $fridays = Fridays::wherecycle_id($cycle->id)->select("id","date")->get();
         if(Auth::user()->role_id == 3) {
-            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Schedule::Return_Associated_Islamic_Center($user_id))->select("friday_id")->get();
+            $fridays_choosen = AdBlockedDates::wherecycle_id($cycle->id)->whereic_id(Schedule::Return_Associated_Islamic_Center($user_id))->select("friday_id","visitor_name")->get();
 
 
             $fridays_choosen_my_ic = AdChooseTheirIc::wherecycle_id($cycle->id)->wheread_id(Auth::user()->user_id)->select("friday_id")->get();
@@ -145,7 +145,7 @@ class UserController extends Controller {
      * post request to save islamic center blocked dates
      */
     public function setIslamicCenterBlockedDates($ic_id){
-        return $result = AdBlockedDates::addBlockedDates(Input::all("dates"),$ic_id ,Input::get("names"));
+        return $result = AdBlockedDates::addBlockedDates(Input::get("dates"),$ic_id ,Input::get("names"));
     }
 
     /**

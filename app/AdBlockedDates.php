@@ -99,10 +99,10 @@ class AdBlockedDates extends Model {
      * @return string
      * updating a record only
      */
-    public function updateRecord($id , $status){
+    public static function updateRecord($id , $status){
         $record = AdBlockedDates::whereid($id)->first();
         $record->confirm = $status ;
-        if($record->save){
+        if($record->update()){
             return "true";
         }else{
             return "false";

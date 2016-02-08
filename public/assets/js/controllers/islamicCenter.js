@@ -76,4 +76,27 @@ app.controller("IslamicCenterController" , ["$scope", "$http" , function(scope ,
             });
         }
         
-    }]);
+        scope.getAllBlockedDates = function(){
+            http.post("/blockedDates/status" , {requested: ["waiting"]}).then(function(response){
+                scope.waitingBlockedDates = response.data[0].waiting;
+                console.log(scope.waitingBlockedDates);
+                $(scope.waitingBlockedDates).each(function(ind , e){
+                    e.friday_date.date = new Date(e.friday_date.date);
+                    
+                });
+            });
+        };
+    
+        scope.editBlockedDateStatus = function(obj){
+            var friday = scope.waitingBlockedDates[obj.pos];
+            http.post("/blockedDates/editStatus" , {id: friday.record_id_block_date , status: obj.status}).then(function(response){
+                var result = Boolean(response.data);
+                if(result){
+                    scope.waitingBlockedDates.splice(obj.pos , 1);
+                }
+            });
+        }
+    
+        if(window.location.pathname.indexOf("blocked_dates_report") !== -1)
+            scope.getAllBlockedDates();
+        }]);

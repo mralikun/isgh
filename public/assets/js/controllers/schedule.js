@@ -234,7 +234,7 @@ app.controller("ScheduleController" , ["$scope" , "$http" , function(scope , req
     scope.generate = function(){
         scope.msg = "Generating , Please wait...";
         scope.processing = true;
-        request.get("/when").then(function(res){
+        request.get("/startSchedule").then(function(res){
             scope.get_schedule();
         } , function(){});
     }
