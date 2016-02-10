@@ -504,5 +504,52 @@ class UserController extends Controller {
     /**
      *
      */
+    public function checkPassword(){
+        $password = Auth::user()->password ;
+
+        $current_password = Input::get("password");
+        $confirm_password = Hash::make($current_password);
+
+        if($confirm_password == $password){
+            return Response::json([
+                "success"=>true,
+                "data"=>"equal"
+            ]);
+        }else{
+            return Response::json([
+                "success"=>false,
+                "data"=>"not equal"
+            ]);
+        }
+    }
+
+    public function SaveNewPass(){
+        $user_id = Auth::user()->id ;
+        $user = User::findOrFail($user_id) ;
+
+        $pass1 = Request::get("pass1");
+        $pass2 = Request::get("pass2");
+
+        if($pass1 == $pass2){
+            $password = Hash::make($pass1);
+            $user->password = $password ;
+            if($user->save()){
+                return Response::json([
+                    "success"=>true,
+                    "data"=>"true"
+                ]);
+            }else{
+                return Response::json([
+                    "success"=>false,
+                    "data"=>"error"
+                ]);
+            }
+        }else{
+            return Response::json([
+                "success"=>false,
+                "data"=>"error"
+            ]);
+        }
+    }
 
 }

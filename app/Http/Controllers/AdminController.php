@@ -797,21 +797,24 @@ class AdminController extends Controller {
 
         if(!empty($blocked)){
             $blocked = self::mapBlocked($blocked);
+
             $accepted = array_filter($blocked, function ($block) {
                 if ($block["status"] == 2) {
-                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                    return $block;
                 }
             });
             $waiting = array_filter($blocked, function ($block) {
                 if ($block["status"] == 1) {
-                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                    return $block;
                 }
             });
             $rejected = array_filter($blocked, function ($block) {
                 if ($block["status"] == 3) {
-                    return self::mapBlocked($block, $block["islamic_center_data"]["director_id"]);
+                    return $block;
                 }
             });
+
+
             $data = ["accepted"=>self::returnArrayNonReserverdKeys($this->mapBlocked($accepted , "director")) ,
                 "waiting"=>self::returnArrayNonReserverdKeys($this->mapBlocked($waiting , "director")) ,
                 "rejected"=>self::returnArrayNonReserverdKeys($this->mapBlocked($rejected , "director"))];
@@ -913,4 +916,8 @@ class AdminController extends Controller {
         return AdBlockedDates::updateRecord($id , $status);
     }
 
+
+    public function blockedDatesReportView(){
+        return view("admin.blocked_dates_report");
+    }
 }

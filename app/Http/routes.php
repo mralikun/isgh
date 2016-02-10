@@ -168,6 +168,10 @@ Route::post("/blockedDates/status" , "AdminController@CheckBlockedDates");
 // update blocked date status
 Route::post("/blockedDates/editStatus" , "AdminController@EditBlockedDatesStatus");
 
+// User check pass
+Route::post('/user/checkpass', 'UserController@checkPassword');
 
+// User Change pass
+Route::post('/user/checkpass', 'UserController@SaveNewPass');
 
 
