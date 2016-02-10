@@ -8,6 +8,7 @@ use App\Cycle;
 use App\Fridays;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
 
 use App\IslamicCenter;
 use App\Khateeb;
@@ -16,8 +17,8 @@ use App\Rating;
 use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -527,8 +528,8 @@ class UserController extends Controller {
         $user_id = Auth::user()->id ;
         $user = User::findOrFail($user_id) ;
 
-        $pass1 = Request::get("pass1");
-        $pass2 = Request::get("pass2");
+        $pass1 = Input::get("pass1");
+        $pass2 = Input::get("pass2");
 
         if($pass1 == $pass2){
             $password = Hash::make($pass1);
