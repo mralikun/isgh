@@ -506,22 +506,10 @@ class UserController extends Controller {
      *
      */
     public function checkPassword(){
-        $password = Auth::user()->password ;
-
-        $current_password = Input::get("password");
-        $confirm_password = Hash::make($current_password);
-
-        if($confirm_password == $password){
-            return Response::json([
-                "success"=>true,
-                "data"=>"equal"
-            ]);
-        }else{
-            return Response::json([
-                "success"=>false,
-                "data"=>"not equal"
-            ]);
-        }
+        $val = Hash::check(Input::get("password") , Auth::user()->password);
+        if($val)
+            return "true";
+        return "false";
     }
 
     public function SaveNewPass(){

@@ -27,7 +27,6 @@ Create new member
 
 
 @section("content")
-
 <span class="note text-right">All of the following fields are required</span>
 
 <form method="POST" class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 form-horizontal" id="members-form" ng-controller="UserController as uc" ng-submit="create(tempUser)" name="registerForm">
@@ -98,6 +97,16 @@ Create new member
         <div class="col-sm-10">
             <label class="col-sm-3 control-label"><input type="radio" name="admin" value="1" ng-model="tempUser.admin_priv"> Yes </label>
             <label class="col-sm-3 control-label"><input type="radio" name="admin" value="0" ng-model="tempUser.admin_priv"> No </label>
+        </div>
+    </div>
+    <div class="form-group" ng-show="tempUser.role == 0">
+        <label class="col-sm-2 control-label">Islamic Center</label>
+        <div class="col-sm-10">
+            <select class="form-control" ng-model="tempUser.ic">
+                @foreach($islamic_centers as $islamic_center)
+                <option value="{{$islamic_center->id}}">{{$islamic_center->name}}</option>
+                @endforeach
+            </select>
         </div>
     </div>
     

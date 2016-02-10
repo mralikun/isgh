@@ -9,6 +9,28 @@
     app.controller("UserController" , ["$scope" , "$http" , function( scope , http ){
         //  DELETES AN EXISTING USER
         
+        scope.chg_pass = {
+            valid_creds: "false"
+        };
+        
+        scope.checkCurrentPassword = function(){
+            http.post("/user/checkpass" , {password: scope.chg_pass.old}).then(function(response){
+                var result = response.data;
+                console.log(result);
+                scope.chg_pass.valid_creds = result;
+            });
+        }
+        
+        scope.saveNewPassword = function(){
+            http.post("/user/changePass" , {pass1: scope.chg_pass.new  , pass2: scope.chg_pass.confirm_new}).then(function(response){
+                var result = response.data.success;
+                if(result) {
+                    ISGH.notify("Password has been changed successfully!");
+                    $("#chg_pass_modal").modal("hide");
+                }
+            });
+        }
+        
         scope.delete = function ( obj ){
             
             var target = obj._ev.target;
@@ -45,11 +67,6 @@
             
             if(!valid(_temp))
                 return false;
-            
-            if( !ISGH.Validator.required( ["username" , "password" , "confirm_password" , "role"] , _temp ) ){
-                ISGH.alertBox.init("Some required fields are missing ,Please review all form fields and make sure nothing is missing" , false);
-                return false;
-            }
             
             if(_temp.role == 2 && !_temp.email){
                 ISGH.alertBox.init("Please Insert your email first!" , false);

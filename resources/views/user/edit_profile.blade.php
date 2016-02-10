@@ -31,15 +31,44 @@ Update Profile
 @stop
 
 @section("content")
-@if($firstTime == "true")
-<h4 class="first-time">It seems this is your first time logging into ISGH System ,Please take a minute to update your personal information</h4>
-@endif
+<div class="modal fade" ng-controller="UserController as uc" id="chg_pass_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Change Password</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" ng-model="chg_pass.old" class="form-control" placeholder="Current Password" ng-change="checkCurrentPassword();">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" ng-model="chg_pass.new" class="form-control" placeholder="New Password" ng-disabled="chg_pass.valid_creds == 'false'">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" ng-model="chg_pass.confirm_new" class="form-control" placeholder="Confirm New Password" ng-disabled="chg_pass.valid_creds == 'false'">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-isgh" data-dismiss="modal">Cancel</button><button class="btn btn-isgh" style="margin-bottom: 5px;" ng-click="saveNewPassword()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-right">
+    <button class="btn btn-isgh" data-toggle="modal" data-target="#chg_pass_modal" type="button">Change Password</button>
+</div>
 <span class="text-right note">All of the following fields are required</span>
 <form class="col-xs-10 col-xs-offset-1 form-horizontal" id="update-profile-form" ng-controller="UserController as uc" enctype="multipart/form-data" name="profile">
   @if(isset($adminEditing) and $adminEditing != null)
   <input type="hidden" value="{{$adminEditing}}" name="userID">
   @endif
-
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="form-group">
         <label class="control-label col-sm-3">Name</label>
@@ -111,16 +140,10 @@ Update Profile
     </div>
 
 <audio src="/assets/alert.mp3"></audio>
-
 @stop
-
 @section("aside")
-
 @if($role == 2)
-
 <div class="pic-holder">
-   
-    
     @if($result->picture_url != "")
     <div class="edit-img thumbnail" style="background-image: url(/images/khateeb_pictures/{{$result->picture_url}})"></div>
     <input type="file" name="profile_picture" class="form-control profile-pic">
@@ -128,13 +151,18 @@ Update Profile
     <div class="edit-img thumbnail" style="background-image: url(/assets/images/user.jpg)"></div>
     <input type="file" name="profile_picture" class="form-control profile-pic" required>
     @endif
-
 </div>
-
 @endif
-
 @stop
 </form>
+    
+    
+</div>
+
+@if($firstTime == "true")
+<h4 class="first-time text-center">It seems this is your first time logging into ISGH System ,Please take a minute to update your personal information</h4>
+@endif
+
 @section("scripts")
 
 <script src="/assets/js/services/google-geocode.js"></script>

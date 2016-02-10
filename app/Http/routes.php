@@ -172,6 +172,6 @@ Route::post("/blockedDates/editStatus" , "AdminController@EditBlockedDatesStatus
 Route::post('/user/checkpass', 'UserController@checkPassword');
 
 // User Change pass
-Route::post('/user/checkpass', 'UserController@SaveNewPass');
+Route::post('/user/changePass', 'UserController@SaveNewPass');
 
 
