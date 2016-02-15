@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>ISGH</title>
+    <title>Khutbah Rotation</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <script src="/assets/js/core/jquery.min.js"></script>
@@ -44,7 +44,7 @@
 
 <body>
 
-<header><h2>ISGH</h2></header>
+<header><h2>Khutbah Rotation</h2></header>
 <form action="{{ url('/auth/login') }}" method="POST" id="login-form">
 
     <img src="/assets/images/auth.jpg" alt="Unknown" id="auth-img">

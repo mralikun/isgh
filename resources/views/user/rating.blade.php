@@ -4,7 +4,7 @@
 @section("navigation")
 
 
-<li><a href="/user/profile">View Profile</a></li>
+<li><a href="/user/profile">Home</a></li>
 <li><a href="/user/rating">Prefrences</a></li>
 @if($role == 3)
 <li><a href="/user/BlockedDates">Blocked Dates</a></li>
@@ -66,6 +66,23 @@ Preferences
 
 
 @section("content")
+
+<div class="modal fade" id="bg-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p class="bg-info"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-isgh" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @if($role == 3)
 <div class="row">
     <div class="col-xs-10 col-xs-offset-1">

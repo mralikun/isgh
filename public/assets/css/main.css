@@ -226,6 +226,21 @@ input.ng-pristine + div[ng-messages] , select.ng-pristine + div[ng-messages] , t
     outline: none;
 }
 
+.art-link {
+    font-size: 90%;
+    color: #007bb3;
+}
+
+.art-link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.bg-info {
+    padding: 5px;
+    text-indent: 10px;
+}
+
 @media (max-width: 768px){
     .tabs-links button {
         width: 100%;

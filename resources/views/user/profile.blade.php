@@ -2,7 +2,7 @@
 
 
 @section("navigation")
-<li><a href="/user/profile">View Profile</a></li>
+<li><a href="/user/profile">Home</a></li>
 <li><a href="/user/rating">Prefrences</a></li>
 @if(Auth::user()->role_id == 3)
 <li><a href="/user/BlockedDates">Blocked Dates</a></li>

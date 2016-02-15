@@ -1,7 +1,7 @@
 @extends("templates.master")
 
 @section("navigation")
-<li><a href="/user/profile">View Profile</a></li>
+<li><a href="/user/profile">Home</a></li>
 <li><a href="/user/rating">Prefrences</a></li>
 <li><a href="/user/BlockedDates">Blocked Dates</a></li>
 <li><a href="/user/dates">Available Dates as khateeb</a></li>

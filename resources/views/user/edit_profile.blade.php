@@ -5,7 +5,7 @@
 
 @if($firstTime == "false" and !isset($adminEditing))
 
-<li><a href="/user/profile">View Profile</a></li>
+<li><a href="/user/profile">Home</a></li>
 <li><a href="/user/rating">Prefrences</a></li>
 @if($role == 3)
 <li><a href="/user/BlockedDates">Blocked Dates</a></li>
@@ -120,9 +120,9 @@ Update Profile
     </div>
     @if($role == 2)
     <div class="form-group">
-        <label for="" class="control-label col-sm-3">Educational Background</label>
+        <label for="" class="control-label col-sm-3">Background</label>
         <div class="col-sm-9">
-            <input type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" value="{{$result->edu_background}}"/>
+            <textarea type="text" name="edu_background" placeholder="Please insert your educational background" class="form-control" style="resize: none;" rows="5">{{$result->edu_background}}</textarea>
         </div>
     </div>
     @endif
@@ -155,10 +155,6 @@ Update Profile
 @endif
 @stop
 </form>
-    
-    
-</div>
-
 @if($firstTime == "true")
 <h4 class="first-time text-center">It seems this is your first time logging into ISGH System ,Please take a minute to update your personal information</h4>
 @endif

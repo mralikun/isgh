@@ -4,7 +4,7 @@
         
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Welcome to ISGH</title>
+        <title>Khutbah Rotation</title>
         <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="/assets/css/main.css">
         <link rel="stylesheet" href="/assets/css/fa/css/font-awesome.min.css">
@@ -25,7 +25,7 @@
                 <button type="button" data-target="#isghNav" data-toggle="collapse" class="navbar-toggle">
                     <span class="fa fa-bars"></span>
                 </button>
-                <a href="/" class="navbar-brand"><h2>ISGH</h2></a>
+                <a href="/" class="navbar-brand"><h2>Khutbah Rotation</h2></a>
             </div>
             <div class="collapse navbar-collapse" id="isghNav">
                 <ul class="nav navbar-nav">
