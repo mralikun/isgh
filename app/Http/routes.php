@@ -174,4 +174,7 @@ Route::post('/user/checkpass', 'UserController@checkPassword');
 // User Change pass
 Route::post('/user/changePass', 'UserController@SaveNewPass');
 
+// User Change pass
+Route::post('/user/getBackground', 'UserController@getBackground');
+
 

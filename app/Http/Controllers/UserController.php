@@ -541,4 +541,13 @@ class UserController extends Controller {
         }
     }
 
+    public function getBackground(){
+        $khateeb_id = Input::get("id");
+        if(!empty($khateeb_id)){
+            $user = User::whereid($khateeb_id)->first();
+            $khateeb = Khateeb::whereid($user->user_id)->first();
+            return $khateeb ;
+        }
+    }
+
 }
