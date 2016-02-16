@@ -118,7 +118,7 @@ Blocked Dates
             </div>
         </div>
        <?php $counter ++; ?>
-       @elseif(gmp_cmp(3 , $counter) == 1)
+       @elseif($counter < 3)
        <div class="date reserved" id="{{$friday->id}}">
             <div class="date-content">
                <h4>Friday</h4>
