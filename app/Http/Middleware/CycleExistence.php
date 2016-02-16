@@ -38,63 +38,76 @@ class CycleExistence {
                 return redirect()->guest('/');
             }
         }elseif($this->auth->user()->role_id == 3){
-            $url = \Illuminate\Support\Facades\Request::url();
-            if (strpos($url, 'user/changePassword') !== false) {
+            if ($request->ajax())
+            {
                 return $next($request);
             }else{
-            // in this section I'am going to check if this is his first time to access the site or not
-                $password_changed = $this->auth->user()->passwordchanged;
+                $url = \Illuminate\Support\Facades\Request::url();
+            
+                if (strpos($url, 'user/changePassword') !== false || strpos($url, 'user/changePass') !== false) {
+                    return $next($request);
+                }else{
+                // in this section I'am going to check if this is his first time to access the site or not
+                    $password_changed = $this->auth->user()->passwordchanged;
 
-                if($password_changed == 1){
-                    $user_data = AssociateDirector::whereid($this->auth->user()->user_id)->first();
+                    if($password_changed == 1){
+                        $user_data = AssociateDirector::whereid($this->auth->user()->user_id)->first();
 
-                    if(!empty($user_data)){
-
-                        if($user_data->reviewer == 0) {
-                            return $next($request);
-                        }else{
+                        if(!empty($user_data)){
 
                             if($user_data->reviewer == 0) {
-                                //->guest('/user/profile');
+                                return $next($request);
                             }else{
-                                if (!$request->ajax())
-                                {
-                                    $latest_cycle = Cycle::latest()->first();
 
-                                    if(empty($latest_cycle)){
-                                        return redirect('/admin/cycle');
-                                    }else{
+                                if($user_data->reviewer == 0) {
+                                    //->guest('/user/profile');
+                                }else{
+                                    if (!$request->ajax())
+                                    {
+                                        $latest_cycle = Cycle::latest()->first();
 
-                                        $latest_cycle_end_date = $latest_cycle->end_date ;
-                                        // check if the end_date of the last cycle is older
-                                        if (strtotime($latest_cycle_end_date) - time() <= 2592000) {
-                                            // okay we need to create new cycle
+                                        if(empty($latest_cycle)){
                                             return redirect('/admin/cycle');
-                                        }
+                                        }else{
 
+                                            $latest_cycle_end_date = $latest_cycle->end_date ;
+                                            // check if the end_date of the last cycle is older
+                                            if (strtotime($latest_cycle_end_date) - time() <= 2592000) {
+                                                // okay we need to create new cycle
+                                                return redirect('/admin/cycle');
+                                            }
+
+                                        }
                                     }
                                 }
                             }
                         }
+                    }else{
+                        return redirect('/user/changePassword');
                     }
-                }else{
-                    return redirect('/user/changePassword');
                 }
             }
+            
 
         }elseif($this->auth->user()->role_id == 2){
-            $url = \Illuminate\Support\Facades\Request::url();
-            if (strpos($url, 'user/changePassword') !== false) {
+            if ($request->ajax())
+            {
                 return $next($request);
-            }else {
-                // in this section I'am going to check if this is his first time to access the site or not
-                $password_changed = $this->auth->user()->passwordchanged;
-                if($password_changed == 1){
+            }else{
+                $url = \Illuminate\Support\Facades\Request::url();
+                if (strpos($url, 'user/changePassword') !== false || strpos($url, 'user/changePass') !== false) {
                     return $next($request);
-                }else{
-                    return redirect('/user/changePassword');
+                }else {
+                    // in this section I'am going to check if this is his first time to access the site or not
+                    $password_changed = $this->auth->user()->passwordchanged;
+                    if($password_changed == 1){
+                        return $next($request);
+                    }else{
+                        return redirect('/user/changePassword');
+                    }
                 }
             }
+            
         }
 
 
