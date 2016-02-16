@@ -522,6 +522,7 @@ class UserController extends Controller {
         if($pass1 == $pass2){
             $password = Hash::make($pass1);
             $user->password = $password ;
+            $user->changepassword=1;
             if($user->save()){
                 return Response::json([
                     "success"=>true,
@@ -545,8 +546,12 @@ class UserController extends Controller {
         $khateeb_id = Input::get("id");
         if(!empty($khateeb_id)){
             $user = User::whereid($khateeb_id)->first();
-            $khateeb = Khateeb::whereid($user->user_id)->first();
-            return $khateeb ;
+            if($user->role_id == 3){
+                $data = AssociateDirector::whereid($user->user_id)->first();
+            }else{
+                $data = Khateeb::whereid($user->user_id)->first();
+            }
+            return $data ;
         }
     }
 
