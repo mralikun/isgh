@@ -17,6 +17,8 @@ class CreateAdBlockedDatesTable extends Migration {
             $table->increments('id');
             $table->integer('ic_id')->unsigned()->index(); // username
             $table->integer('friday_id')->unsigned()->index(); // username
+            $table->integer('confirm'); // confirmation 1 = added by ad , 2 = accepted , 3 = rejected
+            $table->string("visitor_name");
             $table->integer('cycle_id')->unsigned()->index(); // username
             $table->timestamps();
         });

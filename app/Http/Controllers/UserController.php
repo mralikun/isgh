@@ -522,7 +522,7 @@ class UserController extends Controller {
         if($pass1 == $pass2){
             $password = Hash::make($pass1);
             $user->password = $password ;
-            $user->changepassword=1;
+            $user->passwordchanged=1;
             if($user->save()){
                 return Response::json([
                     "success"=>true,

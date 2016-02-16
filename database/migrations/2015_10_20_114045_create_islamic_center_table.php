@@ -36,6 +36,11 @@ class CreateIslamicCenterTable extends Migration {
             $table->timestamps();
         });
 
+        Schema::table('rating', function(Blueprint $table)
+        {
+            $table->foreign("ic_id")->references("id")->on("islamic_center")->onDelete("cascade");
+        });
+
         Schema::table('islamic_center', function(Blueprint $table)
         {
             $table->foreign("director_id")->references("id")->on("associate_director")->onDelete("cascade");
@@ -61,6 +66,10 @@ class CreateIslamicCenterTable extends Migration {
          // this section related to the ad blocked dates
         Schema::table('ad_blocked_dates', function(Blueprint $table) {
             $table->dropForeign("ad_blocked_dates_ic_id_foreign");
+        });
+
+        Schema::table('rating', function(Blueprint $table) {
+            $table->dropForeign("rating_ic_id_foreign");
         });
 
         Schema::dropIfExists("islamic_center");

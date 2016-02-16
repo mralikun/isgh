@@ -30,11 +30,11 @@ class RolesTableSeeder extends Seeder {
         \App\Roles::create(['role_name' => 'ad' , "id"=>3]);
 
         DB::table('admin')->delete();
-        \App\Admin::create(['id' => 1 , "name"=>"Eng Ahmed Ali", "email"=>"emineme32@yahoo.com"]);
+        \App\Admin::create(['id' => 1 , "name"=>"admin", "email"=>"admin@gmail.com"]);
 
         DB::table('users')->delete();
-        $password = Hash::make("ahmedali32");
-        \App\User::create(['username' => 'ahmedali' , "id"=>1, "user_id"=>1, "role_id"=>1 , "password"=>$password]);
+        $password = Hash::make("admin");
+        \App\User::create(['username' => 'admin' , "id"=>1, "user_id"=>1, "role_id"=>1 , "password"=>$password]);
 
     }
 

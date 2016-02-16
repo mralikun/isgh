@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration {
 			$table->increments('id');
 			$table->string('username')->unique(); // username
             $table->integer("user_id");
+            $table->integer("passwordchanged");
             $table->integer("role_id")->unsigned()->index(); // reference id in table Roles
 			$table->string('password', 60);
             $table->string('email')->nullable();
