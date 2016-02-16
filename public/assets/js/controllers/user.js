@@ -27,6 +27,8 @@
                 if(result) {
                     ISGH.notify("Password has been changed successfully!");
                     $("#chg_pass_modal").modal("hide");
+                    if(window.location.pathname.indexOf("changePassword") !== -1)
+                        window.location.href = "/user/profile";
                 }
             });
         }

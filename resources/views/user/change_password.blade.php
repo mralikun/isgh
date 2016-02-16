@@ -31,5 +31,6 @@ Change Password
             </div>
         </form>
     </div>
+    <audio src="/assets/alert.mp3"></audio>
 </div>
 @stop
