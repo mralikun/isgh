@@ -177,4 +177,7 @@ Route::post('/user/changePass', 'UserController@SaveNewPass');
 // User Change pass
 Route::post('/user/getBackground', 'UserController@getBackground');
 
+// get user change password page
+Route::get("/user/changePassword","UserController@changePassword");
+
 
