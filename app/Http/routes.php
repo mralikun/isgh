@@ -180,4 +180,6 @@ Route::post('/user/getBackground', 'UserController@getBackground');
 // get user change password page
 Route::get("/user/changePassword","UserController@changePassword");
 
+// get user change password page
+Route::get("/no_cycle_yet","UserController@no_cycle_yet");
 

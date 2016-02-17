@@ -42,6 +42,15 @@ class CycleExistence {
             {
                 return $next($request);
             }else{
+                if($this->auth->user()->reviewer == 0) {
+                    // he is not a reviewer send him to the no cycle page if there is no cycle
+                    return redirect('/no_cycle_yet');
+                }else{
+                    $latest_cycle = Cycle::latest()->first();
+
+                    return redirect('/admin/cycle');
+
+                }
                 $url = \Illuminate\Support\Facades\Request::url();
             
                 if (strpos($url, 'user/changePassword') !== false || strpos($url, 'user/changePass') !== false) {
@@ -90,6 +99,13 @@ class CycleExistence {
             
 
         }elseif($this->auth->user()->role_id == 2){
+
+            $latest_cycle = Cycle::latest()->first();
+
+            if (empty($latest_cycle)){
+                return redirect('/no_cycle_yet');
+            }
+
             if ($request->ajax())
             {
                 return $next($request);

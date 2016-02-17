@@ -559,4 +559,8 @@ class UserController extends Controller {
         return view("user.change_password");
     }
 
+    public function no_cycle_yet(){
+        // return view no cycle yet
+        return view("user.no_cycle");
+    }
 }
